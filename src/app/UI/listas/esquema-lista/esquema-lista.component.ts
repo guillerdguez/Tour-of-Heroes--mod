@@ -8,7 +8,7 @@ import {
   DoCheck,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { ContextMenu } from 'primeng/contextmenu'; 
+import { ContextMenu } from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-esquema-lista',
@@ -49,10 +49,14 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   }
   initializeHeaders() {
     if (this.paramsTemporal.length) {
-      this.headers = Object.keys(this.paramsTemporal[0]).map((key) => ({
-        field: key,
-        header: key.charAt(0).toUpperCase() + key.slice(1),
-      }));
+      this.headers = [];
+      const keys = Object.keys(this.paramsTemporal[0]);
+      for (let i = 0; i < keys.length; i++) {
+        this.headers.push({
+          field: keys[i],
+          header: keys[i].charAt(0).toUpperCase() + keys[i].slice(1),
+        });
+      }
     }
   }
 
