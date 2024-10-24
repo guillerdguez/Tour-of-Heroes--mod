@@ -29,7 +29,7 @@ export class VillainsComponent implements OnInit {
     private villainService: VillainService,
     public villainModel: VillainModel,
     private router: Router,
-    private fechoriaModel: FechoriaModel // Inyección del modelo de fechorías
+    private fechoriaModel: FechoriaModel
   ) {}
 
   menuItem() {

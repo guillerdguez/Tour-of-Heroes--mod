@@ -5,14 +5,10 @@ import {
   ViewChild,
   Output,
   EventEmitter,
-  OnChanges,
-  output,
   DoCheck,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { ContextMenu } from 'primeng/contextmenu';
-import { Router } from '@angular/router';
-import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
+import { ContextMenu } from 'primeng/contextmenu'; 
 
 @Component({
   selector: 'app-esquema-lista',
@@ -35,20 +31,20 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   emptyRows: number = 0;
   @Output() itemSelected = new EventEmitter<any>();
 
-  constructor(private heroModel: HeroModel) {}
+  constructor() {}
   ngOnInit() {
-    this.updateParamsTemporal();
+    this.ParamsTemporal();
     this.initializeHeaders();
     this.rellenador();
   }
   ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
-      this.updateParamsTemporal();
+      this.ParamsTemporal();
       this.initializeHeaders();
       this.rellenador();
     }
   }
-  private updateParamsTemporal() {
+  private ParamsTemporal() {
     this.paramsTemporal = [...this.params];
   }
   initializeHeaders() {

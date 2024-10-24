@@ -63,7 +63,7 @@ export class FormularioComponentVillain implements OnInit {
         lastName,
       };
 
-      this.villainService.addVillain(newVillain);
+      this.villainService.addVillain(newVillain);console.log(newVillain)
       this.goBack();
     });
   }

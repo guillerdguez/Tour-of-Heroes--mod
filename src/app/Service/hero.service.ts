@@ -16,7 +16,6 @@ export class HeroService {
 
     this.heroDAO.addHero(hero).subscribe({
       next: (hero: Hero) => {
- 
         this.heroModel.hero = hero;
       },
       error: (error) => {
@@ -44,13 +43,12 @@ export class HeroService {
     this.heroDAO.getHeroes().subscribe({
       next: (heroes: Hero[]) => {
         this.heroModel.heroes = heroes;
-      
       },
       error: (error) => {
         console.error(error);
       },
     });
- 
+
     return this.heroes;
   }
 
