@@ -70,7 +70,7 @@ export class VillainsComponent implements OnInit {
 
       menuItems.push({
         label: fechoria,
-        
+
         command: () => {
           this.changeFechoria(fechoria);
         },
@@ -81,12 +81,7 @@ export class VillainsComponent implements OnInit {
   }
 
   changeFechoria(fechoria: string): void {
-    if (this.selectedItem) {
-      this.selectedItem.fechoria = fechoria;
-      console.log(`Fechoria cambiada a: ${fechoria}`);
-    } else {
-      console.error('No se ha seleccionado ningún villano.');
-    }
+    this.selectedItem.fechoria = fechoria;
   }
 
   onItemSelected(item: Villain) {
@@ -96,7 +91,6 @@ export class VillainsComponent implements OnInit {
   ngOnInit(): void {
     this.villainModel.villains = this.villainService.getVillainsArray();
     this.items = this.menuItem();
-    console.log(this.items);
   }
 
   goToDetail(villain: Villain) {

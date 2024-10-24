@@ -1,4 +1,11 @@
-import { Component, Input, input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { HeroService } from '../../../Service/hero.service';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
@@ -18,7 +25,7 @@ import { MenuItem } from 'primeng/api';
     ></app-esquema-lista>
   `,
 })
-export class HeroesComponent implements OnInit {
+export class HeroesComponent implements OnInit, OnChanges {
   title: string = 'Heroes';
   items: MenuItem[] = [];
   selectedItem!: Hero;
@@ -29,6 +36,9 @@ export class HeroesComponent implements OnInit {
 
     private router: Router
   ) {}
+  ngOnChanges(): void {
+    this.heroModel.heroes = this.heroService.getHeroesArray();
+  }
   menuItem() {
     return [
       {
@@ -60,14 +70,14 @@ export class HeroesComponent implements OnInit {
             label: 'poner en top',
             icon: 'pi pi-angle-double-up',
             command: () => {
-              this.moveToFirstPosition();
+              this.primeraPosicion();
             },
           },
           {
             label: 'quitar de top',
             icon: 'pi pi-angle-double-down',
             command: () => {
-              this.moveToLastPosition();
+              this.ultimaPosicion();
             },
           },
         ],
@@ -81,7 +91,6 @@ export class HeroesComponent implements OnInit {
   ngOnInit(): void {
     this.heroModel.heroes = this.heroService.getHeroesArray();
     this.items = this.menuItem();
-    console.log(this.items);
   }
 
   goToDetail(hero: Hero) {
@@ -94,33 +103,30 @@ export class HeroesComponent implements OnInit {
     );
     this.heroService.deleteHero(hero.id);
   }
-  moveToFirstPosition() {
+  primeraPosicion() {
     if (this.heroModel.heroes.indexOf(this.selectedItem) > 4) {
       if (this.selectedItem) {
-        this.heroModel.heroes = this.heroModel.heroes.filter(
-          (h) => h.id !== this.selectedItem.id
+        this.heroTemporal = this.selectedItem;
+        this.heroModel.heroes.splice(
+          this.heroModel.heroes.indexOf(this.selectedItem),
+          1
         );
-
-        this.heroModel.heroes.splice(0, 0, this.selectedItem);
+        this.heroModel.heroes.unshift(this.heroTemporal);
       }
     }
   }
-  moveToLastPosition() {
-    if (
-      this.heroModel.heroes.indexOf(this.selectedItem) !=
-      this.heroModel.heroes.length - 1
+
+  heroTemporal!: Hero;
+  ultimaPosicion() {
+    if (this.heroModel.heroes.indexOf(this.selectedItem)<4
     ) {
       if (this.selectedItem) {
-        this.heroModel.heroes = this.heroModel.heroes.filter(
-          (h) => h.id !== this.selectedItem.id
-        );
-
+        this.heroTemporal = this.selectedItem;
         this.heroModel.heroes.splice(
-          this.heroModel.heroes.length - 1,
-          0,
-          this.selectedItem
+          this.heroModel.heroes.indexOf(this.selectedItem),
+          1
         );
-        console.log(this.heroModel.heroes);
+        this.heroModel.heroes.push(this.heroTemporal);
       }
     }
   }

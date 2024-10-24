@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
   styleUrl: './formulario.component.css',
 })
 export class FormularioComponentHeroe implements OnInit {
-
   model: any;
   heroName: any;
   heroForm: any;
@@ -29,7 +28,6 @@ export class FormularioComponentHeroe implements OnInit {
 
   ngOnInit(): void {
     this.powerModel.powers;
- 
   }
   add(
     name: string,
@@ -58,9 +56,8 @@ export class FormularioComponentHeroe implements OnInit {
         alterEgo,
         age,
         power,
-        
       };
- 
+
       this.heroService.addHero(newHero);
       this.goBack();
     });

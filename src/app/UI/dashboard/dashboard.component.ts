@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.heroService.getHeroesSubscription().subscribe({
       next: (heroes) => {
-        console.log(this.heroModel.heroes);
+       
         this.heroes = heroes.slice(0, 4);
       },
     });
