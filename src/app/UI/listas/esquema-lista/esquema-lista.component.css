@@ -1,4 +1,4 @@
-::ng-deep table {
+/* ::ng-deep table {
   height: 50vh;
   border-collapse: collapse;
   max-width: 100vh;  
@@ -70,4 +70,93 @@ tr {
 .context {
   margin: 0;
   padding: 0;
+} */
+/* 
+
+
+::ng-deep table {
+  height: 50vh;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+::ng-deep th,
+::ng-deep td,
+.table-data,
+.table-header {
+  min-width: 150px;
+  height: 99px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.p-element {
+  font-weight: bold;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+tbody {
+  font-weight: bold;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  font-weight: bold;
+  flex: 1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+
+
+.pi-plus-circle {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.context {
+  margin: 0;
+  padding: 0;
+}
+.table,
+th,
+td {
+  font-weight: bold;
+  border-bottom: 1px solid;
+  text-align: left !important;
+  vertical-align: middle !important;
+  padding: 8px;
+}
+p-dropdown {
+  width: 100%;
+} */
+.title {
+  margin-top: 0;
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 70px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  width: 100%;
 }

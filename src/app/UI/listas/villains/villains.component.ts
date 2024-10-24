@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { VillainService } from '../../../Service/villain.service';
 import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
 import { Villain } from '../../../Model/Domain/villano';
-import { villainDAO } from '../../../DAO/villain.DAO';
+import { MenuItem } from 'primeng/api';
+import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 
 @Component({
   selector: 'app-villains',
@@ -14,47 +15,92 @@ import { villainDAO } from '../../../DAO/villain.DAO';
       [params]="villainModel.villains"
       (delete)="delete($event)"
       (edit)="goToDetail($event)"
+      [items]="items"
+      (itemSelected)="onItemSelected($event)"
     ></app-esquema-lista>
   `,
 })
 export class VillainsComponent implements OnInit {
   title: string = 'Villains';
+  items: MenuItem[] = [];
+  selectedItem!: Villain;
 
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
-    private villainDao: villainDAO,
-    private router: Router
+    private router: Router,
+    private fechoriaModel: FechoriaModel // Inyección del modelo de fechorías
   ) {}
 
-  
+  menuItem() {
+    return [
+      {
+        label: 'Create',
+        icon: 'pi pi-plus',
+        command: () => {
+          this.router.navigate(['/newVillains']);
+        },
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.delete(this.selectedItem);
+        },
+      },
+      {
+        label: 'Edit',
+        icon: 'pi pi-file-edit',
+        command: () => {
+          this.goToDetail(this.selectedItem);
+        },
+      },
+      {
+        label: 'Cambiar Fechoria',
+        icon: 'pi pi-thumbs-down-fill',
+        items: this.getFechoriaItems(),
+      },
+    ];
+  }
+  getFechoriaItems(): MenuItem[] {
+    const menuItems: MenuItem[] = [];
+
+    for (let i = 0; i < this.fechoriaModel.fechorias.length; i++) {
+      const fechoria = this.fechoriaModel.fechorias[i];
+
+      menuItems.push({
+        label: fechoria,
+        
+        command: () => {
+          this.changeFechoria(fechoria);
+        },
+      });
+    }
+
+    return menuItems;
+  }
+
+  changeFechoria(fechoria: string): void {
+    if (this.selectedItem) {
+      this.selectedItem.fechoria = fechoria;
+      console.log(`Fechoria cambiada a: ${fechoria}`);
+    } else {
+      console.error('No se ha seleccionado ningún villano.');
+    }
+  }
+
+  onItemSelected(item: Villain) {
+    this.selectedItem = item;
+  }
+
   ngOnInit(): void {
     this.villainModel.villains = this.villainService.getVillainsArray();
+    this.items = this.menuItem();
+    console.log(this.items);
   }
 
   goToDetail(villain: Villain) {
     this.router.navigate(['/detail/villain/', villain.id]);
-  }
-
-  add(name: string): void {
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      return;
-    }
-
-    this.villainDao.getVillains().subscribe((villains) => {
-      const newId = villains.length ? villains[villains.length - 1].id + 1 : 1;
-      const newVillain: Villain = {
-        id: newId,
-        name: trimmedName,
-        lastName: '',
-        age: 0,
-        power: '',
-        fechoria: ''
-      };
-
-      this.villainService.addVillain(newVillain);
-    });
   }
 
   delete(villain: Villain): void {

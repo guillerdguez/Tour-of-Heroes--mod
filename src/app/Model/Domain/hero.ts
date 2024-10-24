@@ -6,6 +6,6 @@ export interface Hero extends PersonaConPoderes {
      alterEgo?: string
      lastName?:string,
      age:number
-     power: string,
+     power: string,  [key: string]: any;
 
 }

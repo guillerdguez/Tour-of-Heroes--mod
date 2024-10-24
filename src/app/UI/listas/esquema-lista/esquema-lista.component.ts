@@ -3,11 +3,10 @@ import {
   Input,
   OnInit,
   ViewChild,
-  AfterViewInit,
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges,
+  output,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
@@ -18,18 +17,20 @@ import { Router } from '@angular/router';
   templateUrl: './esquema-lista.component.html',
   styleUrls: ['./esquema-lista.component.css'],
 })
-export class EsquemaListaComponent implements OnInit,  OnChanges {
+export class EsquemaListaComponent implements OnInit, OnChanges {
   //@Input() params: PersonaConPoderes[] = [];
 
   @Input() params: any[] = [];
   @Input() title: string = '';
+  @Input() items: MenuItem[] = [];
   selectedItem!: any;
   @ViewChild('menu') menu!: ContextMenu;
   @Output() delete = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
-  items: MenuItem[] = [];
+  @Output() item: any[] = this.selectedItem;
   headers: any[] = [];
   emptyRows: number = 0;
+  @Output() itemSelected = new EventEmitter<any>();
 
   constructor(private router: Router) {}
   ngOnChanges(): void {
@@ -38,12 +39,9 @@ export class EsquemaListaComponent implements OnInit,  OnChanges {
 
   ngOnInit() {
     this.initializeHeaders();
-    this.initializeMenuItems();
-  
+
     this.rellenador();
   }
-
- 
 
   initializeHeaders() {
     if (this.params.length) {
@@ -54,41 +52,15 @@ export class EsquemaListaComponent implements OnInit,  OnChanges {
     }
   }
 
-  initializeMenuItems() {
-    this.items = [
-      {
-        label: 'Create',
-        icon: 'pi pi-plus',
-        command: () => {
-          this.router.navigate(['/new' + this.title]);
-        },
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => {
-          this.delete.emit(this.selectedItem);
-          console.log(this.selectedItem);
-        },
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-file-edit',
-        command: () => {
-          this.edit.emit(this.selectedItem);
-        },
-      },
-    ];
-  }
-
   onContextMenu(event: MouseEvent, item: any) {
     event.preventDefault();
-    this.selectedItem = item;
+    this.selectedItem = item;  
     this.menu.show(event);
+    this.itemSelected.emit(this.selectedItem);  
   }
- 
+
   rellenador() {
-    while (this.params.length % 5 != 0  ) {
+    while (this.params.length % 5 != 0) {
       this.params.push([]);
     }
   }

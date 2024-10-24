@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Hero } from '../../Model/Domain/hero';
 import { HeroService } from '../../Service/hero.service';
 import { HeroModel } from '../../Model/Views/Dynamic/HeroModel';
@@ -8,23 +8,25 @@ import { HeroModel } from '../../Model/Views/Dynamic/HeroModel';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnChanges {
   heroes: Hero[] = [];
-selectedHero: Hero | undefined;
+  selectedHero: Hero | undefined;
 
   constructor(private heroService: HeroService, public heroModel: HeroModel) {}
 
   ngOnInit(): void {
-
-    this.heroService.getHeroesSubscription().subscribe(
-        {
-          next: (heroes) =>{
-            this.heroes = heroes.slice(0,4);
-          }
-        }
-    );
+    this.heroService.getHeroesSubscription().subscribe({
+      next: (heroes) => {
+        this.heroes = heroes.slice(0, 4);
+      },
+    });
   }
-  getHeroes(): void {
-   
+  ngOnChanges(changes: SimpleChanges): void {
+    this.heroService.getHeroesSubscription().subscribe({
+      next: (heroes) => {
+        console.log(this.heroModel.heroes);
+        this.heroes = heroes.slice(0, 4);
+      },
+    });
   }
 }
