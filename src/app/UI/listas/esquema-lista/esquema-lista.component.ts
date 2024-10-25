@@ -98,7 +98,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   }
 
   onContextMenu(event: MouseEvent, item: any) {
-    if (!event || !event.button) return;
+ 
     event.preventDefault();
 
     this.selectedItem = item;
@@ -109,8 +109,8 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   }
 
   onSelectTable(event: MouseEvent, item: any) {
-    // if (!event || !event.button) return;
-    if (event.button != 2 && event.button != 1) {
+
+    if (event.button != 2 && event.button != 1 ) {
       event.preventDefault();
 
       // alert('El botón del ratón pulsado fue el izquierdo');

@@ -16,6 +16,7 @@ import { MenuItem } from 'primeng/api';
       [items]="items"
       [options]="opciones"
       (itemSelected)="onItemSelected($event)"
+            (TableSelected)="onTableSelected($event)"
     ></app-esquema-lista>
   `,
 })
@@ -23,6 +24,7 @@ export class HeroesComponent implements OnInit, OnChanges {
   title: string = 'Heroes';
   items: MenuItem[] = [];
   selectedItem!: Hero;
+  selectedTable!: Hero;
   opciones: any[] = [];
 
   constructor(
@@ -71,14 +73,14 @@ export class HeroesComponent implements OnInit, OnChanges {
             label: 'poner en top',
             icon: 'pi pi-angle-double-up',
             command: () => {
-              this.primeraPosicion();
+              this.primeraPosicion(this.selectedItem);
             },
           },
           {
             label: 'quitar de top',
             icon: 'pi pi-angle-double-down',
             command: () => {
-              this.ultimaPosicion();
+              this.ultimaPosicion(this.selectedItem);
             },
           },
         ],
@@ -89,6 +91,7 @@ export class HeroesComponent implements OnInit, OnChanges {
   onItemSelected(item: Hero) {
     this.selectedItem = item;
   }
+
 
   goToDetail(hero: Hero) {
     this.router.navigate(['/detail/hero/', hero.id]);
@@ -102,22 +105,22 @@ export class HeroesComponent implements OnInit, OnChanges {
   }
 
   heroTemporal!: Hero;
-  primeraPosicion() {
-    if (this.selectedItem) {
-      this.heroTemporal = this.selectedItem;
+  primeraPosicion(selectedItem:Hero) {
+    if ( selectedItem) {
+      this.heroTemporal =  selectedItem;
       this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf(this.selectedItem),
+        this.heroModel.heroes.indexOf( selectedItem),
         1
       );
       this.heroModel.heroes.unshift(this.heroTemporal);
     }
   }
 
-  ultimaPosicion() {
-    if (this.selectedItem) {
-      this.heroTemporal = this.selectedItem;
+  ultimaPosicion(selectedItem:Hero) {
+    if ( selectedItem) {
+      this.heroTemporal =  selectedItem;
       this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf(this.selectedItem),
+        this.heroModel.heroes.indexOf( selectedItem),
         1
       );
       this.heroModel.heroes.push(this.heroTemporal);
@@ -136,15 +139,15 @@ export class HeroesComponent implements OnInit, OnChanges {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => {
-          this.delete(this.selectedItem);
+        command: () => {console.log(this.selectedTable,"ccccc")
+          this.delete(this.selectedTable);
         },
       },
       {
         label: 'Edit',
         icon: 'pi pi-file-edit',
         command: () => {
-          this.goToDetail(this.selectedItem);
+          this.goToDetail(this.selectedTable);
         },
       },
       {
@@ -155,18 +158,20 @@ export class HeroesComponent implements OnInit, OnChanges {
             label: 'poner en top',
             icon: 'pi pi-angle-double-up',
             command: () => {
-              this.primeraPosicion();
+              this.primeraPosicion(this.selectedTable);
             },
           },
           {
             label: 'quitar de top',
             icon: 'pi pi-angle-double-down',
             command: () => {
-              this.ultimaPosicion();
+              this.ultimaPosicion(this.selectedTable);
             },
           },
         ],
       },
     ];
+  }  onTableSelected(item: Hero) {
+    this.selectedTable = item; 
   }
 }
