@@ -13,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 
 import { ContextMenu } from 'primeng/contextmenu';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-esquema-lista',
@@ -108,14 +109,17 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   }
 
   onSelectTable(event: MouseEvent, item: any) {
-    if (!event || !event.button) return;
+    // if (!event || !event.button) return;
+    if (event.button != 2 && event.button != 1) {
+      event.preventDefault();
 
-    if (event.button === 0) {
-      if (!this.selectTable.includes(item)) {
-        this.selectTable.push(item); // Agrega el elemento a selectTable si no está ya
-      }
+      // alert('El botón del ratón pulsado fue el izquierdo');
 
-      this.TableSelected.emit(this.selectTable); // Emite todos los elementos seleccionados
+
+      this.selectTable = item;
+     
+      this.TableSelected.emit(this.selectTable);
+      console.log(this.selectTable);
     }
   }
 
