@@ -1,5 +1,18 @@
-<div class="container">
+<div class="table-container">
   <h2 class="title">{{ title }}</h2>
+
+  <form [formGroup]="formGroup">
+    <p-cascadeSelect
+      formControlName="selectedOption"
+      [options]="options"
+      optionLabel="label"
+      optionGroupLabel="items"
+      [optionGroupChildren]="['items']"
+      [style]="{ minWidth: '14rem' }"
+      placeholder="Select a option"
+      class="formGroup"
+    />
+  </form>
 
   <div class="data-container">
     <p-table
@@ -9,9 +22,10 @@
       [paginator]="true"
       [rows]="5"
       [rowsPerPageOptions]="[5, 10]"
+      [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template pTemplate="header" let-columns>
-        <tr class="table-header-row">
+        <tr class="table-header-row" style="width: 200px; height: 100px">
           <th
             *ngFor="let column of columns"
             class="table-header"
@@ -21,12 +35,16 @@
           </th>
         </tr>
       </ng-template>
+
       <ng-template pTemplate="body" let-item let-columns="columns">
-        <tr class="table-body-row">
+        <tr class="table-body-row" style="width: 200px; height: 100px">
           <td
+            style="width: 200px; height: 100px"
             *ngFor="let header of columns"
             class="table-data"
             (contextmenu)="onContextMenu($event, item)"
+            (click)="onSelectTable($event, item)"
+            [class.selected]="selectTable === item"
           >
             {{ item[header.field] ?? "&nbsp;" }}
           </td>

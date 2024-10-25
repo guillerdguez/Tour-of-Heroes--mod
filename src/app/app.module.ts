@@ -7,7 +7,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InMemoryDataService } from './Service/in-memory-data.service';
-
+import { ReactiveFormsModule } from '@angular/forms';
 // UI Components
 import { HeroesComponent } from './UI/listas/heroe/heroes.component';
 import { HeroDetailComponent } from './UI/detail/hero-detail/hero-detail.component';
@@ -37,7 +37,7 @@ import { ToastModule } from 'primeng/toast';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 @NgModule({
   declarations: [
     VillainDetailComponent,
@@ -56,6 +56,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     VillainsComponent,
   ],
   imports: [
+    CascadeSelectModule,
+    ReactiveFormsModule,
     ContextMenuModule,
     BrowserModule,
     AppRoutingModule,

@@ -17,10 +17,23 @@ body {
   line-height: 1.5;
 
   -webkit-font-smoothing: antialiased;
+  font-weight: bold;
 }
 i {
   cursor: pointer;
 }
 a {
   text-decoration: none;
+}
+
+.data-table {
+  width: 100%;  
+  border-collapse: collapse; 
+}
+
+.table-header, .table-data {
+  padding: 0; 
+  margin: 0;  
+   text-align: center;
+  box-sizing: border-box; 
 }

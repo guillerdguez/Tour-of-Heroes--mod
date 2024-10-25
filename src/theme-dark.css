@@ -114,7 +114,11 @@ button {
 .p-inputwrapper * {
   background-color: #434c5e;
 }
-table,th,td,.table-data,.table-header
-{
- border-bottom: #2e3440 solid 1xp 
+table,
+th,
+td,
+.table-data,
+.table-header {
+  border-bottom: #2e3440 solid 1xp;
+  border-left: white 1px solid;  
 }

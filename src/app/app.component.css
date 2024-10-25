@@ -1,17 +1,15 @@
 :host {
   width: 100%;
-  min-height: 100vh; 
+  min-height: 100vh;
   display: grid;
   grid-template-areas: "sidebar content";
-  grid-template-columns: auto 1fr; 
-  grid-template-rows: 1fr; 
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
 }
-
-
 
 .content {
   grid-area: content;
   padding: 20px;
-  overflow-y: auto; 
-  height: 100vh;  
+  overflow-y: auto;
+  height: 100vh;
 }

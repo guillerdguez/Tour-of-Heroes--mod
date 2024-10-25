@@ -7,53 +7,89 @@ import {
   EventEmitter,
   DoCheck,
 } from '@angular/core';
+
+import { FormControl, FormGroup } from '@angular/forms';
+
 import { MenuItem } from 'primeng/api';
+
 import { ContextMenu } from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-esquema-lista',
+
   templateUrl: './esquema-lista.component.html',
+
   styleUrls: ['./esquema-lista.component.css'],
 })
 export class EsquemaListaComponent implements OnInit, DoCheck {
-  //@Input() params: PersonaConPoderes[] = [];
+  paramsTemporal: any[] = [];
+
+  headers: any[] = [];
+
+  formGroup: FormGroup;
+
+  selectedItem!: any;
+
+  selectedOption: any;
+
+  selectTable!: any;
+
+  @Input() options: any[] = [];
 
   @Input() params: any[] = [];
-  paramsTemporal: any[] = [];
+
   @Input() title: string = '';
+
   @Input() items: MenuItem[] = [];
-  selectedItem!: any;
-  @ViewChild('menu') menu!: ContextMenu;
+
   @Output() delete = new EventEmitter<any>();
+
   @Output() edit = new EventEmitter<any>();
-  @Output() item: any[] = this.selectedItem;
-  headers: any[] = [];
-  emptyRows: number = 0;
+
   @Output() itemSelected = new EventEmitter<any>();
 
-  constructor() {}
+  @Output() TableSelected = new EventEmitter<any>();
+
+  @ViewChild('menu') menu!: ContextMenu;
+
+  constructor() {
+    this.formGroup = new FormGroup({
+      selectedOption: new FormControl<object | null>(null),
+    });
+  }
+
   ngOnInit() {
     this.ParamsTemporal();
+
     this.initializeHeaders();
+
     this.rellenador();
   }
+
   ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();
+
       this.initializeHeaders();
+
       this.rellenador();
     }
   }
+
   private ParamsTemporal() {
     this.paramsTemporal = [...this.params];
   }
+
   initializeHeaders() {
     if (this.paramsTemporal.length) {
       this.headers = [];
+
       const keys = Object.keys(this.paramsTemporal[0]);
+
       for (let i = 0; i < keys.length; i++) {
         this.headers.push({
           field: keys[i],
+
           header: keys[i].charAt(0).toUpperCase() + keys[i].slice(1),
         });
       }
@@ -61,14 +97,30 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   }
 
   onContextMenu(event: MouseEvent, item: any) {
+    if (!event || !event.button) return;
     event.preventDefault();
+
     this.selectedItem = item;
+
     this.menu.show(event);
+
     this.itemSelected.emit(this.selectedItem);
   }
 
+  onSelectTable(event: MouseEvent, item: any) {
+    if (!event || !event.button) return;
+
+    if (event.button === 0) {
+      if (!this.selectTable.includes(item)) {
+        this.selectTable.push(item); // Agrega el elemento a selectTable si no está ya
+      }
+
+      this.TableSelected.emit(this.selectTable); // Emite todos los elementos seleccionados
+    }
+  }
+
   rellenador() {
-    while (this.paramsTemporal.length % 5 != 0) {
+    while (this.paramsTemporal.length % 5 !== 0) {
       this.paramsTemporal.push([]);
     }
   }

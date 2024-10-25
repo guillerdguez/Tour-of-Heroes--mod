@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeroService } from '../../../Service/hero.service';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
@@ -21,6 +14,7 @@ import { MenuItem } from 'primeng/api';
       (delete)="delete($event)"
       (edit)="goToDetail($event)"
       [items]="items"
+      [options]="opciones"
       (itemSelected)="onItemSelected($event)"
     ></app-esquema-lista>
   `,
@@ -29,16 +23,23 @@ export class HeroesComponent implements OnInit, OnChanges {
   title: string = 'Heroes';
   items: MenuItem[] = [];
   selectedItem!: Hero;
+  opciones: any[] = [];
 
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
-
     private router: Router
   ) {}
+  ngOnInit(): void {
+    this.heroModel.heroes = this.heroService.getHeroesArray();
+    this.items = this.menuItem();
+    this.opciones = this.menuOpciones();
+    console.log(this.opciones);
+  }
   ngOnChanges(): void {
     this.heroModel.heroes = this.heroService.getHeroesArray();
   }
+
   menuItem() {
     return [
       {
@@ -84,13 +85,9 @@ export class HeroesComponent implements OnInit, OnChanges {
       },
     ];
   }
+
   onItemSelected(item: Hero) {
     this.selectedItem = item;
-  }
-
-  ngOnInit(): void {
-    this.heroModel.heroes = this.heroService.getHeroesArray();
-    this.items = this.menuItem();
   }
 
   goToDetail(hero: Hero) {
@@ -103,31 +100,73 @@ export class HeroesComponent implements OnInit, OnChanges {
     );
     this.heroService.deleteHero(hero.id);
   }
+
+  heroTemporal!: Hero;
   primeraPosicion() {
-    if (this.heroModel.heroes.indexOf(this.selectedItem) > 4) {
-      if (this.selectedItem) {
-        this.heroTemporal = this.selectedItem;
-        this.heroModel.heroes.splice(
-          this.heroModel.heroes.indexOf(this.selectedItem),
-          1
-        );
-        this.heroModel.heroes.unshift(this.heroTemporal);
-      }
+    if (this.selectedItem) {
+      this.heroTemporal = this.selectedItem;
+      this.heroModel.heroes.splice(
+        this.heroModel.heroes.indexOf(this.selectedItem),
+        1
+      );
+      this.heroModel.heroes.unshift(this.heroTemporal);
     }
   }
 
-  heroTemporal!: Hero;
   ultimaPosicion() {
-    if (this.heroModel.heroes.indexOf(this.selectedItem)<4
-    ) {
-      if (this.selectedItem) {
-        this.heroTemporal = this.selectedItem;
-        this.heroModel.heroes.splice(
-          this.heroModel.heroes.indexOf(this.selectedItem),
-          1
-        );
-        this.heroModel.heroes.push(this.heroTemporal);
-      }
+    if (this.selectedItem) {
+      this.heroTemporal = this.selectedItem;
+      this.heroModel.heroes.splice(
+        this.heroModel.heroes.indexOf(this.selectedItem),
+        1
+      );
+      this.heroModel.heroes.push(this.heroTemporal);
     }
+  }
+
+  menuOpciones() {
+    return [
+      {
+        label: 'Create',
+        icon: 'pi pi-plus',
+        command: () => {
+          this.router.navigate(['/newHeroes']);
+        },
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => {
+          this.delete(this.selectedItem);
+        },
+      },
+      {
+        label: 'Edit',
+        icon: 'pi pi-file-edit',
+        command: () => {
+          this.goToDetail(this.selectedItem);
+        },
+      },
+      {
+        label: 'top',
+        icon: 'pi pi-crown',
+        items: [
+          {
+            label: 'poner en top',
+            icon: 'pi pi-angle-double-up',
+            command: () => {
+              this.primeraPosicion();
+            },
+          },
+          {
+            label: 'quitar de top',
+            icon: 'pi pi-angle-double-down',
+            command: () => {
+              this.ultimaPosicion();
+            },
+          },
+        ],
+      },
+    ];
   }
 }
