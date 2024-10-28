@@ -53,7 +53,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Smith',
         age: 35,
         power: powers[0],
-        alterEgo: 'Pablo',
+        alterEgo: undefined,
       },
       {
         id: 13,

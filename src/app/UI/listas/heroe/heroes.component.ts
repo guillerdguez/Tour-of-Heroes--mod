@@ -4,6 +4,7 @@ import { HeroService } from '../../../Service/hero.service';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
 import { Hero } from '../../../Model/Domain/hero';
 import { MenuItem } from 'primeng/api';
+
 @Component({
   selector: 'app-heroes',
   template: `
@@ -16,54 +17,76 @@ import { MenuItem } from 'primeng/api';
       [items]="items"
       [options]="opciones"
       (itemSelected)="onItemSelected($event)"
-            (TableSelected)="onTableSelected($event)"
+      (TableSelected)="onTableSelected($event)"
+      (OptionSelecet)="onOptionSelecet($event)"
     ></app-esquema-lista>
   `,
 })
 export class HeroesComponent implements OnInit, OnChanges {
   title: string = 'Heroes';
   items: MenuItem[] = [];
+  opciones: any[] = [];
   selectedItem!: Hero;
   selectedTable!: Hero;
-  opciones: any[] = [];
+  selectedOption!: string;
+  heroTemporal!: Hero;
 
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
     private router: Router
   ) {}
+
   ngOnInit(): void {
     this.heroModel.heroes = this.heroService.getHeroesArray();
     this.items = this.menuItem();
     this.opciones = this.menuOpciones();
-    console.log(this.opciones);
   }
+
   ngOnChanges(): void {
     this.heroModel.heroes = this.heroService.getHeroesArray();
   }
 
+  // menuItem() {
+  //   return [
+  //     {
+  //       label: 'Create',
+  //       icon: 'pi pi-plus',
+  //       command: () => this.router.navigate(['/newHeroes']),
+  //     },
+  //     {
+  //       label: 'Delete',
+  //       icon: 'pi pi-trash',
+  //       command: () => this.delete(this.selectedItem),
+  //     },
+  //     {
+  //       label: 'Edit',
+  //       icon: 'pi pi-file-edit',
+  //       command: () => this.goToDetail(this.selectedItem),
+  //     },
+  //     {
+  //       label: 'quitar de top',
+  //       icon: 'pi pi-angle-double-down',
+  //       command: () => this.ultimaPosicion(this.selectedItem),
+  //     },
+  //   ];
+  // }
   menuItem() {
     return [
       {
         label: 'Create',
         icon: 'pi pi-plus',
-        command: () => {
-          this.router.navigate(['/newHeroes']);
-        },
+        command: () => this.router.navigate(['/newHeroes']),
       },
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => {
-          this.delete(this.selectedItem);
-        },
+        command: () => this.delete(this.selectedItem),
       },
       {
         label: 'Edit',
         icon: 'pi pi-file-edit',
-        command: () => {
-          this.goToDetail(this.selectedItem);
-        },
+        command: () => this.goToDetail(this.selectedItem),
       },
       {
         label: 'top',
@@ -72,26 +95,91 @@ export class HeroesComponent implements OnInit, OnChanges {
           {
             label: 'poner en top',
             icon: 'pi pi-angle-double-up',
-            command: () => {
-              this.primeraPosicion(this.selectedItem);
-            },
+            command: () => this.primeraPosicion(this.selectedItem),
           },
           {
             label: 'quitar de top',
             icon: 'pi pi-angle-double-down',
-            command: () => {
-              this.ultimaPosicion(this.selectedItem);
-            },
+            command: () => this.ultimaPosicion(this.selectedItem),
           },
         ],
       },
     ];
   }
 
+  menuOpciones() {
+    return [
+      {
+        label: 'Create',
+        icon: 'pi pi-plus',
+        command: () => this.router.navigate(['/newHeroes']),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => this.delete(this.selectedTable),
+      },
+      {
+        label: 'Edit',
+        icon: 'pi pi-file-edit',
+        command: () => this.goToDetail(this.selectedTable),
+      },
+      {
+        label: 'top',
+        icon: 'pi pi-crown',
+        items: [
+          {
+            label: 'poner en top',
+            icon: 'pi pi-angle-double-up',
+            command: () => this.primeraPosicion(this.selectedTable),
+          },
+          {
+            label: 'quitar de top',
+            icon: 'pi pi-angle-double-down',
+            command: () => this.ultimaPosicion(this.selectedTable),
+          },
+        ],
+      },
+    ];
+  }
+  // menuOpciones() {
+  //   return [
+  //     {
+  //       label: 'Create',
+  //       icon: 'pi pi-plus',
+  //       command: () => this.router.navigate(['/newHeroes']),
+  //     },
+  //     {
+  //       label: 'Delete',
+  //       icon: 'pi pi-trash',
+  //       command: () => this.delete(this.selectedTable),
+  //     },
+  //     {
+  //       label: 'Edit',
+  //       icon: 'pi pi-file-edit',
+  //       command: () => this.goToDetail(this.selectedTable),
+  //     },
+  //     {
+  //       label: 'quitar de top',
+  //       icon: 'pi pi-angle-double-down',
+  //       command: () => this.ultimaPosicion(this.selectedTable),
+  //     },
+  //   ];
+  // }
+
   onItemSelected(item: Hero) {
     this.selectedItem = item;
   }
 
+  onTableSelected(item: Hero) {
+    this.selectedTable = item;
+  }
+
+  onOptionSelecet(select: string) {
+    this.selectedOption = select;
+    console.log(select);
+    this.switchOpciones(this.selectedOption);
+  }
 
   goToDetail(hero: Hero) {
     this.router.navigate(['/detail/hero/', hero.id]);
@@ -104,74 +192,52 @@ export class HeroesComponent implements OnInit, OnChanges {
     this.heroService.deleteHero(hero.id);
   }
 
-  heroTemporal!: Hero;
-  primeraPosicion(selectedItem:Hero) {
-    if ( selectedItem) {
-      this.heroTemporal =  selectedItem;
+  primeraPosicion(selectedItem: Hero) {
+    if (selectedItem) {
+      this.heroTemporal = selectedItem;
       this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf( selectedItem),
+        this.heroModel.heroes.indexOf(selectedItem),
         1
       );
       this.heroModel.heroes.unshift(this.heroTemporal);
     }
   }
 
-  ultimaPosicion(selectedItem:Hero) {
-    if ( selectedItem) {
-      this.heroTemporal =  selectedItem;
+  ultimaPosicion(selectedItem: Hero) {
+    if (selectedItem) {
+      this.heroTemporal = selectedItem;
       this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf( selectedItem),
+        this.heroModel.heroes.indexOf(selectedItem),
         1
       );
       this.heroModel.heroes.push(this.heroTemporal);
     }
   }
-
-  menuOpciones() {
-    return [
-      {
-        label: 'Create',
-        icon: 'pi pi-plus',
-        command: () => {
+  switchOpciones(selectedOption: string) {
+    if (this.selectedOption != undefined) {
+      console.log(selectedOption);
+      selectedOption = selectedOption.toLowerCase();
+      switch (selectedOption.toLowerCase()) {
+        case 'create':
           this.router.navigate(['/newHeroes']);
-        },
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => {console.log(this.selectedTable,"ccccc")
+
+          break;
+
+        case 'delete':
           this.delete(this.selectedTable);
-        },
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-file-edit',
-        command: () => {
+          break;
+
+        case 'edit':
           this.goToDetail(this.selectedTable);
-        },
-      },
-      {
-        label: 'top',
-        icon: 'pi pi-crown',
-        items: [
-          {
-            label: 'poner en top',
-            icon: 'pi pi-angle-double-up',
-            command: () => {
-              this.primeraPosicion(this.selectedTable);
-            },
-          },
-          {
-            label: 'quitar de top',
-            icon: 'pi pi-angle-double-down',
-            command: () => {
-              this.ultimaPosicion(this.selectedTable);
-            },
-          },
-        ],
-      },
-    ];
-  }  onTableSelected(item: Hero) {
-    this.selectedTable = item; 
+          break;
+
+        case 'quitar de top':
+          this.ultimaPosicion(this.selectedTable);
+          break;
+
+        default:
+          console.error('Opción no válida:', selectedOption);
+      }
+    }
   }
 }

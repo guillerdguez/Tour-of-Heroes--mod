@@ -5,7 +5,7 @@ export class PowerModel {
   powers: string[] = [
     'Really Smart',
     'Super Flexible',
-    'Super Hot',
+    'Super ',
     'Weather Changer',
     'Invisibility',
     'Flight',
