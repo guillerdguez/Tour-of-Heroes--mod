@@ -97,23 +97,21 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
       }
     }
   }
-//no funciona pero si hay alguna forma de que pueda detectar cuando presiono en la opcion para que borre la selecion en la tabla
+  //no funciona pero si hay alguna forma de que pueda detectar cuando presiono en la opcion para que borre la selecion en la tabla
   onContextMenu(event: MouseEvent, item: any) {
     event.preventDefault();
     this.menu.show(event);
-    
+
     if (this.selectTable.length > 0) {
-      // this.selectedItem = [...this.selectTable]; 
-      this.itemSelected.emit(this.selectTable);
-      this.formGroup.get('selectedOption')?.enable();  this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = this.selectTable.length === 0;
+      // this.selectedItem = [...this.selectTable];
+      this.itemSelected.emit(this.selectTable);    this.limpieza();
+
+
     } else {
       this.selectedItem = item;
       this.itemSelected.emit(this.selectedItem);
     }
-    
- 
-    // this.selectTable = []; 
+    // this.selectTable = [];
   }
 
   onSelectTable(event: MouseEvent, item: any) {
@@ -131,7 +129,8 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
       console.log(this.selectTable);
       this.TableSelected.emit(this.selectTable);
       this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = this.selectTable.length === 0;    console.log(this.selectTable,"ddddddddddddddddd");
+      this.usarSelect = this.selectTable.length === 0;
+      console.log(this.selectTable, 'ddddddddddddddddd');
     }
   }
 
@@ -139,5 +138,10 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
     while (this.paramsTemporal.length % 5 !== 0) {
       this.paramsTemporal.push([]);
     }
+  }
+  limpieza() {
+    this.selectTable = [];
+    this.resetOption();
+    console.log("dddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaa")
   }
 }
