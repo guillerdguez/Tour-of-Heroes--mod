@@ -23,7 +23,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   formGroup: FormGroup;
   selectedItem!: any;
   selectedOption: any;
-  selectTable!: any;
+  selectTable: any[] = [];
 
   @Input() options: any[] = [];
   @Input() params: any[] = [];
@@ -32,14 +32,13 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
   @Output() delete = new EventEmitter<any>();
   @Output() edit = new EventEmitter<any>();
   @Output() itemSelected = new EventEmitter<any>();
-  @Output() OptionSelecet = new EventEmitter<any>();
-  @Output() TableSelected = new EventEmitter<any>();
+  @Output() OptionSelect = new EventEmitter<any>();
+  @Output() TableSelected = new EventEmitter<any[]>();
   @ViewChild('menu') menu!: ContextMenu;
 
   constructor() {
     this.formGroup = new FormGroup({
       selectedOption: new FormControl({
-        value: null,
         disabled: this.usarSelect,
       }),
     });
@@ -51,18 +50,32 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
     this.rellenador();
 
     this.formGroup.get('selectedOption')?.valueChanges.subscribe((value) => {
-      this.selectedOption = value; 
-      this.OptionSelecet.emit(this.selectedOption?.label);
+      if (value && value.label) {
+        this.selectedOption = value;
+        this.OptionSelect.emit(value.label);
+        this.selectTable = [];
+      }
     });
+  }
+
+  resetOption() {
+    const selectedControl = this.formGroup.get('selectedOption');
+    if (selectedControl) {
+      selectedControl.reset();
+    }
   }
 
   ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();
- 
       this.rellenador();
     }
-    if (this.selectTable == null || undefined) {
+
+    if (
+      this.selectTable === null ||
+      this.selectTable === undefined ||
+      this.selectTable.length === 0
+    ) {
       this.formGroup.get('selectedOption')?.disable();
       this.usarSelect = true;
     }
@@ -72,34 +85,53 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
     this.paramsTemporal = [...this.params];
   }
 
-  initializeHeaders() { 
+  initializeHeaders() {
     if (this.headers.length === 0 && this.paramsTemporal.length) {
-        const keys = Object.keys(this.paramsTemporal[0]);
+      const keys = Object.keys(this.paramsTemporal[0]);
 
-        for (let i = 0; i < keys.length; i++) {
-            this.headers.push({
-                field: keys[i],
-                header: keys[i].charAt(0).toUpperCase() + keys[i].slice(1),
-            });
-        }
+      for (let i = 0; i < keys.length; i++) {
+        this.headers.push({
+          field: keys[i],
+          header: keys[i].charAt(0).toUpperCase() + keys[i].slice(1),
+        });
+      }
     }
-}
-
+  }
+//no funciona pero si hay alguna forma de que pueda detectar cuando presiono en la opcion para que borre la selecion en la tabla
   onContextMenu(event: MouseEvent, item: any) {
     event.preventDefault();
-    this.selectedItem = item;
     this.menu.show(event);
-    this.selectTable = null;
-    this.itemSelected.emit(this.selectedItem);
+    
+    if (this.selectTable.length > 0) {
+      // this.selectedItem = [...this.selectTable]; 
+      this.itemSelected.emit(this.selectTable);
+      this.formGroup.get('selectedOption')?.enable();  this.formGroup.get('selectedOption')?.enable();
+      this.usarSelect = this.selectTable.length === 0;
+    } else {
+      this.selectedItem = item;
+      this.itemSelected.emit(this.selectedItem);
+    }
+    
+ 
+    // this.selectTable = []; 
   }
 
   onSelectTable(event: MouseEvent, item: any) {
-    if (event.button !== 2 && event.button !== 1) {
-      event.preventDefault();
-      this.selectTable = item;
+    if (
+      (event.button !== 2 && event.button !== 1) ||
+      this.selectTable.length !== 0
+    ) {
+      if (!this.selectTable.includes(item)) {
+        this.selectTable.push(item);
+      } else {
+        this.selectTable = this.selectTable.filter(
+          (selected) => selected !== item
+        );
+      }
+      console.log(this.selectTable);
       this.TableSelected.emit(this.selectTable);
       this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = false;
+      this.usarSelect = this.selectTable.length === 0;    console.log(this.selectTable,"ddddddddddddddddd");
     }
   }
 

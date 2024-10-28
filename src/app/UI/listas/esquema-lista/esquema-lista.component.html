@@ -11,8 +11,10 @@
       [style]="{ minWidth: '14rem' }"
       placeholder="Select a option"
       class="formGroup"
+      (onChange)="resetOption()"
     />
-  </form>
+</form>
+
 
   <div class="data-container">
     <p-table
@@ -44,7 +46,8 @@
             class="table-data"
             (contextmenu)="onContextMenu($event, item)"
             (click)="onSelectTable($event, item)"
-            [class.selected]="selectTable === item"
+            [class.selected]="selectTable.includes(item)"
+
           >
             {{ item[header.field] ?? "&nbsp;" }}
           </td>
