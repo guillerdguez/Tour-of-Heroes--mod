@@ -1,3 +1,4 @@
+
 .title {
   margin-top: 0;
   text-align: center;
@@ -10,6 +11,8 @@
 form {
   margin: 10px;
 }
-.selected{
-  background-color: red;
-}
+
+/* ::ng-deep .p-highlight {
+  filter: brightness(0.7);  
+  transition: filter 0.3s ease;  
+} */

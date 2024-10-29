@@ -10,9 +10,7 @@ import { MenuItem } from 'primeng/api';
   template: `<div *ngIf="heroModel.heroes.length > 0; else noHeroes">
       <app-esquema-lista
         [title]="title"
-        [params]="heroModel.heroes"
-        (delete)="delete($event)"
-        (edit)="goToDetail($event)"
+        [params]="heroModel.heroes" 
         [items]="items"
         [options]="opciones"
         (itemSelected)="onItemSelected($event)"
@@ -22,10 +20,10 @@ import { MenuItem } from 'primeng/api';
     </div>
 
     <ng-template #noHeroes>
-      <p class="no-heroes-message">Sin resultados</p>
+      <h2 class="title ">Sin resultados</h2>
     </ng-template> `,
 })
-export class HeroesComponent implements OnInit, OnChanges {
+export class HeroesComponent implements OnInit {
   title: string = 'Heroes';
   items: MenuItem[] = [];
   opciones: any[] = [];
@@ -45,35 +43,7 @@ export class HeroesComponent implements OnInit, OnChanges {
     this.items = this.menuItem();
     this.opciones = this.menuOpciones();
   }
-
-  ngOnChanges(): void {
-    this.heroModel.heroes = this.heroService.getHeroesArray();
-  }
-
-  // menuItem() {
-  //   return [
-  //     {
-  //       label: 'Create',
-  //       icon: 'pi pi-plus',
-  //       command: () => this.router.navigate(['/newHeroes']),
-  //     },
-  //     {
-  //       label: 'Delete',
-  //       icon: 'pi pi-trash',
-  //       command: () => this.delete(this.selectedItem),
-  //     },
-  //     {
-  //       label: 'Edit',
-  //       icon: 'pi pi-file-edit',
-  //       command: () => this.goToDetail(this.selectedItem),
-  //     },
-  //     {
-  //       label: 'quitar de top',
-  //       icon: 'pi pi-angle-double-down',
-  //       command: () => this.ultimaPosicion(this.selectedItem),
-  //     },
-  //   ];
-  // }
+ 
   menuItem() {
     return [
       {
@@ -84,7 +54,7 @@ export class HeroesComponent implements OnInit, OnChanges {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-       command: () => this.delete(this.selectedItem),
+        command: () => this.delete(this.selectedItem),
       },
       {
         label: 'Edit',
@@ -125,7 +95,7 @@ export class HeroesComponent implements OnInit, OnChanges {
       {
         label: 'Edit',
         icon: 'pi pi-file-edit',
-      command: () => this.goToDetail(this.selectedTable),
+        command: () => this.goToDetail(this.selectedTable),
       },
       {
         label: 'top',
@@ -134,87 +104,82 @@ export class HeroesComponent implements OnInit, OnChanges {
           {
             label: 'poner en top',
             icon: 'pi pi-angle-double-up',
-           command: () => this.primeraPosicion(this.selectedTable),
+            command: () => this.primeraPosicion(this.selectedTable),
           },
           {
             label: 'quitar de top',
             icon: 'pi pi-angle-double-down',
-          command: () => this.ultimaPosicion(this.selectedTable),
+            command: () => this.ultimaPosicion(this.selectedTable),
           },
         ],
       },
     ];
   }
- 
 
   onItemSelected(item: Hero[]) {
     this.selectedItem = item;
+ 
   }
 
   onTableSelected(item: Hero[]) {
     this.selectedTable = item;
-   // console.log(this.selectedTable);
   }
 
   onOptionSelect(select: string) {
     this.selectedOption = select;
-   // console.log(select);
     this.switchOpciones(this.selectedOption);
   }
 
   goToDetail(hero: Hero[]) {
-   // console.log(hero[0].id);
-    this.router.navigate(['/detail/hero/', hero[0].id]);    this.selectedTable = [];
+ 
+    this.router.navigate(['/detail/hero/', hero[0].id]);
+    this.selectedTable = [];
     this.selectedOption = '';
   }
 
   delete(hero: Hero[]): void {
     for (let i = 0; i < hero.length; i++) {
-      
       this.heroModel.heroes = this.heroModel.heroes.filter(
         (h) => h.id !== hero[i].id
       );
       this.heroService.deleteHero(hero[i].id);
-    }console.log(this.selectedTable)
+    }
     this.selectedTable = [];
-    this.selectedOption = '';
-   // console.log(this.selectedOption);
-   // console.log(this.selectedTable)
+    this.selectedOption = ''; 
   }
 
   primeraPosicion(selectedItem: Hero[]) {
     if (selectedItem) {
-for (let i = 0; i < selectedItem.length; i++) {
-  this.heroTemporal = selectedItem[i];
-      this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf(selectedItem[i]),
-        1
-      );
-      this.heroModel.heroes.unshift(this.heroTemporal);
-  
-}
-     
-   
-    }    this.selectedTable = [];
+      for (let i = 0; i < selectedItem.length; i++) {
+        this.heroTemporal = selectedItem[i];
+        this.heroModel.heroes.splice(
+          this.heroModel.heroes.indexOf(selectedItem[i]),
+          1
+        );
+        this.heroModel.heroes.unshift(this.heroTemporal);
+      }
+    }
+    this.selectedTable = [];
     this.selectedOption = '';
   }
 
   ultimaPosicion(selectedItem: Hero[]) {
-    if (selectedItem) {for (let i = 0; i < selectedItem.length; i++) {
-      
-      this.heroTemporal = selectedItem[i];
-      this.heroModel.heroes.splice(
-        this.heroModel.heroes.indexOf(selectedItem[i]),
-        1
-      );
-      this.heroModel.heroes.push(this.heroTemporal);
+    if (selectedItem) {
+      for (let i = 0; i < selectedItem.length; i++) {
+        this.heroTemporal = selectedItem[i];
+        this.heroModel.heroes.splice(
+          this.heroModel.heroes.indexOf(selectedItem[i]),
+          1
+        );
+        this.heroModel.heroes.push(this.heroTemporal);
+      }
     }
-      
-    }    this.selectedTable = [];
+    this.selectedTable = [];
     this.selectedOption = '';
   }
 
   switchOpciones(selectedOption: string) {
+ 
     if (this.selectedOption != undefined) {
       if (
         selectedOption.toLowerCase() == 'edit' &&
@@ -229,18 +194,18 @@ for (let i = 0; i < selectedItem.length; i++) {
           case 'delete':
             this.delete(this.selectedTable);
             break;
-            
-            case 'poner en top':
+
+          case 'poner en top':
             this.primeraPosicion(this.selectedTable);
             break;
           case 'edit':
             this.goToDetail(this.selectedTable);
             break;
-              case 'quitar de top':
-                this.ultimaPosicion(this.selectedTable);
-                break;
-              default:
-                console.error('Opción no válida:', selectedOption);
+          case 'quitar de top':
+            this.ultimaPosicion(this.selectedTable);
+            break;
+          default:
+            console.error('Opción no válida:', selectedOption);
         }
       }
     }

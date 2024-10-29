@@ -37,7 +37,8 @@ export class FormularioComponentVillain implements OnInit {
     power: string,
     fechoria: string,
     alterEgo?: string,
-    lastName?: string
+    lastName?: string,
+   
   ): void {
     name = name.trim();
     alterEgo = alterEgo?.trim() === '' ? undefined : alterEgo?.trim();

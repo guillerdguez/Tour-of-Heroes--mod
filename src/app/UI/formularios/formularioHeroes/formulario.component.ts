@@ -33,6 +33,7 @@ export class FormularioComponentHeroe implements OnInit {
     name: string,
     age: number,
     power: string,
+    favourite: boolean,
     alterEgo?: string,
     lastName?: string
   ): void {
@@ -45,17 +46,18 @@ export class FormularioComponentHeroe implements OnInit {
     if (!name || !age || !power) {
       return;
     }
-
+    //añadir favourite
     this.HeroDao.getHeroes().subscribe((heroes) => {
       const lastHero = heroes[heroes.length - 1];
       const newId = lastHero ? lastHero.id + 1 : 1;
       const newHero: Hero = {
         id: newId,
         name,
-        lastName,
-        alterEgo,
         age,
         power,
+        favourite,
+        lastName,
+        alterEgo,
       };
 
       this.heroService.addHero(newHero);

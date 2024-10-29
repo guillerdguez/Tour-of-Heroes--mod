@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   DoCheck,
+  OnChanges,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
@@ -16,22 +17,22 @@ import { ContextMenu } from 'primeng/contextmenu';
   templateUrl: './esquema-lista.component.html',
   styleUrls: ['./esquema-lista.component.css'],
 })
-export class EsquemaListaComponent implements OnInit, DoCheck {
+export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
   usarSelect: boolean = true;
   paramsTemporal: any[] = [];
   headers: any[] = [];
   formGroup: FormGroup;
-  selectedItem!: any;
+  selectedItem: any[] = [];
   selectedOption: any;
   selectTable: any[] = [];
-
+  paramsTemporalPrueba!: any[];
   @Input() options: any[] = [];
   @Input() params: any[] = [];
   @Input() title: string = '';
   @Input() items: MenuItem[] = [];
-  @Output() delete = new EventEmitter<any>();
-  @Output() edit = new EventEmitter<any>();
-  @Output() itemSelected = new EventEmitter<any>();
+  // @Output() delete = new EventEmitter<any>();
+  // @Output() edit = new EventEmitter<any>();
+  @Output() itemSelected = new EventEmitter<any[]>();
   @Output() OptionSelect = new EventEmitter<any>();
   @Output() TableSelected = new EventEmitter<any[]>();
   @ViewChild('menu') menu!: ContextMenu;
@@ -43,7 +44,9 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
       }),
     });
   }
-
+  ngOnChanges(): void {
+    this.selectTable = [];
+  }
   ngOnInit() {
     this.ParamsTemporal();
     this.initializeHeaders();
@@ -97,21 +100,18 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
       }
     }
   }
-  //no funciona pero si hay alguna forma de que pueda detectar cuando presiono en la opcion para que borre la selecion en la tabla
   onContextMenu(event: MouseEvent, item: any) {
     event.preventDefault();
     this.menu.show(event);
 
     if (this.selectTable.length > 0) {
       // this.selectedItem = [...this.selectTable];
-      this.itemSelected.emit(this.selectTable);    this.limpieza();
-
-
+      this.itemSelected.emit(this.selectTable);
     } else {
-      this.selectedItem = item;
+      this.selectedItem.push(item);
       this.itemSelected.emit(this.selectedItem);
+      this.selectedItem = [];
     }
-    // this.selectTable = [];
   }
 
   onSelectTable(event: MouseEvent, item: any) {
@@ -126,11 +126,10 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
           (selected) => selected !== item
         );
       }
-      console.log(this.selectTable);
+
       this.TableSelected.emit(this.selectTable);
       this.formGroup.get('selectedOption')?.enable();
       this.usarSelect = this.selectTable.length === 0;
-      console.log(this.selectTable, 'ddddddddddddddddd');
     }
   }
 
@@ -138,10 +137,5 @@ export class EsquemaListaComponent implements OnInit, DoCheck {
     while (this.paramsTemporal.length % 5 !== 0) {
       this.paramsTemporal.push([]);
     }
-  }
-  limpieza() {
-    this.selectTable = [];
-    this.resetOption();
-    console.log("dddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaa")
   }
 }

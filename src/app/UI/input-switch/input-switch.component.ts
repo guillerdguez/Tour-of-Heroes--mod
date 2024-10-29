@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { FormsModule } from '@angular/forms';
+ 
 
 @Component({
   selector: 'app-switch',

@@ -55,7 +55,20 @@
           #age
         />
       </div>
-
+      <div class="form-group-favourite">
+        <label for="favourite">Favourite: </label>
+        <select
+          class="form-control"
+          id="favourite"
+          required
+          name="favourite"
+          #favourite
+        >
+          <option value="false" selected="selected">No</option>
+          <option value="true">Yes</option>
+        </select>
+      </div>
+      
       <div class="form-group-power">
         <label for="power">Hero Power</label>
         <select class="form-control" id="power" required name="power" #power>
@@ -64,29 +77,23 @@
           </option>
         </select>
       </div>
-      <div class="buttons">
-        <button
-          type="submit"
-          class="btn"
-          (click)="
-            add(
-              heroName.value,
-              age.valueAsNumber,
-              power.value,
-              alterEgo.value,
-              lastName.value
-            );
-            (heroName.value);
-            (age);
-            (power.value);
-            (alterEgo.value);
-            (lastName.value)
-          "
-        >
-          Submit
-        </button>
-        <button class="boton" type="button" (click)="goBack()">go back</button>
-      </div>
+      <button
+      type="submit"
+      class="btn"
+      (click)="
+        add(
+          heroName.value,
+          age.valueAsNumber,
+          power.value,        
+          favourite.value === 'true',
+          alterEgo.value,
+          lastName.value
+        );
+      "
+    >
+      Submit
+    </button>
+    
     </div>
   </body>
 </html>

@@ -54,6 +54,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 35,
         power: powers[0],
         alterEgo: undefined,
+        favourite: true,
       },
       {
         id: 13,
@@ -62,6 +63,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 42,
         power: powers[1],
         alterEgo: 'Jose',
+        favourite: false,
       },
       {
         id: 14,
@@ -70,6 +72,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 29,
         power: powers[2],
         alterEgo: undefined,
+        favourite: false,
       },
       {
         id: 15,
@@ -78,6 +81,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 50,
         power: powers[3],
         alterEgo: 'Paco',
+        favourite: true,
       },
       {
         id: 16,
@@ -86,6 +90,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 28,
         power: powers[1],
         alterEgo: undefined,
+        favourite: true,
       },
       {
         id: 17,
@@ -94,6 +99,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 30,
         power: powers[0],
         alterEgo: undefined,
+        favourite: false,
       },
       {
         id: 18,
@@ -102,6 +108,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 40,
         power: powers[0],
         alterEgo: 'Chuck',
+        favourite: true,
       },
       {
         id: 19,
@@ -110,6 +117,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 36,
         power: powers[2],
         alterEgo: 'Pablo',
+        favourite: true,
       },
       {
         id: 20,
@@ -118,6 +126,7 @@ export class InMemoryDataService implements InMemoryDbService {
         age: 33,
         power: powers[3],
         alterEgo: undefined,
+        favourite: true,
       },
     ];
 

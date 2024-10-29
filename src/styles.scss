@@ -27,13 +27,15 @@ a {
 }
 
 .data-table {
-  width: 100%;  
+  width: 100%;
   border-collapse: collapse; 
 }
 
-.table-header, .table-data {
-  padding: 0; 
-  margin: 0;  
-   text-align: center;
-  box-sizing: border-box; 
+.table-header,
+.table-data {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  box-sizing: border-box;
+  
 }

@@ -2,7 +2,7 @@
   <h2 class="title">{{ title }}</h2>
 
   <form [formGroup]="formGroup">
-    <p-cascadeSelect 
+    <p-cascadeSelect
       formControlName="selectedOption"
       [options]="options"
       optionLabel="label"
@@ -13,8 +13,7 @@
       class="formGroup"
       (onChange)="resetOption()"
     />
-</form>
-
+  </form>
 
   <div class="data-container">
     <p-table
@@ -27,7 +26,17 @@
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template pTemplate="header" let-columns>
-        <tr class="table-header-row" style="width: 200px; height: 100px">
+        <tr
+          class="table-header-row"
+          style="
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            height:  70px;
+            max-height:  70px;
+            min-height:  70px;
+          "
+        >
           <th
             *ngFor="let column of columns"
             class="table-header"
@@ -39,15 +48,31 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-item let-columns="columns">
-        <tr class="table-body-row" style="width: 200px; height: 100px">
+        <tr
+          class="table-body-row"
+          style="
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            height:  70px;
+            max-height:  70px;
+            min-height:  70px;
+          "
+        >
           <td
-            style="width: 200px; height: 100px"
+            style="
+              width: 200px;
+              min-width: 200px;
+              max-width: 200px;
+              height:  70px;
+              max-height:  70px;
+              min-height:  70px;
+            "
             *ngFor="let header of columns"
             class="table-data"
             (contextmenu)="onContextMenu($event, item)"
             (click)="onSelectTable($event, item)"
             [class.selected]="selectTable.includes(item)"
-
           >
             {{ item[header.field] ?? "&nbsp;" }}
           </td>
@@ -63,3 +88,4 @@
     ></p-contextMenu>
   </div>
 </div>
+<!-- (onChange)="" -->

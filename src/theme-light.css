@@ -117,3 +117,8 @@ button {
 .table-data {
   background-color: #dfe8fa;
 }
+
+.selected { 
+  filter: brightness(0.9);  
+  transition: filter 0.3s ease;  
+}
