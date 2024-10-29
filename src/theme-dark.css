@@ -113,7 +113,8 @@ button {
 }
 /* mejorar */
 .p-highlight {  border: 1px solid;
-  background-color: #1c1f23;
+  background-color: #2e3440;
+  font-weight: bold;
 }
 .p-inputwrapper * {
   background-color: #434c5e;

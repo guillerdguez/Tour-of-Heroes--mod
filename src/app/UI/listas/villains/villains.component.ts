@@ -118,6 +118,8 @@ export class VillainsComponent implements OnInit {
   changeFechoria(fechoria: string): void {
     for (let i = 0; i < this.selectedItem.length; i++) {
       this.selectedItem[i].fechoria = fechoria;
+
+      this.villainService.updateVillain(this.selectedItem[i]);
     }
   }
 
@@ -150,40 +152,73 @@ export class VillainsComponent implements OnInit {
     this.selectedOption = '';
   }
 
+  // switchOpciones(selectedOption: string) {
+  //   const options = [
+  //     {
+  //       label: 'Create',
+  //       action: () => this.router.navigate(['/newVillains']),
+  //     },
+  //     {
+  //       label: 'Delete',
+  //       action: () => this.delete(this.selectedItem),
+  //     },
+  //     {
+  //       label: 'Edit',
+  //       action: () => {
+  //         if (this.selectedTable.length !== 1) {
+  //           alert('Solo se puede editar si hay un solo villano seleccionado');
+  //         } else {
+  //           this.goToDetail(this.selectedItem);
+  //         }
+  //       },
+  //     },
+  //     {
+  //       label: 'Cambiar Fechoria',
+  //       action: () => this.changeFechoria(this.selectedItem[0].fechoria),
+  //     },
+  //   ];
+
+  //   const selected = options.find(
+  //     (option) => option.label.toLowerCase() === selectedOption.toLowerCase()
+  //   );
+
+  //   if (selected) {
+  //     selected.action();
+  //   } else {
+  //     console.error('Opción no válida:', selectedOption);
+  //   }
+  // }
+
   switchOpciones(selectedOption: string) {
-    const options = [
-      {
-        label: 'Create',
-        action: () => this.router.navigate(['/newVillains']),
-      },
-      {
-        label: 'Delete',
-        action: () => this.delete(this.selectedItem),
-      },
-      {
-        label: 'Edit',
-        action: () => {
-          if (this.selectedTable.length !== 1) {
-            alert('Solo se puede editar si hay un solo héroe seleccionado');
-          } else {
-            this.goToDetail(this.selectedItem);
-          }
-        },
-      },
-      {
-        label: 'Cambiar Fechoria',
-        action: () => this.changeFechoria(this.selectedItem[0].fechoria),
-      },
-    ];
+    if (this.selectedOption != undefined) {
+      if (
+        selectedOption.toLowerCase() == 'edit' &&
+        this.selectedTable.length != 1
+      ) {
+        alert('It can only be edited if there is a single villain selected');
+      } else {
+        switch (selectedOption.toLowerCase()) {
+          case 'create':
+            this.router.navigate(['/newVillains']);
+            break;
+          case 'delete':
+            this.delete(this.selectedTable);
+            break;
 
-    const selected = options.find(
-      (option) => option.label.toLowerCase() === selectedOption.toLowerCase()
-    );
+          case 'edit':
+            this.router.navigate([
+              '/detail/villain/' + this.selectedTable[0].id,
+            ]);
 
-    if (selected) {
-      selected.action();
-    } else {
-      console.error('Opción no válida:', selectedOption);
+            break;
+          case 'Cambiar Fechoria':
+            this.changeFechoria(this.selectedItem[0].fechoria);
+            break;
+
+          default:
+            console.error('Opción no válida:', selectedOption);
+        }
+      }
     }
   }
 }

@@ -10,7 +10,7 @@ import { MenuItem } from 'primeng/api';
   template: `<div *ngIf="heroModel.heroes.length > 0; else noHeroes">
       <app-esquema-lista
         [title]="title"
-        [params]="heroModel.heroes" 
+        [params]="heroModel.heroes"
         [items]="items"
         [options]="opciones"
         (itemSelected)="onItemSelected($event)"
@@ -31,7 +31,7 @@ export class HeroesComponent implements OnInit {
   selectedTable!: Hero[];
   selectedOption!: string;
   heroTemporal!: Hero;
-
+  favouriteVariable!: Boolean;
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
@@ -43,7 +43,7 @@ export class HeroesComponent implements OnInit {
     this.items = this.menuItem();
     this.opciones = this.menuOpciones();
   }
- 
+
   menuItem() {
     return [
       {
@@ -62,22 +62,19 @@ export class HeroesComponent implements OnInit {
         command: () => this.goToDetail(this.selectedItem),
       },
       {
-        label: 'top',
-        icon: 'pi pi-crown',
-        items: [
-          {
-            label: 'poner en top',
-            icon: 'pi pi-angle-double-up',
-            command: () => this.primeraPosicion(this.selectedItem),
-          },
-          {
-            label: 'quitar de top',
-            icon: 'pi pi-angle-double-down',
-            command: () => this.ultimaPosicion(this.selectedItem),
-          },
-        ],
+        label: 'favourite',
+        icon: 'pi pi-star',
+
+        command: () => this.favourite(this.selectedItem),
       },
     ];
+  }
+  favourite(selectedItem: Hero[]) {
+    selectedItem.forEach((hero) => {
+      const index = this.heroModel.heroes.indexOf(hero);
+      this.heroModel.heroes[index].favourite = !hero.favourite;
+      this.heroService.updateHero(this.heroModel.heroes[index]);
+    });
   }
 
   menuOpciones() {
@@ -98,27 +95,16 @@ export class HeroesComponent implements OnInit {
         command: () => this.goToDetail(this.selectedTable),
       },
       {
-        label: 'top',
-        icon: 'pi pi-crown',
-        items: [
-          {
-            label: 'poner en top',
-            icon: 'pi pi-angle-double-up',
-            command: () => this.primeraPosicion(this.selectedTable),
-          },
-          {
-            label: 'quitar de top',
-            icon: 'pi pi-angle-double-down',
-            command: () => this.ultimaPosicion(this.selectedTable),
-          },
-        ],
+        label: 'favourite',
+        icon: 'pi pi-star',
+
+        command: () => this.favourite(this.selectedTable),
       },
     ];
   }
 
   onItemSelected(item: Hero[]) {
     this.selectedItem = item;
- 
   }
 
   onTableSelected(item: Hero[]) {
@@ -131,7 +117,6 @@ export class HeroesComponent implements OnInit {
   }
 
   goToDetail(hero: Hero[]) {
- 
     this.router.navigate(['/detail/hero/', hero[0].id]);
     this.selectedTable = [];
     this.selectedOption = '';
@@ -145,41 +130,10 @@ export class HeroesComponent implements OnInit {
       this.heroService.deleteHero(hero[i].id);
     }
     this.selectedTable = [];
-    this.selectedOption = ''; 
-  }
-
-  primeraPosicion(selectedItem: Hero[]) {
-    if (selectedItem) {
-      for (let i = 0; i < selectedItem.length; i++) {
-        this.heroTemporal = selectedItem[i];
-        this.heroModel.heroes.splice(
-          this.heroModel.heroes.indexOf(selectedItem[i]),
-          1
-        );
-        this.heroModel.heroes.unshift(this.heroTemporal);
-      }
-    }
-    this.selectedTable = [];
-    this.selectedOption = '';
-  }
-
-  ultimaPosicion(selectedItem: Hero[]) {
-    if (selectedItem) {
-      for (let i = 0; i < selectedItem.length; i++) {
-        this.heroTemporal = selectedItem[i];
-        this.heroModel.heroes.splice(
-          this.heroModel.heroes.indexOf(selectedItem[i]),
-          1
-        );
-        this.heroModel.heroes.push(this.heroTemporal);
-      }
-    }
-    this.selectedTable = [];
     this.selectedOption = '';
   }
 
   switchOpciones(selectedOption: string) {
- 
     if (this.selectedOption != undefined) {
       if (
         selectedOption.toLowerCase() == 'edit' &&
@@ -195,14 +149,8 @@ export class HeroesComponent implements OnInit {
             this.delete(this.selectedTable);
             break;
 
-          case 'poner en top':
-            this.primeraPosicion(this.selectedTable);
-            break;
-          case 'edit':
-            this.goToDetail(this.selectedTable);
-            break;
-          case 'quitar de top':
-            this.ultimaPosicion(this.selectedTable);
+          case 'favourite':
+            this.favourite(this.selectedTable);
             break;
           default:
             console.error('Opción no válida:', selectedOption);

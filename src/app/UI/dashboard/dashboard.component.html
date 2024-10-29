@@ -1,17 +1,18 @@
 <div class="container">
-   
-<h2 class="title"><i class="pi pi-crown" style="font-size: 24px; "></i> Top Heroes</h2>
-<div class="heroes-menu">
-  <a class="menu" *ngFor="let hero of heroes" routerLink="/detail/hero/{{ hero.id }}">
-    {{ hero.name }}
-  </a>
-</div>
+  <h2 class="title">
+    <i class="pi pi-crown" style="font-size: 24px"></i> Top Heroes
+  </h2>
+  <div class="heroes-menu">
+    <ng-container *ngFor="let hero of heroModel.heroes">
+      <a
+        class="menu"
+        *ngIf="hero.favourite==true"
+        [routerLink]="['/detail/hero', hero.id]"
+      >
+        {{ hero.name }}
+      </a>
+    </ng-container>
+  </div>
 
-<app-hero-search class="search"></app-hero-search>
+  <app-hero-search class="search"></app-hero-search>
 </div>
-<!--<p-dropdown
-  [options]="heroes"
-  [(ngModel)]="selectedHero"
-  optionLabel="name"
-  placeholder="Select a Hero"
-/>-->

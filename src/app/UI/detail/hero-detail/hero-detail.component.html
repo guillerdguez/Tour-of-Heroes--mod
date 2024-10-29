@@ -51,6 +51,20 @@
     </select>
   </div>
 
+  <div class="form-group-favourite">
+    <label for="favourite">Favourite: </label>
+    <select
+      class="form-control"
+      id="favourite"
+      [(ngModel)]="heroModel.hero.favourite"
+      required
+      name="favourite"
+      #favourite
+    >
+      <option value="false" selected="selected">No</option>
+      <option value="true">Yes</option>
+    </select>
+  </div>
   <div class="botones">
     <button class="boton" type="button" (click)="goBack()">Go Back</button>
     <button class="boton" type="button" (click)="save()">Save</button>

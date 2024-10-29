@@ -8,25 +8,16 @@ import { HeroModel } from '../../Model/Views/Dynamic/HeroModel';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit, OnChanges {
-  heroes: Hero[] = [];
-  selectedHero: Hero | undefined;
-
+export class DashboardComponent implements OnInit,OnChanges {
+ 
   constructor(private heroService: HeroService, public heroModel: HeroModel) {}
+  ngOnChanges( ): void {
+    this.heroModel.heroes = this.heroService.getHeroesArray();
+  }
 
   ngOnInit(): void {
-    this.heroService.getHeroesSubscription().subscribe({
-      next: (heroes) => {
-        this.heroes = heroes.slice(0, 4);
-      },
-    });
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    this.heroService.getHeroesSubscription().subscribe({
-      next: (heroes) => {
-       
-        this.heroes = heroes.slice(0, 4);
-      },
-    });
-  }
+ 
+    this.heroModel.heroes = this.heroService.getHeroesArray();
+  } 
+ 
 }
