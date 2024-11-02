@@ -112,23 +112,23 @@ button {
   background-color: #2e3440;
 }
 /* mejorar */
-.p-highlight {  border: 1px solid;
+.p-highlight {
+  border: 1px solid;
   background-color: #2e3440;
   font-weight: bold;
 }
 .p-inputwrapper * {
   background-color: #434c5e;
 }
-table,
+/*table,
 th,
 td,
 .table-data,
 .table-header {
   border-bottom: #2e3440 solid 1xp;
   border-left: white 1px solid;  
+}*/
+.selected {
+  filter: brightness(0.7);
+  transition: filter 0.3s ease;
 }
-.selected { 
-  filter: brightness(0.7);  
-  transition: filter 0.3s ease;  
-}
- 

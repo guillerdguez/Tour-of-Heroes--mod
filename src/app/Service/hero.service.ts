@@ -41,14 +41,15 @@ export class HeroService {
 
   getHeroesArray(): Hero[] {
     this.heroDAO.getHeroes().subscribe({
-      next: (heroes: Hero[]) => {
+      next: (heroes: Hero[]) => {        console.log("heroes",heroes);
+
         this.heroModel.heroes = heroes;
       },
       error: (error) => {
         console.error(error);
       },
     });
-
+    console.log("heroes2",this.heroes);
     return this.heroes;
   }
 

@@ -100,27 +100,23 @@ export class VillainsComponent implements OnInit {
   getFechoriaItems(): MenuItem[] {
     const menuItems: MenuItem[] = [];
 
-    for (let i = 0; i < this.fechoriaModel.fechorias.length; i++) {
-      const fechoria = this.fechoriaModel.fechorias[i];
-
+    this.fechoriaModel.fechorias.forEach((fechoria) => {
       menuItems.push({
         label: fechoria,
-
         command: () => {
           this.changeFechoria(fechoria);
         },
       });
-    }
+    });
 
     return menuItems;
   }
 
   changeFechoria(fechoria: string): void {
-    for (let i = 0; i < this.selectedItem.length; i++) {
-      this.selectedItem[i].fechoria = fechoria;
-
-      this.villainService.updateVillain(this.selectedItem[i]);
-    }
+    this.selectedItem.forEach((item) => {
+      item.fechoria = fechoria;
+      this.villainService.updateVillain(item);
+    });
   }
 
   onItemSelected(item: Villain[]) {
