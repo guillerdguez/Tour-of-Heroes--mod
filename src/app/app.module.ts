@@ -38,6 +38,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { SelectFormComponent } from './UI/select-form/select-form.component';
 @NgModule({
   declarations: [
     VillainDetailComponent,
@@ -54,6 +55,7 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 
     EsquemaListaComponent,
     VillainsComponent,
+    SelectFormComponent,
   ],
   imports: [
     CascadeSelectModule,

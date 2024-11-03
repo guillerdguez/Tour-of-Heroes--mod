@@ -1,16 +1,8 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-  Output,
-  EventEmitter,
-  DoCheck,
-  OnChanges,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, DoCheck, OnChanges, SimpleChanges, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
+import { Hero } from '../../../Model/Domain/hero';
 
 @Component({
   selector: 'app-esquema-lista',
@@ -24,80 +16,81 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
   formGroup: FormGroup;
   selectedItem: any[] = [];
   selectedOption: any;
-  selectTable: any[] = [];
+  selectTable: Hero[] = [];
   paramsTemporalPrueba!: any[];
-  @Input() options: any[] = [];
+
+  @Input() options: MenuItem[] = [];
   @Input() params: any[] = [];
   @Input() title: string = '';
-  @Input() items: MenuItem[] = [];
-  // @Output() delete = new EventEmitter<any>();
-  // @Output() edit = new EventEmitter<any>();
+  @Input() items: MenuItem[] = [];  
+  @Input() toggleFavorite!: (item: any) => void;
+
   @Output() itemSelected = new EventEmitter<any[]>();
   @Output() OptionSelect = new EventEmitter<any>();
-  @Output() TableSelected = new EventEmitter<any[]>();
+  @Output() TableSelected = new EventEmitter<Hero[]>();
+
   @ViewChild('menu') menu!: ContextMenu;
 
   constructor() {
     this.formGroup = new FormGroup({
-      selectedOption: new FormControl({
-        disabled: this.usarSelect,
-      }),
+      selectedOption: new FormControl({ disabled: this.usarSelect }),
     });
   }
-  ngOnChanges(): void {
-    this.selectTable = [];
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['params'] && changes['params'].currentValue) {
+      this.ParamsTemporal();
+      this.initializeHeaders();
+      this.rellenador();
+    }
   }
+
   ngOnInit() {
     this.ParamsTemporal();
     this.initializeHeaders();
     this.rellenador();
-
-    this.formGroup.get('selectedOption')?.valueChanges.subscribe((value) => {
-      if (value && value.label) {
-        this.selectedOption = value;
-        this.OptionSelect.emit(value.label);
-        this.selectTable = [];
-      }
-    });
   }
 
-  resetOption() {
-    const selectedControl = this.formGroup.get('selectedOption');
-    if (selectedControl) {
-      selectedControl.reset();
-    }
-  }
-
-  ngDoCheck() {
+  ngDoCheck() { 
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();
       this.rellenador();
     }
+  }
 
-    if (
-      this.selectTable === null ||
-      this.selectTable === undefined ||
-      this.selectTable.length === 0
-    ) {
-      this.formGroup.get('selectedOption')?.disable();
-      this.usarSelect = true;
+  onSelectTable(event: MouseEvent, item: Hero) {
+    if (event.button !== 2) { // Evitar selección con botón derecho
+      const itemIndex = this.selectTable.findIndex(selected => selected.id === item.id);
+      if (itemIndex === -1) {
+        this.selectTable.push(item);
+      } else {
+        this.selectTable = this.selectTable.filter(selected => selected.id !== item.id);
+      }
+
+      // Emitir una copia del array
+      this.TableSelected.emit([...this.selectTable]);
+      this.formGroup.get('selectedOption')?.enable();
+      this.usarSelect = this.selectTable.length > 0;
     }
   }
 
-  private ParamsTemporal() {
+  ParamsTemporal() {
     this.paramsTemporal = [...this.params];
   }
 
   initializeHeaders() {
     if (this.headers.length === 0 && this.paramsTemporal.length) {
       const keys = Object.keys(this.paramsTemporal[0]);
+      this.headers = keys.map(key => ({
+        field: key,
+        header: key.charAt(0).toUpperCase() + key.slice(1),
+      }));
+    }
+  }
 
-      for (let i = 0; i < keys.length; i++) {
-        this.headers.push({
-          field: keys[i],
-          header: keys[i].charAt(0).toUpperCase() + keys[i].slice(1),
-        });
-      }
+  rellenador() {
+    while (this.paramsTemporal.length % 5 !== 0) {
+      this.paramsTemporal.push([]);
     }
   }
   onContextMenu(event: MouseEvent, item: any) {
@@ -105,37 +98,11 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     this.menu.show(event);
 
     if (this.selectTable.length > 0) {
-      // this.selectedItem = [...this.selectTable];
       this.itemSelected.emit(this.selectTable);
     } else {
-      this.selectedItem.push(item);
+      this.selectedItem = [item];
       this.itemSelected.emit(this.selectedItem);
       this.selectedItem = [];
-    }
-  }
-
-  onSelectTable(event: MouseEvent, item: any) {
-    if (
-      (event.button !== 2 && event.button !== 1) ||
-      this.selectTable.length !== 0
-    ) {
-      if (!this.selectTable.includes(item)) {
-        this.selectTable.push(item);
-      } else {
-        this.selectTable = this.selectTable.filter(
-          (selected) => selected !== item
-        );
-      }
-
-      this.TableSelected.emit(this.selectTable);
-      this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = this.selectTable.length === 0;
-    }
-  }
-
-  rellenador() {
-    while (this.paramsTemporal.length % 5 !== 0) {
-      this.paramsTemporal.push([]);
     }
   }
 }

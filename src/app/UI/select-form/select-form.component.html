@@ -1,0 +1,14 @@
+<form [formGroup]="formGroup">
+    <p-cascadeSelect
+      formControlName="selectedOption"
+      [options]="options"
+      optionLabel="label"
+      optionGroupLabel="items"
+      [optionGroupChildren]="['items']"
+      [style]="{ minWidth: '14rem' }"
+      placeholder="Select an option"
+      class="formGroup"
+      (onChange)="resetOption()"
+    />
+  </form>
+  

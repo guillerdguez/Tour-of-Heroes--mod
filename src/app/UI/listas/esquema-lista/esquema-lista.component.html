@@ -1,20 +1,6 @@
 <div class="table-container">
   <h2 class="title">{{ title }}</h2>
 
-  <form [formGroup]="formGroup">
-    <p-cascadeSelect
-      formControlName="selectedOption"
-      [options]="options"
-      optionLabel="label"
-      optionGroupLabel="items"
-      [optionGroupChildren]="['items']"
-      [style]="{ minWidth: '14rem' }"
-      placeholder="Select a option"
-      class="formGroup"
-      (onChange)="resetOption()"
-    />
-  </form>
-
   <div class="data-container">
     <p-table
       class="data-table"
@@ -26,17 +12,7 @@
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template pTemplate="header" let-columns>
-        <tr
-          class="table-header-row"
-          style="
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            height: 70px;
-            max-height: 70px;
-            min-height: 70px;
-          "
-        >
+        <tr class="table-header-row" style="width: 200px; height: 70px;">
           <th
             *ngFor="let column of columns"
             class="table-header"
@@ -50,32 +26,29 @@
       <ng-template pTemplate="body" let-item let-columns="columns">
         <tr
           class="table-body-row"
-          style="
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            height: 70px;
-            max-height: 70px;
-            min-height: 70px;
-          "
+          [class.selected]="selectTable.includes(item)"  
+          (click)="onSelectTable($event, item)" 
+          style="width: 200px; height: 70px;"
         >
           <td
-            style="
-              width: 200px;
-              min-width: 200px;
-              max-width: 200px;
-              height: 70px;
-              max-height: 70px;
-              min-height: 70px;
-            "
             *ngFor="let header of columns"
             class="table-data"
             (contextmenu)="onContextMenu($event, item)"
-            (click)="onSelectTable($event, item)"
-            [class.selected]="selectTable.includes(item)"
- 
+            style="width: 200px; height: 70px;"
           >
-            {{ item[header.field] ?? "&nbsp;" }}
+            <ng-container *ngIf="header.field === 'favourite' && item.favourite !== null && item.favourite !== undefined; else regularCell">
+              <i 
+                (click)="toggleFavorite(item); $event.stopPropagation()"  
+                [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
+                tabindex="-1"
+              ></i>
+            </ng-container>
+
+            <ng-template #regularCell>
+              <span>{{
+                item[header.field] ?? "&nbsp;"
+              }}</span>
+            </ng-template>
           </td>
         </tr>
       </ng-template>
@@ -90,4 +63,3 @@
     ></p-contextMenu>
   </div>
 </div>
-<!-- (onChange)="" -->

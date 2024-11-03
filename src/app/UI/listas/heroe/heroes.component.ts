@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeroService } from '../../../Service/hero.service';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
@@ -7,31 +7,34 @@ import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-heroes',
-  template: `<div *ngIf="heroModel.heroes.length > 0; else noHeroes">
+  template: `
+    <div *ngIf="heroModel.heroes.length > 0">
+      <app-select-form
+        [options]="opciones"
+        (OptionSelect)="onOptionSelect($event)"
+        [selectTable]="selectedTable"
+      ></app-select-form>
       <app-esquema-lista
         [title]="title"
         [params]="heroModel.heroes"
         [items]="items"
-        [options]="opciones"
         (itemSelected)="onItemSelected($event)"
         (TableSelected)="onTableSelected($event)"
-        (OptionSelect)="onOptionSelect($event)"
+        [toggleFavorite]="toggleFavorite.bind(this)"
       ></app-esquema-lista>
     </div>
-
-    <ng-template #noHeroes>
-      <h2 class="title ">Sin resultados</h2>
-    </ng-template> `,
+    <div *ngIf="heroModel.heroes.length === 0">
+      <h2 class="title">Sin resultados</h2>
+    </div>
+  `,
 })
 export class HeroesComponent implements OnInit {
   title: string = 'Heroes';
   items: MenuItem[] = [];
   opciones: any[] = [];
-  selectedItem!: Hero[];
-  selectedTable!: Hero[];
-  selectedOption!: string;
-  heroTemporal!: Hero;
-  favouriteVariable!: Boolean;
+  selectedItem: Hero[] = [];
+  selectedTable: Hero[] = [];
+
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
@@ -44,7 +47,7 @@ export class HeroesComponent implements OnInit {
     this.opciones = this.menuOpciones();
   }
 
-  menuItem() {
+  menuItem(): MenuItem[] {
     return [
       {
         label: 'Create',
@@ -62,22 +65,14 @@ export class HeroesComponent implements OnInit {
         command: () => this.goToDetail(this.selectedItem),
       },
       {
-        label: 'favourite',
+        label: 'Favourite',
         icon: 'pi pi-star',
-
         command: () => this.favourite(this.selectedItem),
       },
     ];
   }
-  favourite(selectedItem: Hero[]) {
-    selectedItem.forEach((hero) => {
-      const index = this.heroModel.heroes.indexOf(hero);
-      this.heroModel.heroes[index].favourite = !hero.favourite;
-      this.heroService.updateHero(this.heroModel.heroes[index]);
-    });
-  }
 
-  menuOpciones() {
+  menuOpciones(): MenuItem[] {
     return [
       {
         label: 'Create',
@@ -95,67 +90,58 @@ export class HeroesComponent implements OnInit {
         command: () => this.goToDetail(this.selectedTable),
       },
       {
-        label: 'favourite',
+        label: 'Favourite',
         icon: 'pi pi-star',
-
         command: () => this.favourite(this.selectedTable),
       },
     ];
+  }
+
+  onOptionSelect(option: any) {
+    console.log('Opción seleccionada:', option);  
   }
 
   onItemSelected(item: Hero[]) {
     this.selectedItem = item;
   }
 
-  onTableSelected(item: Hero[]) {
-    this.selectedTable = item;
-  }
-
-  onOptionSelect(select: string) {
-    this.selectedOption = select;
-    this.switchOpciones(this.selectedOption);
+  onTableSelected(selectedItems: Hero[]) {
+    this.selectedTable = [...selectedItems]; // Usar spread operator para crear una nueva referencia
   }
 
   goToDetail(hero: Hero[]) {
-    this.router.navigate(['/detail/hero/', hero[0].id]);
-    this.selectedTable = [];
-    this.selectedOption = '';
+    if (hero.length > 0) {
+      this.router.navigate(['/detail/hero/', hero[0].id]);
+    }
   }
 
   delete(hero: Hero[]): void {
-    for (let i = 0; i < hero.length; i++) {
+    hero.forEach((h) => {
       this.heroModel.heroes = this.heroModel.heroes.filter(
-        (h) => h.id !== hero[i].id
+        (existing) => existing.id !== h.id
       );
-      this.heroService.deleteHero(hero[i].id);
-    }
-    this.selectedTable = [];
-    this.selectedOption = '';
+      this.heroService.deleteHero(h.id);
+    });
   }
 
-  switchOpciones(selectedOption: string) {
-    if (this.selectedOption != undefined) {
-      if (
-        selectedOption.toLowerCase() == 'edit' &&
-        this.selectedTable.length != 1
-      ) {
-        alert('It can only be edited if there is a single hero selected');
-      } else {
-        switch (selectedOption.toLowerCase()) {
-          case 'create':
-            this.router.navigate(['/newHeroes']);
-            break;
-          case 'delete':
-            this.delete(this.selectedTable);
-            break;
-
-          case 'favourite':
-            this.favourite(this.selectedTable);
-            break;
-          default:
-            console.error('Opción no válida:', selectedOption);
-        }
+  favourite(selectedItem: Hero[]) {
+    selectedItem.forEach((hero) => {
+      const index = this.heroModel.heroes.indexOf(hero);
+      if (index !== -1) {
+        this.heroModel.heroes[index].favourite = !hero.favourite;
+        this.heroService.updateHero(this.heroModel.heroes[index]);
       }
+    });
+  }
+
+  toggleFavorite(item: Hero) {
+    item.favourite = !item.favourite;  
+    const index = this.heroModel.heroes.findIndex(
+      (hero) => hero.id === item.id
+    );
+    if (index !== -1) {
+      this.heroModel.heroes[index] = { ...item };  
+      this.heroService.updateHero(this.heroModel.heroes[index]);  
     }
   }
 }

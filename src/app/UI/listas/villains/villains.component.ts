@@ -9,16 +9,7 @@ import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 @Component({
   selector: 'app-villains',
   template: `
-    <app-esquema-lista
-      *ngIf="villainModel.villains.length > 0"
-      [title]="title"
-      [params]="villainModel.villains"
-      [items]="items"
-      [options]="opciones"
-      (itemSelected)="onItemSelected($event)"
-      (TableSelected)="onTableSelected($event)"
-      (OptionSelect)="onOptionSelect($event)"
-    ></app-esquema-lista>
+ 
   `,
 })
 export class VillainsComponent implements OnInit {
