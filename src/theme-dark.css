@@ -132,3 +132,7 @@ td,
   filter: brightness(0.7);
   transition: filter 0.3s ease;
 }
+.p-menuitem-link  {
+  background-color: #434c5e;
+}
+ 

@@ -121,4 +121,12 @@ button {
 .selected { 
   filter: brightness(0.9);  
   transition: filter 0.3s ease;  
+}.p-paginator {
+  background-color: #a8c1f3;
+}
+/* mejorar */
+.p-highlight {color: white;
+  border: 1px solid;
+  background-color: #a8c1f3;
+  font-weight: bold;
 }

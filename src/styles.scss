@@ -48,5 +48,24 @@ table {
   table-layout: fixed;
 }
 .p-ripple.p-element.p-cascadeselect-item-content {
-  max-width: 300px !important;
+  max-width: 300px !important;  
+ 
+ 
 }
+ 
+.title { 
+  margin-top: 50px;
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 70px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  width: 100%;
+
+}
+.p-splitbutton{
+  width: 250px;
+}::ng-deep * {
+  font-family: 'Roboto', sans-serif;
+}
+ 

@@ -1,8 +1,17 @@
-import { Component, OnInit, DoCheck, OnChanges, SimpleChanges, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  DoCheck,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
-import { Hero } from '../../../Model/Domain/hero';
 
 @Component({
   selector: 'app-esquema-lista',
@@ -10,38 +19,34 @@ import { Hero } from '../../../Model/Domain/hero';
   styleUrls: ['./esquema-lista.component.css'],
 })
 export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
-  usarSelect: boolean = true;
   paramsTemporal: any[] = [];
   headers: any[] = [];
-  formGroup: FormGroup;
+
   selectedItem: any[] = [];
   selectedOption: any;
-  selectTable: Hero[] = [];
+  selectedTable: any[] = [];
   paramsTemporalPrueba!: any[];
 
   @Input() options: MenuItem[] = [];
   @Input() params: any[] = [];
   @Input() title: string = '';
-  @Input() items: MenuItem[] = [];  
+  @Input() items: MenuItem[] = [];
   @Input() toggleFavorite!: (item: any) => void;
 
   @Output() itemSelected = new EventEmitter<any[]>();
   @Output() OptionSelect = new EventEmitter<any>();
-  @Output() TableSelected = new EventEmitter<Hero[]>();
+  @Output() TableSelected = new EventEmitter<any[]>();
 
   @ViewChild('menu') menu!: ContextMenu;
 
-  constructor() {
-    this.formGroup = new FormGroup({
-      selectedOption: new FormControl({ disabled: this.usarSelect }),
-    });
-  }
-
+  //falta hero alterego
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['params'] && changes['params'].currentValue) {
       this.ParamsTemporal();
       this.initializeHeaders();
       this.rellenador();
+      this.selectedTable = [];
+      this.TableSelected.emit(this.selectedTable);
     }
   }
 
@@ -51,30 +56,28 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     this.rellenador();
   }
 
-  ngDoCheck() { 
+  ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();
-      this.rellenador();
+      this.rellenador();  
+ 
     }
   }
 
- 
-  onSelectTable(event: MouseEvent, item: any) {
+  onselectedTable(event: MouseEvent, item: any) {
     if (
       (event.button !== 2 && event.button !== 1) ||
-      this.selectTable.length !== 0
-    ) {
-      if (!this.selectTable.includes(item)) {
-        this.selectTable.push(item);
+      this.selectedTable.length !== 0
+    ) { 
+      if (!this.selectedTable.includes(item)) {
+        this.selectedTable.push(item);
       } else {
-        this.selectTable = this.selectTable.filter(
+        this.selectedTable = this.selectedTable.filter(
           (selected) => selected !== item
         );
       }
 
-      this.TableSelected.emit(this.selectTable);
-      this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = this.selectTable.length === 0;
+      this.TableSelected.emit(this.selectedTable);
     }
   }
 
@@ -85,7 +88,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
   initializeHeaders() {
     if (this.headers.length === 0 && this.paramsTemporal.length) {
       const keys = Object.keys(this.paramsTemporal[0]);
-      this.headers = keys.map(key => ({
+      this.headers = keys.map((key) => ({
         field: key,
         header: key.charAt(0).toUpperCase() + key.slice(1),
       }));
@@ -101,8 +104,8 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     event.preventDefault();
     this.menu.show(event);
 
-    if (this.selectTable.length > 0) { 
-      this.itemSelected.emit(this.selectTable);
+    if (this.selectedTable.length > 0) {
+      this.itemSelected.emit(this.selectedTable);
     } else {
       this.selectedItem.push(item);
       this.itemSelected.emit(this.selectedItem);

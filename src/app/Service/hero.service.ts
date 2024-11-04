@@ -3,10 +3,14 @@ import { Observable, of } from 'rxjs';
 import { Hero } from '../Model/Domain/hero';
 import { heroDAO } from '../DAO/hero.DAO';
 import { HeroModel } from '../Model/Views/Dynamic/HeroModel';
-
+import { MessageService } from 'primeng/api';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
-  constructor(private heroDAO: heroDAO, private heroModel: HeroModel) {}
+  constructor(
+    private heroDAO: heroDAO,
+    private heroModel: HeroModel,
+    private messageService: MessageService
+  ) {}
 
   /////////// CREATE methods ///////////
 
@@ -16,10 +20,18 @@ export class HeroService {
 
     this.heroDAO.addHero(hero).subscribe({
       next: (hero: Hero) => {
-        this.heroModel.hero = hero;
+        this.heroModel.hero = hero;  this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Created',
+        });
       },
       error: (error) => {
-        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail:  error,
+        });
       },
     });
   }
@@ -41,14 +53,13 @@ export class HeroService {
 
   getHeroesArray(): Hero[] {
     this.heroDAO.getHeroes().subscribe({
-      next: (heroes: Hero[]) => {        
-
+      next: (heroes: Hero[]) => {
         this.heroModel.heroes = heroes;
       },
       error: (error) => {
         console.error(error);
       },
-    }); 
+    });
     return this.heroes;
   }
 
@@ -95,6 +106,11 @@ export class HeroService {
     this.heroDAO.updateHero(hero).subscribe({
       next: (hero: Hero) => {
         this.heroModel.hero = hero;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Data Saved',
+        });
       },
       error: (error) => {
         console.error(error);
@@ -108,7 +124,11 @@ export class HeroService {
   deleteHero(id: number): void {
     this.heroDAO.deleteHero(id).subscribe({
       next: (hero: Hero) => {
-        this.heroModel.hero = hero;
+        this.heroModel.hero = hero;      this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Deleted',
+        });
       },
       error: (error) => {
         console.error(error);

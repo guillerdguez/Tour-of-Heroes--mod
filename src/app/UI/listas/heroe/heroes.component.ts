@@ -3,31 +3,34 @@ import { Router } from '@angular/router';
 import { HeroService } from '../../../Service/hero.service';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
 import { Hero } from '../../../Model/Domain/hero';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-heroes',
   template: `
-    <div *ngIf="heroModel.heroes.length > 0">
+    <h2 class="title">
+      {{ title }}
+    </h2>
+    @if(heroModel.heroes.length > 0){
+    <div class="continer">
       <app-select-form
         [options]="opciones"
         (OptionSelect)="onOptionSelect($event)"
-        [selectTable]="selectedTable"
-      
+        [isTableEmpty]="selectedTable.length == 0"
       ></app-select-form>
 
       <app-esquema-lista
         [title]="title"
         [params]="heroModel.heroes"
         [items]="items"
+        [toggleFavorite]="toggleFavorite.bind(this)"
         (itemSelected)="onItemSelected($event)"
         (TableSelected)="onTableSelected($event)"
-        [toggleFavorite]="toggleFavorite.bind(this)"
       ></app-esquema-lista>
     </div>
-    <div *ngIf="heroModel.heroes.length === 0">
-      <h2 class="title">Sin resultados</h2>
-    </div>
+    } @else {
+    <h2 class="title">Sin resultados</h2>
+    }
   `,
 })
 export class HeroesComponent implements OnInit {
@@ -40,7 +43,8 @@ export class HeroesComponent implements OnInit {
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -104,17 +108,22 @@ export class HeroesComponent implements OnInit {
     this.switchOpciones(this.selectedOption);
   }
 
-
   onItemSelected(item: Hero[]) {
     this.selectedItem = item;
   }
 
   onTableSelected(selectedItems: Hero[]) {
-    this.selectedTable = [...selectedItems];  
+    this.selectedTable = [...selectedItems];
   }
 
   goToDetail(hero: Hero[]) {
-    if (hero.length > 0) {
+    if (this.selectedTable.length != 1) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'It can only be edited if there is a single hero selected',
+      });
+    } else {
       this.router.navigate(['/detail/hero/', hero[0].id]);
     }
   }
@@ -126,6 +135,8 @@ export class HeroesComponent implements OnInit {
       );
       this.heroService.deleteHero(h.id);
     });
+    this.selectedItem = [];
+    this.selectedTable = [];
   }
 
   favourite(selectedItem: Hero[]) {
@@ -151,7 +162,7 @@ export class HeroesComponent implements OnInit {
   switchOpciones(selectedOption: string) {
     if (this.selectedOption != undefined) {
       if (
-        selectedOption.toLowerCase() == 'Edit' &&
+        selectedOption.toLowerCase() == 'edit' &&
         this.selectedTable.length != 1
       ) {
         alert('It can only be edited if there is a single hero selected');
@@ -163,11 +174,9 @@ export class HeroesComponent implements OnInit {
           case 'delete':
             this.delete(this.selectedTable);
             break;
-            case 'edit':
-              this.router.navigate([
-                '/detail/hero/' + this.selectedTable[0].id,
-              ]);
-              break;
+          case 'edit':
+            this.router.navigate(['/detail/hero/' + this.selectedTable[0].id]);
+            break;
           case 'favourite':
             this.favourite(this.selectedTable);
             break;

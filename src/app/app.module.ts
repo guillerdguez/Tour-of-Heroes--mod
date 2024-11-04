@@ -39,6 +39,9 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectFormComponent } from './UI/select-form/select-form.component';
+import { MessageService } from 'primeng/api';
+ 
+
 @NgModule({
   declarations: [
     VillainDetailComponent,
@@ -58,6 +61,7 @@ import { SelectFormComponent } from './UI/select-form/select-form.component';
     SelectFormComponent,
   ],
   imports: [
+    ToastModule,
     CascadeSelectModule,
     ReactiveFormsModule,
     ContextMenuModule,
@@ -86,7 +90,7 @@ import { SelectFormComponent } from './UI/select-form/select-form.component';
       dataEncapsulation: false,
     }),
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(),MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -3,67 +3,56 @@ import { Router } from '@angular/router';
 import { VillainService } from '../../../Service/villain.service';
 import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
 import { Villain } from '../../../Model/Domain/villano';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 
 @Component({
   selector: 'app-villains',
   template: `
- 
+    <h2 class="title">{{ title }}</h2>
+    <div *ngIf="villainModel.villains.length > 0">
+      <app-select-form
+        [options]="opciones"
+        (OptionSelect)="onOptionSelect($event)"
+        [isTableEmpty]="selectedTable.length == 0"
+      ></app-select-form>
+
+      <app-esquema-lista
+        [title]="title"
+        [params]="villainModel.villains"
+        [items]="items"
+        (itemSelected)="onItemSelected($event)"
+        (TableSelected)="onTableSelected($event)"
+      ></app-esquema-lista>
+    </div>
+    <div *ngIf="villainModel.villains.length === 0">
+      <h2 class="title">Sin resultados</h2>
+    </div>
   `,
 })
 export class VillainsComponent implements OnInit {
   title: string = 'Villains';
   items: MenuItem[] = [];
-  selectedItem!: Villain[];
   opciones: any[] = [];
-
-  selectedTable!: Villain[];
+  selectedItem: Villain[] = [];
+  selectedTable: Villain[] = [];
   selectedOption!: string;
-  villainTemporal!: Villain[];
 
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
     private router: Router,
-    private fechoriaModel: FechoriaModel
+    private fechoriaModel: FechoriaModel,
+    private messageService: MessageService
   ) {}
+
   ngOnInit(): void {
     this.villainModel.villains = this.villainService.getVillainsArray();
     this.items = this.menuItem();
     this.opciones = this.menuOpciones();
   }
+
   menuItem() {
-    return [
-      {
-        label: 'Create',
-        icon: 'pi pi-plus',
-        command: () => {
-          this.router.navigate(['/newVillains']);
-        },
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-trash',
-        command: () => {
-          this.delete(this.selectedItem);
-        },
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-file-edit',
-        command: () => {
-          this.goToDetail(this.selectedItem);
-        },
-      },
-      {
-        label: 'Cambiar Fechoria',
-        icon: 'pi pi-thumbs-down-fill',
-        items: this.getFechoriaItems(),
-      },
-    ];
-  }
-  menuOpciones() {
     return [
       {
         label: 'Create',
@@ -81,6 +70,9 @@ export class VillainsComponent implements OnInit {
         command: () => this.goToDetail(this.selectedItem),
       },
       {
+        separator: true,
+      },
+      {
         label: 'Cambiar Fechoria',
         icon: 'pi pi-thumbs-down-fill',
         items: this.getFechoriaItems(),
@@ -88,19 +80,40 @@ export class VillainsComponent implements OnInit {
     ];
   }
 
+  menuOpciones() {
+    return [
+      {
+        label: 'Create',
+        icon: 'pi pi-plus',
+        command: () => this.router.navigate(['/newVillains']),
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => this.delete(this.selectedTable),
+      },
+      {
+        label: 'Edit',
+        icon: 'pi pi-file-edit',
+        command: () => this.goToDetail(this.selectedTable),
+      },
+      {
+        separator: true,
+      },
+      {
+        label: 'Cambiar Fechoria',
+        icon: 'pi pi-thumbs-down-fill',
+
+        items: this.getFechoriaItems(),
+      },
+    ];
+  }
+
   getFechoriaItems(): MenuItem[] {
-    const menuItems: MenuItem[] = [];
-
-    this.fechoriaModel.fechorias.forEach((fechoria) => {
-      menuItems.push({
-        label: fechoria,
-        command: () => {
-          this.changeFechoria(fechoria);
-        },
-      });
-    });
-
-    return menuItems;
+    return this.fechoriaModel.fechorias.map((fechoria) => ({
+      label: fechoria,
+      command: () => this.changeFechoria(fechoria),
+    }));
   }
 
   changeFechoria(fechoria: string): void {
@@ -119,62 +132,32 @@ export class VillainsComponent implements OnInit {
     this.switchOpciones(this.selectedOption);
   }
 
-  onTableSelected(item: Villain[]) {
-    this.selectedTable = item;
+  onTableSelected(selectedItems: Villain[]) {
+    this.selectedTable = [...selectedItems];
   }
+
   goToDetail(villain: Villain[]) {
-    this.router.navigate(['/detail/villain/', villain[0].id]);
-    this.selectedTable = [];
-    this.selectedOption = '';
+    if (this.selectedTable.length != 1) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'It can only be edited if there is a single hero selected',
+      });
+    } else {
+      this.router.navigate(['/detail/villain/', villain[0].id]);
+    }
   }
 
   delete(villain: Villain[]): void {
-    for (let i = 0; i < villain.length; i++) {
+    villain.forEach((item) => {
       this.villainModel.villains = this.villainModel.villains.filter(
-        (h) => h.id !== villain[i].id
+        (h) => h.id !== item.id
       );
-      this.villainService.deleteVillain(villain[i].id);
-    }
+      this.villainService.deleteVillain(item.id);
+    });
+    this.selectedItem = [];
     this.selectedTable = [];
-    this.selectedOption = '';
   }
-
-  // switchOpciones(selectedOption: string) {
-  //   const options = [
-  //     {
-  //       label: 'Create',
-  //       action: () => this.router.navigate(['/newVillains']),
-  //     },
-  //     {
-  //       label: 'Delete',
-  //       action: () => this.delete(this.selectedItem),
-  //     },
-  //     {
-  //       label: 'Edit',
-  //       action: () => {
-  //         if (this.selectedTable.length !== 1) {
-  //           alert('Solo se puede editar si hay un solo villano seleccionado');
-  //         } else {
-  //           this.goToDetail(this.selectedItem);
-  //         }
-  //       },
-  //     },
-  //     {
-  //       label: 'Cambiar Fechoria',
-  //       action: () => this.changeFechoria(this.selectedItem[0].fechoria),
-  //     },
-  //   ];
-
-  //   const selected = options.find(
-  //     (option) => option.label.toLowerCase() === selectedOption.toLowerCase()
-  //   );
-
-  //   if (selected) {
-  //     selected.action();
-  //   } else {
-  //     console.error('Opción no válida:', selectedOption);
-  //   }
-  // }
 
   switchOpciones(selectedOption: string) {
     if (this.selectedOption != undefined) {
@@ -182,7 +165,11 @@ export class VillainsComponent implements OnInit {
         selectedOption.toLowerCase() == 'edit' &&
         this.selectedTable.length != 1
       ) {
-        alert('It can only be edited if there is a single villain selected');
+        this.messageService.add({
+          severity: 'danger',
+          summary: 'Error',
+          detail: 'It can only be edited if there is a single hero selected',
+        });
       } else {
         switch (selectedOption.toLowerCase()) {
           case 'create':
@@ -191,17 +178,12 @@ export class VillainsComponent implements OnInit {
           case 'delete':
             this.delete(this.selectedTable);
             break;
-
           case 'edit':
-            this.router.navigate([
-              '/detail/villain/' + this.selectedTable[0].id,
-            ]);
-
+            this.router.navigate(['/detail/hero/' + this.selectedTable[0].id]);
             break;
-          case 'Cambiar Fechoria':
-            this.changeFechoria(this.selectedItem[0].fechoria);
+          case 'cambiar fechoria':
+            this.changeFechoria(this.selectedItem[0]?.fechoria);
             break;
-
           default:
             console.error('Opción no válida:', selectedOption);
         }

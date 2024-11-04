@@ -1,58 +1,57 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  Input,
+  EventEmitter,
+  Output,
+  viewChildren,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MenuItem } from 'primeng/api';
-import { Hero } from '../../Model/Domain/hero';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-select-form',
   templateUrl: './select-form.component.html',
-  styleUrls: ['./select-form.component.css'],  
+  styleUrls: ['./select-form.component.css'],
 })
 export class SelectFormComponent implements OnInit, OnChanges {
-  usarSelect: boolean = true;
-  
   formGroup: FormGroup;
-  
-  selectedOption: any;
-  @Input() selectTable: Hero[] = [];
   @Input() options: any[] = [];
-  
+  @Input() isTableEmpty = true;
   @Output() OptionSelect = new EventEmitter<string>();
- 
+  selectedOption: any;
+  usarSelect = true;
+  selectedOptions: any;
+
+  @ViewChild('drop') dropdown: Dropdown | undefined;
   constructor() {
     this.formGroup = new FormGroup({
-      selectedOption: new FormControl({ disabled: this.usarSelect }),
+      selectedOption: new FormControl({ disabled: this.isTableEmpty, value: '2' }),
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectTable'] && changes['selectTable'].currentValue) {
-      if (this.selectTable && this.selectTable.length > 0) {
-        this.formGroup.get('selectedOption')?.enable();
-        this.usarSelect = false;
-      } else {
-        this.formGroup.get('selectedOption')?.disable();
-        this.usarSelect = true;
-      }
-    }
   }
   ngOnInit(): void {
-    this.formGroup.get('selectedOption')?.valueChanges.subscribe((value) => {
-      if (value && value.label) {
-        this.selectedOption = value;
-        this.OptionSelect.emit(value.label);
-        this.selectTable = [];   
-      }
-    });
+    // this.formGroup.get('selectedOption')?.reset();
+    // this.formGroup.get('selectedOption')?.valueChanges.subscribe((value) => {
+    //   if (value?.label) {
+    //     this.selectedOption = value;
+    //     this.OptionSelect.emit(value.label);
+    //   }
+    // });
   }
-  
+
+  ngOnChanges(): void {
+    // if (this.isTableEmpty) {
+    //   this.formGroup.get('selectedOption')?.disable();
+    // } else {
+    //   this.formGroup.get('selectedOption')?.enable();
+    // }
+  }
+
   resetOption() {
-    const selectedControl = this.formGroup.get('selectedOption');
-    if (selectedControl) {
-      selectedControl.reset(); // Resetear el control
-      this.usarSelect = true; // Reiniciar la selección
-    }
+    this.OptionSelect.emit(this.selectedOptions.label);
+    // this.dropdown?.clear();
+    this.selectedOptions = null;
   }
-  
- 
 }

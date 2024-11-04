@@ -1,5 +1,5 @@
 <div class="table-container">
-  <h2 class="title">{{ title }}</h2>
+
 
   <div class="data-container">
     <p-table
@@ -26,8 +26,8 @@
       <ng-template pTemplate="body" let-item let-columns="columns">
         <tr
           class="table-body-row"
-          [class.selected]="selectTable.includes(item)"  
-          (click)="onSelectTable($event, item)" 
+          [class.selected]="selectedTable.includes(item)"  
+          (click)="onselectedTable($event, item)" 
           style="width: 200px; height: 70px;"
         >
           <td
@@ -57,9 +57,10 @@
     <p-contextMenu
       [model]="items"
       [baseZIndex]="1000"
-      [appendTo]="'body'"
+      [appendTo]="'self'"
       #menu
-      styleClass="custom-context-menu"
+      
+      
     ></p-contextMenu>
   </div>
 </div>

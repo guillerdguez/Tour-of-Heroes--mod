@@ -3,12 +3,13 @@ import { Observable, of } from 'rxjs';
 import { Villain } from '../Model/Domain/villano';
 import { villainDAO } from '../DAO/villain.DAO';
 import { VillainModel } from '../Model/Views/Dynamic/VillainModel';
-
+import { MessageService } from 'primeng/api';
 @Injectable({ providedIn: 'root' })
 export class VillainService {
   constructor(
     private villainDAO: villainDAO,
-    private villainModel: VillainModel
+    private villainModel: VillainModel,
+    private messageService: MessageService
   ) {}
 
   /////////// CREATE methods ///////////
@@ -98,6 +99,11 @@ export class VillainService {
     this.villainDAO.updateVillain(villain).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Data Saved',
+        });
       },
       error: (error) => {
         console.error(error);
@@ -112,6 +118,11 @@ export class VillainService {
     this.villainDAO.deleteVillain(id).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Deleted',
+        });
       },
       error: (error) => {
         console.error(error);
