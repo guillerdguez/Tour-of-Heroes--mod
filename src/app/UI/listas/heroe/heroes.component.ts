@@ -13,7 +13,9 @@ import { MenuItem } from 'primeng/api';
         [options]="opciones"
         (OptionSelect)="onOptionSelect($event)"
         [selectTable]="selectedTable"
+      
       ></app-select-form>
+
       <app-esquema-lista
         [title]="title"
         [params]="heroModel.heroes"
@@ -34,7 +36,7 @@ export class HeroesComponent implements OnInit {
   opciones: any[] = [];
   selectedItem: Hero[] = [];
   selectedTable: Hero[] = [];
-
+  selectedOption!: string;
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
@@ -97,16 +99,18 @@ export class HeroesComponent implements OnInit {
     ];
   }
 
-  onOptionSelect(option: any) {
-    console.log('Opción seleccionada:', option);  
+  onOptionSelect(select: string) {
+    this.selectedOption = select;
+    this.switchOpciones(this.selectedOption);
   }
+
 
   onItemSelected(item: Hero[]) {
     this.selectedItem = item;
   }
 
   onTableSelected(selectedItems: Hero[]) {
-    this.selectedTable = [...selectedItems]; // Usar spread operator para crear una nueva referencia
+    this.selectedTable = [...selectedItems];  
   }
 
   goToDetail(hero: Hero[]) {
@@ -135,13 +139,42 @@ export class HeroesComponent implements OnInit {
   }
 
   toggleFavorite(item: Hero) {
-    item.favourite = !item.favourite;  
+    item.favourite = !item.favourite;
     const index = this.heroModel.heroes.findIndex(
       (hero) => hero.id === item.id
     );
     if (index !== -1) {
-      this.heroModel.heroes[index] = { ...item };  
-      this.heroService.updateHero(this.heroModel.heroes[index]);  
+      this.heroModel.heroes[index] = { ...item };
+      this.heroService.updateHero(this.heroModel.heroes[index]);
+    }
+  }
+  switchOpciones(selectedOption: string) {
+    if (this.selectedOption != undefined) {
+      if (
+        selectedOption.toLowerCase() == 'Edit' &&
+        this.selectedTable.length != 1
+      ) {
+        alert('It can only be edited if there is a single hero selected');
+      } else {
+        switch (selectedOption.toLowerCase()) {
+          case 'create':
+            this.router.navigate(['/newHeroes']);
+            break;
+          case 'delete':
+            this.delete(this.selectedTable);
+            break;
+            case 'edit':
+              this.router.navigate([
+                '/detail/hero/' + this.selectedTable[0].id,
+              ]);
+              break;
+          case 'favourite':
+            this.favourite(this.selectedTable);
+            break;
+          default:
+            console.error('Opción no válida:', selectedOption);
+        }
+      }
     }
   }
 }

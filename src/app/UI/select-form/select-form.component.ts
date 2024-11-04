@@ -18,8 +18,7 @@ export class SelectFormComponent implements OnInit, OnChanges {
   @Input() options: any[] = [];
   
   @Output() OptionSelect = new EventEmitter<string>();
-  @ViewChild('menu') menu!: MenuItem;
-
+ 
   constructor() {
     this.formGroup = new FormGroup({
       selectedOption: new FormControl({ disabled: this.usarSelect }),

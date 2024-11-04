@@ -58,19 +58,23 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     }
   }
 
-  onSelectTable(event: MouseEvent, item: Hero) {
-    if (event.button !== 2) { // Evitar selección con botón derecho
-      const itemIndex = this.selectTable.findIndex(selected => selected.id === item.id);
-      if (itemIndex === -1) {
+ 
+  onSelectTable(event: MouseEvent, item: any) {
+    if (
+      (event.button !== 2 && event.button !== 1) ||
+      this.selectTable.length !== 0
+    ) {
+      if (!this.selectTable.includes(item)) {
         this.selectTable.push(item);
       } else {
-        this.selectTable = this.selectTable.filter(selected => selected.id !== item.id);
+        this.selectTable = this.selectTable.filter(
+          (selected) => selected !== item
+        );
       }
 
-      // Emitir una copia del array
-      this.TableSelected.emit([...this.selectTable]);
+      this.TableSelected.emit(this.selectTable);
       this.formGroup.get('selectedOption')?.enable();
-      this.usarSelect = this.selectTable.length > 0;
+      this.usarSelect = this.selectTable.length === 0;
     }
   }
 
@@ -97,10 +101,10 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     event.preventDefault();
     this.menu.show(event);
 
-    if (this.selectTable.length > 0) {
+    if (this.selectTable.length > 0) { 
       this.itemSelected.emit(this.selectTable);
     } else {
-      this.selectedItem = [item];
+      this.selectedItem.push(item);
       this.itemSelected.emit(this.selectedItem);
       this.selectedItem = [];
     }
