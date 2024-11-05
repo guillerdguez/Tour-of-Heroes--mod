@@ -49,24 +49,26 @@
         {{ pow }}
       </option>
     </select>
-  </div><div class="form-group-fechorias">
+  </div>
+  
+  <div class="form-group">
     <label for="fechoria">Villain Fechorias</label>
     <select
       class="form-control"
-      id="fechorias"
-      [(ngModel)]="villainModel.villain.fechoria"
+      id="fechoria"
+      required
       name="fechoria"
+      [(ngModel)]="villainModel.villain.fechoria"
       #fechoria="ngModel"
     >
-      <option
-        *ngFor="let fechoria of fechoriaModel.fechorias"
-        [value]="fechoria"
-      >
-        {{ fechoria }}
+      <option value="" disabled>Selecciona una fechoria</option>
+      <option *ngFor="let fechoria of fechoriaModel.fechorias" [value]="fechoria.name">
+        {{ fechoria.name }}
       </option>
     </select>
   </div>
   
+
   <div class="botones">
     <button class="boton" type="button" (click)="goBack()">Go Back</button>
     <button class="boton" type="button" (click)="save()">Save</button>

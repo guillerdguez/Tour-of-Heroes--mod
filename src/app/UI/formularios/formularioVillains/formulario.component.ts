@@ -1,15 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { villainDAO } from '../../../DAO/villain.DAO';
+import { Fechoria } from '../../../Model/Domain/fechoria';
+import { Villain } from '../../../Model/Domain/villano';
+import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
+import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
 import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
 import { VillainService } from '../../../Service/villain.service';
-import { Villain } from '../../../Model/Domain/villano';
-import { InMemoryDataService } from '../../../Service/in-memory-data.service';
-import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
-import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
-import { Fechoria } from '../../../Model/Domain/fechoria';
 
 @Component({
   selector: 'app-formulario',
@@ -20,7 +17,7 @@ export class FormularioComponentVillain implements OnInit {
   model: any;
   villainName: any;
   villainForm: any;
-selectedFechoria: any;
+  selectedFechoria!: string;
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
@@ -39,14 +36,13 @@ selectedFechoria: any;
     power: string,
     fechoria: string,
     alterEgo?: string,
-    lastName?: string,
-   
+    lastName?: string
   ): void {
     name = name.trim();
     alterEgo = alterEgo?.trim() === '' ? undefined : alterEgo?.trim();
     lastName = lastName?.trim() === '' ? undefined : lastName?.trim();
     power = power.trim();
- 
+
     age;
 
     if (!name || !age || !power || !fechoria) {
@@ -56,6 +52,7 @@ selectedFechoria: any;
     this.VillainDao.getVillains().subscribe((villains) => {
       const lastVillain = villains[villains.length - 1];
       const newId = lastVillain ? lastVillain.id + 1 : 1;
+
       const newVillain: Villain = {
         id: newId,
         name,
@@ -67,7 +64,7 @@ selectedFechoria: any;
       };
 
       this.villainService.addVillain(newVillain);
-    
+
       this.goBack();
     });
   }

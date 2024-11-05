@@ -35,7 +35,7 @@
           #alterEgo
         />
       </div>
-      
+
       <div class="form-group-lastName">
         <label for="lastName">Last name: </label>
         <input
@@ -67,21 +67,21 @@
           </option>
         </select>
       </div>
-      <label for="fechoria">Villain Fechorias</label>
-      <select
-        class="form-control"
-        id="fechoria"
-        required
-        name="fechoria"
-        [(ngModel)]="selectedFechoria"
-      >
-        <option
-          *ngFor="let fechoria of fechoriaModel.fechorias"
-          [ngValue]="fechoria"
+      <div class="form-group-fechoria">
+        <label for="fechoria">Villain Fechorias</label>
+        <select
+          class="form-control"
+          id="fechoria"
+          required
+          name="fechoria"
+          #fechoria
         >
-          {{ fechoria.name }}
-        </option>
-      </select>
+         
+          <option *ngFor="let fechoria of fechoriaModel.fechorias" [value]="fechoria.name">
+            {{ fechoria.name }}
+          </option>
+        </select>
+      </div>
       
       <div class="buttons">
         <button
@@ -92,13 +92,15 @@
               villainName.value,
               age.valueAsNumber,
               power.value,
-              selectedFechoria.name, 
+              selectedFechoria,
               alterEgo.value,
               lastName.value
-            )"
+            )
+          "
         >
           Agregar
         </button>
       </div>
     </div>
   </body>
+</html>
