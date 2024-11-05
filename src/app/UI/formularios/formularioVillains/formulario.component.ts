@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
+import { Fechoria } from '../../../Model/Domain/fechoria';
 
 @Component({
   selector: 'app-formulario',
@@ -19,6 +20,7 @@ export class FormularioComponentVillain implements OnInit {
   model: any;
   villainName: any;
   villainForm: any;
+selectedFechoria: any;
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
@@ -44,7 +46,7 @@ export class FormularioComponentVillain implements OnInit {
     alterEgo = alterEgo?.trim() === '' ? undefined : alterEgo?.trim();
     lastName = lastName?.trim() === '' ? undefined : lastName?.trim();
     power = power.trim();
-    fechoria.trim();
+ 
     age;
 
     if (!name || !age || !power || !fechoria) {

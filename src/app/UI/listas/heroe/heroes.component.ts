@@ -117,7 +117,7 @@ export class HeroesComponent implements OnInit {
   }
 
   goToDetail(hero: Hero[]) {
-    if (this.selectedTable.length != 1) {
+    if (hero.length != 1) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -157,6 +157,9 @@ export class HeroesComponent implements OnInit {
     if (index !== -1) {
       this.heroModel.heroes[index] = { ...item };
       this.heroService.updateHero(this.heroModel.heroes[index]);
+     
+      this.selectedTable = this.selectedTable.filter(hero => hero.id !== item.id);
+  
     }
   }
   switchOpciones(selectedOption: string) {

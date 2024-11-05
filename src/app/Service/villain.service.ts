@@ -21,9 +21,18 @@ export class VillainService {
     this.villainDAO.addVillain(villain).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Created',
+        });
       },
       error: (error) => {
-        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
       },
     });
   }
@@ -106,7 +115,11 @@ export class VillainService {
         });
       },
       error: (error) => {
-        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
       },
     });
   }
@@ -125,7 +138,11 @@ export class VillainService {
         });
       },
       error: (error) => {
-        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+        });
       },
     });
   }

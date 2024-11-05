@@ -16,42 +16,42 @@ import { Dropdown } from 'primeng/dropdown';
   templateUrl: './select-form.component.html',
   styleUrls: ['./select-form.component.css'],
 })
-export class SelectFormComponent implements OnInit, OnChanges {
+export class SelectFormComponent implements OnInit {
   formGroup: FormGroup;
   @Input() options: any[] = [];
+
   @Input() isTableEmpty = true;
   @Output() OptionSelect = new EventEmitter<string>();
   selectedOption: any;
   usarSelect = true;
   selectedOptions: any;
 
+  firstOption: any[] = [];
+
   @ViewChild('drop') dropdown: Dropdown | undefined;
   constructor() {
     this.formGroup = new FormGroup({
-      selectedOption: new FormControl({ disabled: this.isTableEmpty, value: '2' }),
+      selectedOption: new FormControl({
+        disabled: this.isTableEmpty,
+        value: '2',
+      }),
     });
   }
-  ngOnInit(): void {
-    // this.formGroup.get('selectedOption')?.reset();
-    // this.formGroup.get('selectedOption')?.valueChanges.subscribe((value) => {
-    //   if (value?.label) {
-    //     this.selectedOption = value;
-    //     this.OptionSelect.emit(value.label);
-    //   }
-    // });
-  }
 
-  ngOnChanges(): void {
-    // if (this.isTableEmpty) {
-    //   this.formGroup.get('selectedOption')?.disable();
-    // } else {
-    //   this.formGroup.get('selectedOption')?.enable();
-    // }
+  ngOnInit(): void {
+
+      this.firstOption = [this.options[0]];  
+      this.options.shift();
+  
   }
 
   resetOption() {
     this.OptionSelect.emit(this.selectedOptions.label);
-    // this.dropdown?.clear();
+
     this.selectedOptions = null;
+  }
+  onSelectDefaultOption() {  
+    this.OptionSelect.emit(this.firstOption[0].label);
+ 
   }
 }

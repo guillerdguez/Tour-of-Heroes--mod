@@ -1,0 +1,14 @@
+<div class="table-container">
+  <p-table [value]="fechorias" class="container">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Select a Fechoria</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-fechoria>
+      <tr (click)="selectFechoria(fechoria)">
+        <td>{{ fechoria }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

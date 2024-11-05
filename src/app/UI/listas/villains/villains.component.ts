@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { VillainService } from '../../../Service/villain.service';
-import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
-import { Villain } from '../../../Model/Domain/villano';
 import { MenuItem, MessageService } from 'primeng/api';
-import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Villain } from '../../../Model/Domain/villano';
+import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
+import { VillainService } from '../../../Service/villain.service';
+import { FechoriaDialogComponent } from '../../fechoria-dialog/fechoria-dialog.component';
 
 @Component({
   selector: 'app-villains',
@@ -29,6 +30,7 @@ import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
       <h2 class="title">Sin resultados</h2>
     </div>
   `,
+  providers: [DialogService],
 })
 export class VillainsComponent implements OnInit {
   title: string = 'Villains';
@@ -37,13 +39,15 @@ export class VillainsComponent implements OnInit {
   selectedItem: Villain[] = [];
   selectedTable: Villain[] = [];
   selectedOption!: string;
+  ref!: DynamicDialogRef;
 
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
     private router: Router,
-    private fechoriaModel: FechoriaModel,
-    private messageService: MessageService
+    private messageService: MessageService,
+
+    public dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -75,11 +79,11 @@ export class VillainsComponent implements OnInit {
       {
         label: 'Cambiar Fechoria',
         icon: 'pi pi-thumbs-down-fill',
-        items: this.getFechoriaItems(),
+        command: () => this.showDialog(),
       },
     ];
   }
-
+  //repetido
   menuOpciones() {
     return [
       {
@@ -97,30 +101,43 @@ export class VillainsComponent implements OnInit {
         icon: 'pi pi-file-edit',
         command: () => this.goToDetail(this.selectedTable),
       },
-      {
-        separator: true,
-      },
+
       {
         label: 'Cambiar Fechoria',
         icon: 'pi pi-thumbs-down-fill',
-
-        items: this.getFechoriaItems(),
+        command: () => this.showDialog(),
       },
     ];
   }
+  showDialog() {
+    this.ref = this.dialogService.open(FechoriaDialogComponent, {});
 
-  getFechoriaItems(): MenuItem[] {
-    return this.fechoriaModel.fechorias.map((fechoria) => ({
-      label: fechoria,
-      command: () => this.changeFechoria(fechoria),
-    }));
+    this.ref.onClose.subscribe((fechoria: string) => {
+      if (fechoria) {
+        this.changeFechoria(fechoria);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 
   changeFechoria(fechoria: string): void {
-    this.selectedItem.forEach((item) => {
-      item.fechoria = fechoria;
-      this.villainService.updateVillain(item);
-    });
+    if (this.selectedItem.length != 0) {
+      this.selectedItem.forEach((item) => {
+        item.fechoria = fechoria;
+        this.villainService.updateVillain(item);
+      });
+      this.selectedItem = [];
+    } else {
+      this.selectedTable.forEach((item) => {
+        item.fechoria = fechoria;
+        this.villainService.updateVillain(item);
+      });
+    }
   }
 
   onItemSelected(item: Villain[]) {
@@ -129,15 +146,16 @@ export class VillainsComponent implements OnInit {
 
   onOptionSelect(select: string) {
     this.selectedOption = select;
-    this.switchOpciones(this.selectedOption);
+    if (this.selectedOption.toLowerCase() == 'create') {
+      this.router.navigate(['/newVillains']);
+    }
   }
 
   onTableSelected(selectedItems: Villain[]) {
     this.selectedTable = [...selectedItems];
   }
-
   goToDetail(villain: Villain[]) {
-    if (this.selectedTable.length != 1) {
+    if (villain.length != 1) {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -157,37 +175,5 @@ export class VillainsComponent implements OnInit {
     });
     this.selectedItem = [];
     this.selectedTable = [];
-  }
-
-  switchOpciones(selectedOption: string) {
-    if (this.selectedOption != undefined) {
-      if (
-        selectedOption.toLowerCase() == 'edit' &&
-        this.selectedTable.length != 1
-      ) {
-        this.messageService.add({
-          severity: 'danger',
-          summary: 'Error',
-          detail: 'It can only be edited if there is a single hero selected',
-        });
-      } else {
-        switch (selectedOption.toLowerCase()) {
-          case 'create':
-            this.router.navigate(['/newVillains']);
-            break;
-          case 'delete':
-            this.delete(this.selectedTable);
-            break;
-          case 'edit':
-            this.router.navigate(['/detail/hero/' + this.selectedTable[0].id]);
-            break;
-          case 'cambiar fechoria':
-            this.changeFechoria(this.selectedItem[0]?.fechoria);
-            break;
-          default:
-            console.error('Opción no válida:', selectedOption);
-        }
-      }
-    }
   }
 }

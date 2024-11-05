@@ -67,25 +67,22 @@
           </option>
         </select>
       </div>
-
-      <div class="form-group-fechorias">
-        <label for="fechoria">Villain Fechorias</label>
-        <select
-          class="form-control"
-          id="fechorias"
-          required
-          name="fechorias"
-          #fechoria
+      <label for="fechoria">Villain Fechorias</label>
+      <select
+        class="form-control"
+        id="fechoria"
+        required
+        name="fechoria"
+        [(ngModel)]="selectedFechoria"
+      >
+        <option
+          *ngFor="let fechoria of fechoriaModel.fechorias"
+          [ngValue]="fechoria"
         >
-          <option
-            *ngFor="let fechoria of fechoriaModel.fechorias"
-            [value]="fechoria"
-          >
-            {{ fechoria }}
-          </option>
-        </select>
-      </div>
-
+          {{ fechoria.name }}
+        </option>
+      </select>
+      
       <div class="buttons">
         <button
           type="button"
@@ -95,16 +92,13 @@
               villainName.value,
               age.valueAsNumber,
               power.value,
-              fechoria.value,
+              selectedFechoria.name, 
               alterEgo.value,
               lastName.value
-            )
-          "
+            )"
         >
-          Submit
+          Agregar
         </button>
-        <button class="boton" type="button" (click)="goBack()">go back</button>
       </div>
     </div>
   </body>
-</html>

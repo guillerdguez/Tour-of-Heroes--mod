@@ -40,8 +40,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectFormComponent } from './UI/select-form/select-form.component';
 import { MessageService } from 'primeng/api';
- 
-
+import { ChangeFechoriaComponent } from './UI/change-fechoria/change-fechoria.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CardModule } from 'primeng/card';
+import { FechoriaDialogComponent } from './UI/fechoria-dialog/fechoria-dialog.component';
+import { DialogModule } from 'primeng/dialog';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { MenuModule } from 'primeng/menu';
+import { SkeletonModule } from 'primeng/skeleton';
 @NgModule({
   declarations: [
     VillainDetailComponent,
@@ -59,8 +65,12 @@ import { MessageService } from 'primeng/api';
     EsquemaListaComponent,
     VillainsComponent,
     SelectFormComponent,
+    ChangeFechoriaComponent,
+    FechoriaDialogComponent,
   ],
   imports: [
+    DialogModule,
+    CardModule,
     ToastModule,
     CascadeSelectModule,
     ReactiveFormsModule,
@@ -72,6 +82,8 @@ import { MessageService } from 'primeng/api';
     BrowserAnimationsModule,
 
     // PrimeNG Modules
+    SkeletonModule,
+    MenuModule,
     DropdownModule,
     ButtonModule,
     PanelModule,
@@ -84,13 +96,15 @@ import { MessageService } from 'primeng/api';
     ToolbarModule,
     ToastModule,
     SplitButtonModule,
+    DynamicDialogModule,
+    SpeedDialModule,
 
     // HttpClientInMemoryWebApiModule for simulated server responses
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
   ],
-  providers: [provideAnimationsAsync(),MessageService],
+  providers: [provideAnimationsAsync(), MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

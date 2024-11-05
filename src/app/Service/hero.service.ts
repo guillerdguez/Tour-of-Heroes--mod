@@ -20,7 +20,8 @@ export class HeroService {
 
     this.heroDAO.addHero(hero).subscribe({
       next: (hero: Hero) => {
-        this.heroModel.hero = hero;  this.messageService.add({
+        this.heroModel.hero = hero;
+        this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Created',
@@ -30,7 +31,7 @@ export class HeroService {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail:  error,
+          detail: error,
         });
       },
     });
@@ -124,7 +125,8 @@ export class HeroService {
   deleteHero(id: number): void {
     this.heroDAO.deleteHero(id).subscribe({
       next: (hero: Hero) => {
-        this.heroModel.hero = hero;      this.messageService.add({
+        this.heroModel.hero = hero;
+        this.messageService.add({
           severity: 'success',
           summary: 'Success',
           detail: 'Deleted',

@@ -7,6 +7,7 @@ import { FormularioComponentHeroe } from './UI/formularios/formularioHeroes/form
 import { VillainsComponent } from './UI/listas/villains/villains.component';
 import { FormularioComponentVillain } from './UI/formularios/formularioVillains/formulario.component';
 import { VillainDetailComponent } from './UI/detail/villain-detail/villain-detail.component';
+import { ChangeFechoriaComponent } from './UI/change-fechoria/change-fechoria.component';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'detail/villain/:id', component: VillainDetailComponent },
   { path: 'newHeroes', component: FormularioComponentHeroe },
   { path: 'newVillains', component: FormularioComponentVillain },
+  { path: 'changeFechoria', component: ChangeFechoriaComponent },
 ];
 
 @NgModule({

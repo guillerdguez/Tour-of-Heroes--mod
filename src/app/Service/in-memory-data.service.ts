@@ -4,6 +4,7 @@ import { Hero } from '../Model/Domain/hero';
 import { Villain } from '../Model/Domain/villano';
 import { PowerModel } from '../Model/Views/Dynamic/powerModel';
 import { FechoriaModel } from '../Model/Views/Dynamic/fechoriaModel';
+import { Fechoria } from '../Model/Domain/fechoria';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,39 +13,10 @@ export class InMemoryDataService implements InMemoryDbService {
     public powerModel: PowerModel,
     public fechoriaModel: FechoriaModel
   ) {}
-  // createPowers() {
-  //   return [
-  //     'Really Smart',
-  //     'Super Flexible',
-  //     'Super Hot',
-  //     'Weather Changer',
-  //     'Invisibility',
-  //     'Flight',
-  //     'Super Strength',
-  //     'Telepathy',
-  //     'Time Manipulation',
-  //     'Mind Control',
-  //   ];
-  // }
-
-  // createFechorias() {
-  //   return [
-  //     'Robó el banco nacional',
-  //     'Secuestró al alcalde',
-  //     'Destruyó el monumento histórico',
-  //     'Hackeó los sistemas del gobierno',
-  //     'Causó un apagón masivo',
-  //     'Envenenó el suministro de agua',
-  //     'Incendió la biblioteca pública',
-  //     'Rompió la barrera del tiempo',
-  //     'Controla la mente del presidente',
-  //     'Desató una tormenta eterna',
-  //   ];
-  // }
 
   createDb() {
     const powers = this.powerModel.powers;
-    const fechorias = this.fechoriaModel.fechorias;
+    const fechorias: Fechoria[] = this.fechoriaModel.fechorias;
 
     const heroes: Hero[] = [
       {
@@ -137,7 +109,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Graves',
         age: 45,
         power: powers[4],
-        fechoria: fechorias[0],
+        fechoria: fechorias[0].name,
         alterEgo: 'Marcus',
       },
       {
@@ -146,7 +118,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Quinn',
         age: 38,
         power: powers[9],
-        fechoria: fechorias[1],
+        fechoria: fechorias[1].name,
         alterEgo: 'Sophia',
       },
       {
@@ -155,7 +127,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Storm',
         age: 42,
         power: powers[3],
-        fechoria: fechorias[9],
+        fechoria: fechorias[9].name,
         alterEgo: 'Edward',
       },
       {
@@ -164,7 +136,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Black',
         age: 30,
         power: powers[4],
-        fechoria: fechorias[2],
+        fechoria: fechorias[2].name,
         alterEgo: 'Lara',
       },
       {
@@ -173,7 +145,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Evans',
         age: 55,
         power: powers[8],
-        fechoria: fechorias[7],
+        fechoria: fechorias[7].name,
         alterEgo: 'Walter',
       },
       {
@@ -182,7 +154,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: undefined,
         age: 29,
         power: powers[2],
-        fechoria: fechorias[5],
+        fechoria: fechorias[5].name,
         alterEgo: 'Carlos',
       },
       {
@@ -191,7 +163,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: undefined,
         age: 40,
         power: powers[6],
-        fechoria: fechorias[6],
+        fechoria: fechorias[6].name,
         alterEgo: 'Olaf',
       },
       {
@@ -200,7 +172,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Carter',
         age: 32,
         power: powers[5],
-        fechoria: fechorias[4],
+        fechoria: fechorias[4].name,
         alterEgo: 'Natasha',
       },
       {
@@ -209,7 +181,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: 'Phantom',
         age: 28,
         power: powers[4],
-        fechoria: fechorias[3],
+        fechoria: fechorias[3].name,
         alterEgo: 'Victor',
       },
       {
@@ -218,7 +190,7 @@ export class InMemoryDataService implements InMemoryDbService {
         lastName: undefined,
         age: 37,
         power: powers[9],
-        fechoria: fechorias[8],
+        fechoria: fechorias[8].name,
         alterEgo: 'Samuel',
       },
     ];

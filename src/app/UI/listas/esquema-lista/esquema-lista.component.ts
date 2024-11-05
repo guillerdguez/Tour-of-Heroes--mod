@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+ 
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
 
@@ -39,23 +39,23 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
 
   @ViewChild('menu') menu!: ContextMenu;
 
-  //falta hero alterego
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['params'] && changes['params'].currentValue) {
-      this.ParamsTemporal();
-      this.initializeHeaders();
-      this.rellenador();
-      this.selectedTable = [];
-      this.TableSelected.emit(this.selectedTable);
-    }
-  }
-
   ngOnInit() {
     this.ParamsTemporal();
     this.initializeHeaders();
     this.rellenador();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['params'] && changes['params'].currentValue) {
+      this.ParamsTemporal();
+      this.initializeHeaders();
+      this.rellenador();
+      this.selectedTable = [];
+      // this.TableSelected.emit(this.selectedTable);
+    }
+  }
+
+  
   ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();

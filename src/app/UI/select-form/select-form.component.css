@@ -1,3 +1,24 @@
 form {
-    margin: 20px;
-  }
+  margin: 20px;
+}
+.speed-dial-form {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 100px;
+
+  border-radius: 8px;
+}
+button {
+  font-size: larger;
+  font-weight: bold;
+}
+p-speedDial {
+  width: 80px;
+  height: 80px;
+}
+.custom-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,5 +1,31 @@
 <form [formGroup]="formGroup">
-  <p-splitButton label="Select a option" [model]="options" 
-  [disabled]="isTableEmpty"/>
+  <p-splitButton 
+    label="+ Create" 
+    [model]="options" 
+    (onClick)="onSelectDefaultOption()" 
+    [disabled]="isTableEmpty">
+  </p-splitButton>
 </form>
+
  
+<!-- 
+<form [formGroup]="formGroup" class="speed-dial-form">
+  <p-speedDial
+    [model]="options"
+    direction="up"
+    [radius]="80"
+    type="semi-circle"
+    [disabled]="isTableEmpty"
+  />
+</form>
+<form [formGroup]="formGroup" style="  padding: 20px;   border-radius: 5px;  ">
+  <p-menu label="Select a option" #menu [model]="options" [popup]="true"></p-menu>
+  <p-button  
+    class="pmenu"
+    label="Select a option"
+    (onClick)="menu.toggle($event)"
+    icon="pi pi-ellipsis-v"
+    [disabled]="isTableEmpty"
+    [ngStyle]="{ marginTop: '10px', border: '0px', borderRadius: '5px',   cursor: 'pointer', }"
+  ></p-button>
+</form> -->
