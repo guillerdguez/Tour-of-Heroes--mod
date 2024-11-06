@@ -39,8 +39,7 @@ selectedFechoria: any;
     this.location.back();
   }
   save(): void {
-    if (this.villainModel.villain) {     
-      console.log(this.selectedPower)
+    if (this.villainModel.villain) {      
       this.villainService.updateVillain(this.villainModel.villain);
       this.goBack();
     }

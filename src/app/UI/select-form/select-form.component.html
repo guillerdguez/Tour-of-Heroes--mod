@@ -1,8 +1,8 @@
 <form [formGroup]="formGroup">
   <p-splitButton 
     label="+ Create" 
-    [model]="options" 
-    (onClick)="onSelectDefaultOption()" 
+    [model]="itemsCopy" 
+    (onClick)="onSelectDefaultItem()" 
     [disabled]="isTableEmpty">
   </p-splitButton>
 </form>
@@ -11,7 +11,7 @@
 <!-- 
 <form [formGroup]="formGroup" class="speed-dial-form">
   <p-speedDial
-    [model]="options"
+    [model]="items"
     direction="up"
     [radius]="80"
     type="semi-circle"
@@ -19,7 +19,7 @@
   />
 </form>
 <form [formGroup]="formGroup" style="  padding: 20px;   border-radius: 5px;  ">
-  <p-menu label="Select a option" #menu [model]="options" [popup]="true"></p-menu>
+  <p-menu label="Select a option" #menu [model]="items" [popup]="true"></p-menu>
   <p-button  
     class="pmenu"
     label="Select a option"

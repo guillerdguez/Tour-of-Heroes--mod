@@ -1,14 +1,14 @@
 import {
   Component,
   OnInit,
-  OnChanges,
   Input,
-  EventEmitter,
   Output,
-  viewChildren,
+  EventEmitter,
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MenuItem } from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Dropdown } from 'primeng/dropdown';
 
 @Component({
@@ -18,20 +18,20 @@ import { Dropdown } from 'primeng/dropdown';
 })
 export class SelectFormComponent implements OnInit {
   formGroup: FormGroup;
-  @Input() options: any[] = [];
-
+  @Input() items: MenuItem[] = [];
+  itemsCopy: MenuItem[] = [];
   @Input() isTableEmpty = true;
-  @Output() OptionSelect = new EventEmitter<string>();
-  selectedOption: any;
+  @Output() ItemSelect = new EventEmitter<any[]>();
+  selectedItem: any;
   usarSelect = true;
-  selectedOptions: any;
+  selectedItems: any;
 
-  firstOption: any[] = [];
+  firstItem: any[] = [];
 
-  @ViewChild('drop') dropdown: Dropdown | undefined;
+  @ViewChild('drop') dropdown!: ContextMenu  ;
   constructor() {
     this.formGroup = new FormGroup({
-      selectedOption: new FormControl({
+      selectedItem: new FormControl({
         disabled: this.isTableEmpty,
         value: '2',
       }),
@@ -39,19 +39,18 @@ export class SelectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.itemsCopy = [...this.items];
+    this.firstItem = [this.itemsCopy[0]];
+    this.itemsCopy.shift();
+  }
 
-      this.firstOption = [this.options[0]];  
-      this.options.shift();
+  resetItem() {
+    this.ItemSelect.emit(this.selectedItems);
+
+    this.selectedItems = null;
+  }
+  onSelectDefaultItem() {
+    this.ItemSelect.emit(this.firstItem[0]);
+  }
   
-  }
-
-  resetOption() {
-    this.OptionSelect.emit(this.selectedOptions.label);
-
-    this.selectedOptions = null;
-  }
-  onSelectDefaultOption() {  
-    this.OptionSelect.emit(this.firstOption[0].label);
- 
-  }
 }

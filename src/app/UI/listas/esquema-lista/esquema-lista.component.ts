@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
- 
+
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
 
@@ -23,18 +23,17 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
   headers: any[] = [];
 
   selectedItem: any[] = [];
-  selectedOption: any;
+
   selectedTable: any[] = [];
   paramsTemporalPrueba!: any[];
 
-  @Input() options: MenuItem[] = [];
+  @Input() items: MenuItem[] = [];
   @Input() params: any[] = [];
   @Input() title: string = '';
-  @Input() items: MenuItem[] = [];
   @Input() toggleFavorite!: (item: any) => void;
 
   @Output() itemSelected = new EventEmitter<any[]>();
-  @Output() OptionSelect = new EventEmitter<any>();
+  @Output() ItemSelect = new EventEmitter<any>();
   @Output() TableSelected = new EventEmitter<any[]>();
 
   @ViewChild('menu') menu!: ContextMenu;
@@ -51,16 +50,13 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
       this.initializeHeaders();
       this.rellenador();
       this.selectedTable = [];
-      // this.TableSelected.emit(this.selectedTable);
     }
   }
 
-  
   ngDoCheck() {
     if (this.params !== this.paramsTemporal) {
       this.ParamsTemporal();
-      this.rellenador();  
- 
+      this.rellenador();
     }
   }
 
@@ -68,7 +64,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     if (
       (event.button !== 2 && event.button !== 1) ||
       this.selectedTable.length !== 0
-    ) { 
+    ) {
       if (!this.selectedTable.includes(item)) {
         this.selectedTable.push(item);
       } else {
@@ -107,6 +103,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
     if (this.selectedTable.length > 0) {
       this.itemSelected.emit(this.selectedTable);
     } else {
+ 
       this.selectedItem.push(item);
       this.itemSelected.emit(this.selectedItem);
       this.selectedItem = [];
