@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Hero } from '../Model/Domain/hero';
-import { Villain } from '../Model/Domain/villano';
+import { Villain } from '../Model/Domain/villain';
 import { PowerModel } from '../Model/Views/Dynamic/powerModel';
 import { FechoriaModel } from '../Model/Views/Dynamic/fechoriaModel';
 import { Fechoria } from '../Model/Domain/fechoria';
@@ -18,7 +18,7 @@ export class InMemoryDataService implements InMemoryDbService {
     const powers = this.powerModel.powers;
     const fechorias: Fechoria[] = this.fechoriaModel.fechorias;
 
-    const heroes: Hero[] = [
+    const heroes: any[] = [
       {
         id: 12,
         name: 'Dr. Nice',
@@ -102,7 +102,7 @@ export class InMemoryDataService implements InMemoryDbService {
       },
     ];
 
-    const villains: Villain[] = [
+    const villains: any[] = [
       {
         id: 21,
         name: 'DoomMaster',

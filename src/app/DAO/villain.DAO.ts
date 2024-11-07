@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Villain } from '../Model/Domain/villano';
+import { Villain } from '../Model/Domain/villain';
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 

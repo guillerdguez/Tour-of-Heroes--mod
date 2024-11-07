@@ -12,31 +12,29 @@ import {
 
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
+import { PersonaConPoderes } from '../../../Model/Domain/personaConPoderes';
 
 @Component({
   selector: 'app-esquema-lista',
   templateUrl: './esquema-lista.component.html',
   styleUrls: ['./esquema-lista.component.css'],
 })
-export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
+export class EsquemaListaComponent implements OnInit, OnChanges {
   paramsTemporal: any[] = [];
   headers: any[] = [];
 
-  selectedItem: any[] = [];
-
   selectedTable: any[] = [];
-  paramsTemporalPrueba!: any[];
-
-  @Input() items: MenuItem[] = [];
-  @Input() params: any[] = [];
+  elegidosTemporal: PersonaConPoderes[] = [];
+  items: MenuItem[] = [];
+  @Input() params: PersonaConPoderes[] = [];
   @Input() title: string = '';
   @Input() toggleFavorite!: (item: any) => void;
 
-  @Output() itemSelected = new EventEmitter<any[]>();
-  @Output() ItemSelect = new EventEmitter<any>();
+  // @Output() ItemSelect = new EventEmitter<any>();
   @Output() TableSelected = new EventEmitter<any[]>();
 
   @ViewChild('menu') menu!: ContextMenu;
+  click!: MouseEvent;
 
   ngOnInit() {
     this.ParamsTemporal();
@@ -45,7 +43,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['params'] && changes['params'].currentValue) {
+    if (changes['params']?.currentValue) {
       this.ParamsTemporal();
       this.initializeHeaders();
       this.rellenador();
@@ -83,11 +81,7 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
 
   initializeHeaders() {
     if (this.headers.length === 0 && this.paramsTemporal.length) {
-      const keys = Object.keys(this.paramsTemporal[0]);
-      this.headers = keys.map((key) => ({
-        field: key,
-        header: key.charAt(0).toUpperCase() + key.slice(1),
-      }));
+      this.headers = this.paramsTemporal[0].getHeaders();
     }
   }
 
@@ -96,17 +90,50 @@ export class EsquemaListaComponent implements OnInit, DoCheck, OnChanges {
       this.paramsTemporal.push([]);
     }
   }
+  // onContextMenu(event: MouseEvent, item: any) {
+  //   this.items = item.menuItem();
+  //   event.preventDefault();
+  //   this.menu.show(event);
+
+  //   if (this.selectedTable.length > 0) {
+
+  //     this.itemSelected.emit(this.selectedTable);
+  //   } else {
+  //     this.selectedTable.push(item);
+  //     this.itemSelected.emit(this.selectedTable);
+  //     this.selectedTable = [];
+  //   }
+  // }
+
+  //   selecciono una persona
+  // lo meto en un array que tenga definido en la clase
+  // cuando se ejecute una acción en el context menú:
+  // 3.1 consigo las acciones a realizar
+  // 3.2 paso por todos las personas de mi array
+  // 3.3 a cada una le digo que ajecute la acción seleccionada
+  //   en las acciones del context menú (la parte que se ejecuta, osea el command) se ejecuta sobre cada persona, no?
+
+  // pues tendrás que mirar una forma de hacer que puedas con esa lista decirles que ejecuten la acción seleccionada
+
+  // por ejemplo, cuando hagas click sobre una acción, que todos los que estén en la lista sepan que cuando les digas
+  // que ejecuten la acción, sepan cada uno cual tiene que hacer y que la hagan
+
+  // al igual que cada uno tiene su propio menuItems pues también pueden tener un campo que sea la acción a realizar
+
+  // por ejemplo vaya, asi sin acordarme mucho como está montado
+
   onContextMenu(event: MouseEvent, item: any) {
+    this.items = item.menuItem();
+    console.log(this.items[0]);
     event.preventDefault();
     this.menu.show(event);
 
     if (this.selectedTable.length > 0) {
-      this.itemSelected.emit(this.selectedTable);
+      this.TableSelected.emit(this.selectedTable);
     } else {
- 
-      this.selectedItem.push(item);
-      this.itemSelected.emit(this.selectedItem);
-      this.selectedItem = [];
+      this.selectedTable.push(item);
+      this.TableSelected.emit(this.selectedTable);
+      this.selectedTable = [];
     }
   }
 }

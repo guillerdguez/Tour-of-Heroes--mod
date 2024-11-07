@@ -1,6 +1,4 @@
 <div class="table-container">
-
-
   <div class="data-container">
     <p-table
       class="data-table"
@@ -12,7 +10,7 @@
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template pTemplate="header" let-columns>
-        <tr class="table-header-row" style="width: 200px; height: 70px;">
+        <tr class="table-header-row" style="width: 200px; height: 70px">
           <th
             *ngFor="let column of columns"
             class="table-header"
@@ -26,28 +24,26 @@
       <ng-template pTemplate="body" let-item let-columns="columns">
         <tr
           class="table-body-row"
-          [class.selected]="selectedTable.includes(item)"  
-          (click)="onselectedTable($event, item)" 
-          style="width: 200px; height: 70px;"
+          [class.selected]="selectedTable.includes(item)"
+          (click)="onselectedTable($event, item)"
+          style="width: 200px; height: 70px"
         >
           <td
             *ngFor="let header of columns"
             class="table-data"
             (contextmenu)="onContextMenu($event, item)"
-            style="width: 200px; height: 70px;"
+            style="width: 200px; height: 70px"
           >
-            <ng-container *ngIf="header.field === 'favourite' && item.favourite !== null && item.favourite !== undefined; else regularCell">
-              <i 
-                (click)="toggleFavorite(item); $event.stopPropagation()"  
-                [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
-                tabindex="-1"
-              ></i>
-            </ng-container>
-
+          <!-- opcional que clickes -->
+          <ng-container *ngIf="header.field === 'favourite' && item.favourite !== null && item.favourite !== undefined; else regularCell">
+            <i 
+              (click)="toggleFavorite(item); $event.stopPropagation()"  
+              [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
+              tabindex="-1"
+            ></i>
+          </ng-container>
             <ng-template #regularCell>
-              <span>{{
-                item[header.field] ?? "&nbsp;"
-              }}</span>
+              <span>{{ item[header.field] ?? "&nbsp;" }}</span>
             </ng-template>
           </td>
         </tr>
@@ -59,8 +55,6 @@
       [baseZIndex]="1000"
       [appendTo]="'body'"
       #menu
-      
-      
     ></p-contextMenu>
   </div>
 </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { villainDAO } from '../../../DAO/villain.DAO';
 import { Fechoria } from '../../../Model/Domain/fechoria';
-import { Villain } from '../../../Model/Domain/villano';
+import { Villain } from '../../../Model/Domain/villain';
 import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
 import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
@@ -53,17 +53,18 @@ export class FormularioComponentVillain implements OnInit {
       const lastVillain = villains[villains.length - 1];
       const newId = lastVillain ? lastVillain.id + 1 : 1;
 
-      const newVillain: Villain = {
-        id: newId,
-        name,
-        age,
-        power,
-        fechoria,
-        alterEgo,
-        lastName,
-      };
+      // mirar
+      // const newVillain: Villain = {
+      //   id: newId,
+      //   name,
+      //   age,
+      //   power,
+      //   fechoria,
+      //   alterEgo,
+      //   lastName,
+      // };
 
-      this.villainService.addVillain(newVillain);
+      // this.villainService.addVillain(newVillain);
 
       this.goBack();
     });

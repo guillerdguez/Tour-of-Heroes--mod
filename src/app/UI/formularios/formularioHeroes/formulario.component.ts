@@ -50,17 +50,18 @@ export class FormularioComponentHeroe implements OnInit {
     this.HeroDao.getHeroes().subscribe((heroes) => {
       const lastHero = heroes[heroes.length - 1];
       const newId = lastHero ? lastHero.id + 1 : 1;
-      const newHero: Hero = {
-        id: newId,
-        name,
-        age,
-        power,
-        favourite,
-        lastName,
-        alterEgo,
-      };
+      // mirar
+      // const newHero: Hero = {
+      //   id: newId,
+      //   name,
+      //   age,
+      //   power,
+      //   favourite,
+      //   lastName,
+      //   alterEgo,
+      // };
 
-      this.heroService.addHero(newHero);
+      // this.heroService.addHero(newHero);
       this.goBack();
     });
   }

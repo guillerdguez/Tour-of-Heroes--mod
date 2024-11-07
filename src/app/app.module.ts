@@ -8,8 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InMemoryDataService } from './Service/in-memory-data.service';
 import { ReactiveFormsModule } from '@angular/forms';
-// UI Components
-import { HeroesComponent } from './UI/listas/heroe/heroes.component';
+// UI Components 
 import { HeroDetailComponent } from './UI/detail/hero-detail/hero-detail.component';
 import { MessagesComponent } from './UI/messages/messages.component';
 import { DashboardComponent } from './UI/dashboard/dashboard.component';
@@ -19,7 +18,6 @@ import { SidebarComponent } from './UI/sidebar/sidebar.component';
 import { FormularioComponentHeroe } from './UI/formularios/formularioHeroes/formulario.component';
 import { FormularioComponentVillain } from './UI/formularios/formularioVillains/formulario.component';
 import { EsquemaListaComponent } from './UI/listas/esquema-lista/esquema-lista.component';
-import { VillainsComponent } from './UI/listas/villains/villains.component';
 import { VillainDetailComponent } from './UI/detail/villain-detail/villain-detail.component';
 // PrimeNG Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -41,20 +39,21 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectFormComponent } from './UI/select-form/select-form.component';
 import { MessageService } from 'primeng/api';
 import { ChangeFechoriaComponent } from './UI/change-fechoria/change-fechoria.component';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CardModule } from 'primeng/card';
 import { FechoriaDialogComponent } from './UI/fechoria-dialog/fechoria-dialog.component';
 import { DialogModule } from 'primeng/dialog';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
+import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pasar-informacion-tabla.component';
 @NgModule({
   declarations: [
     VillainDetailComponent,
     FormularioComponentHeroe,
     FormularioComponentVillain,
     AppComponent,
-    HeroesComponent,
+ 
     HeroDetailComponent,
     MessagesComponent,
     DashboardComponent,
@@ -63,10 +62,10 @@ import { SkeletonModule } from 'primeng/skeleton';
     SidebarComponent,
 
     EsquemaListaComponent,
-    VillainsComponent,
     SelectFormComponent,
     ChangeFechoriaComponent,
     FechoriaDialogComponent,
+    PasarInformacionTablaComponent,
   ],
   imports: [
     DialogModule,

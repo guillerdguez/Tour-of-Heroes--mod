@@ -4,12 +4,16 @@ import { Hero } from '../Model/Domain/hero';
 import { heroDAO } from '../DAO/hero.DAO';
 import { HeroModel } from '../Model/Views/Dynamic/HeroModel';
 import { MessageService } from 'primeng/api';
+import { Route, Router } from '@angular/router';
+import { PersonaModel } from '../Model/Views/Dynamic/PersonaModel';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
   constructor(
     private heroDAO: heroDAO,
     private heroModel: HeroModel,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private personaModel: PersonaModel
   ) {}
 
   /////////// CREATE methods ///////////
@@ -50,17 +54,33 @@ export class HeroService {
       },
     });
   }
+  createHero(heroData: Hero): Hero {
+    return new Hero(
+      this,
+      this.heroModel,
+      this.router,
+      this.messageService
+    ).setDetails(heroData);
+  }
   private heroes: Hero[] = [];
 
   getHeroesArray(): Hero[] {
+    this.personaModel.personas = [];
+
     this.heroDAO.getHeroes().subscribe({
-      next: (heroes: Hero[]) => {
-        this.heroModel.heroes = heroes;
+      next: (heroes: any[]) => {
+        let aux: Hero[] = [];
+
+        heroes.forEach((hero) => aux.push(this.createHero(hero)));
+
+        this.heroModel.heroes = aux;
+        this.personaModel.personas = aux;
       },
       error: (error) => {
         console.error(error);
       },
     });
+
     return this.heroes;
   }
 
@@ -103,9 +123,10 @@ export class HeroService {
   /////////// UPDATE methods ///////////
 
   /** PUT: update the hero on the server */
-  updateHero(hero: Hero): void {
+  updateHero(hero: any): void {
+ 
     this.heroDAO.updateHero(hero).subscribe({
-      next: (hero: Hero) => {
+      next: (hero: any) => {
         this.heroModel.hero = hero;
         this.messageService.add({
           severity: 'success',
@@ -126,6 +147,10 @@ export class HeroService {
     this.heroDAO.deleteHero(id).subscribe({
       next: (hero: Hero) => {
         this.heroModel.hero = hero;
+        this.personaModel.personas = this.personaModel.personas.filter(
+          (persona) => persona.id !== id
+        );
+
         this.messageService.add({
           severity: 'success',
           summary: 'Success',

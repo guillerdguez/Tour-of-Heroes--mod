@@ -1,17 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Villain } from '../Model/Domain/villano';
+import { Villain } from '../Model/Domain/villain';
 import { villainDAO } from '../DAO/villain.DAO';
 import { VillainModel } from '../Model/Views/Dynamic/VillainModel';
 import { MessageService } from 'primeng/api';
+import { PersonaModel } from '../Model/Views/Dynamic/PersonaModel';
+import { DialogService } from 'primeng/dynamicdialog';
+import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class VillainService {
   constructor(
     private villainDAO: villainDAO,
     private villainModel: VillainModel,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private personaModel: PersonaModel,
+    private router: Router
   ) {}
 
+  createVillain(villainData: any): Villain {
+    return new Villain(
+      this,
+      this.villainModel,
+      this.router,
+      this.messageService
+    ).setDetails(villainData);
+  }
   /////////// CREATE methods ///////////
 
   /** POST: add a new villain to the server */
@@ -53,9 +66,15 @@ export class VillainService {
   private villains: Villain[] = [];
 
   getVillainsArray(): Villain[] {
+    this.personaModel.personas = [];
     this.villainDAO.getVillains().subscribe({
-      next: (villains: Villain[]) => {
-        this.villainModel.villains = villains;
+      next: (villains: any[]) => {
+        let aux: Villain[] = [];
+
+        villains.forEach((villain) => aux.push(this.createVillain(villain)));
+
+        this.villainModel.villains = aux;
+        this.personaModel.personas = aux;
       },
       error: (error) => {
         console.error(error);
@@ -128,8 +147,12 @@ export class VillainService {
 
   /** DELETE: delete the villain from the server */
   deleteVillain(id: number): void {
+ 
     this.villainDAO.deleteVillain(id).subscribe({
-      next: (villain: Villain) => {
+      next: (villain: Villain) => { 
+        this.personaModel.personas = this.personaModel.personas.filter(
+          (persona) => persona.id !== id
+        );
         this.villainModel.villain = villain;
         this.messageService.add({
           severity: 'success',
