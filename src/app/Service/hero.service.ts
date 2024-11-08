@@ -19,7 +19,7 @@ export class HeroService {
   /////////// CREATE methods ///////////
 
   /** POST: add a new hero to the server */
-  addHero(hero: Hero): void {
+  addHero(hero: any): void {
     this.heroModel.heroes.push(hero);
 
     this.heroDAO.addHero(hero).subscribe({
@@ -59,7 +59,8 @@ export class HeroService {
       this,
       this.heroModel,
       this.router,
-      this.messageService
+      this.messageService,
+      this.personaModel
     ).setDetails(heroData);
   }
   private heroes: Hero[] = [];
@@ -124,15 +125,17 @@ export class HeroService {
 
   /** PUT: update the hero on the server */
   updateHero(hero: any): void {
- 
     this.heroDAO.updateHero(hero).subscribe({
-      next: (hero: any) => {
+      next: (hero: Hero) => {
         this.heroModel.hero = hero;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Data Saved',
-        });
+        // this.personaModel.personas = this.personaModel.personas.filter(
+        //   (persona) => (persona as Hero).favourite === hero.favourite
+        // );
+        // this.messageService.add({
+        //   severity: 'success',
+        //   summary: 'Success',
+        //   detail: 'Data Saved',
+        // });
       },
       error: (error) => {
         console.error(error);

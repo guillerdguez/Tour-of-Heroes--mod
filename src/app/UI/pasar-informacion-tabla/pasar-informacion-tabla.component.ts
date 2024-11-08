@@ -16,7 +16,7 @@ import { VillainService } from '../../Service/villain.service';
       <app-select-form
         (selectedTable)="onTableSelected($event)"
         [isTableEmpty]="selectedTable.length == 0"
-        (items)="(personaModel.persona)"
+        [items]="personaModel.personas[0].menuItemOptions()"
       ></app-select-form>
       <app-esquema-lista
         [title]="title"

@@ -6,26 +6,28 @@ import { FechoriaDialogComponent } from '../../UI/fechoria-dialog/fechoria-dialo
 import { VillainModel } from '../Views/Dynamic/VillainModel';
 import { PersonaConPoderes } from './personaConPoderes';
 import { Injectable } from '@angular/core';
+import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 
 @Injectable({ providedIn: 'root' })
 export class Villain extends PersonaConPoderes {
   fechoria!: string;
   title: string = 'Villains';
   ref!: DynamicDialogRef;
-
+  url: string = '/newVillains';
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
     public override router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public override personaModel: PersonaModel // public dialogService: DialogService
   ) {
-    super(router);
+    super(router, personaModel);
   }
 
-  setDialogService(dialogService: DialogService) {
-    // this.dialogService = dialogService;
-    return this;
-  }
+  // setDialogService(dialogService: DialogService) {
+  //   this.dialogService = dialogService;
+  //   return this;
+  // }
 
   override setDetails(villainData: any): any {
     super.setDetails(villainData);
@@ -34,21 +36,38 @@ export class Villain extends PersonaConPoderes {
   }
 
   override menuItem() {
-    let items: any[] = super.menuItem('/newVillains');
+    let items: any[] = super.menuItem(this.url);
     items.push({
       label: 'Cambiar Fechoria',
       icon: 'pi pi-thumbs-down-fill',
-      command: () => this.showDialog(),
+      command: () => alert('llega'),
+      // this.showDialog()
     });
     return items;
   }
 
+  override menuItemOptions() {
+    let items: any[] = super.menuItemOptions();
+    let cambiarFechoria = {
+      label: 'Cambiar Fechoria',
+      icon: 'pi pi-thumbs-down-fill',
+      command: () => {
+        this.personaModel.menuItemSeleccionado = 'Cambiar Fechoria';
+        this.personaModel.ejecutarMenuItem();
+      },
+    };
+    items.push(cambiarFechoria);
+
+    return items;
+  }
   ngOnDestroy() {
     if (this.ref) {
       this.ref.close();
     }
   }
-
+  getUrl() {
+    return this.url;
+  }
   override getHeaders() {
     return [
       { field: 'id', header: 'Id' },
@@ -62,25 +81,25 @@ export class Villain extends PersonaConPoderes {
   }
   //fechorias
 
-  showDialog() {
-    // this.ref = this.dialogService.open(FechoriaDialogComponent, {});
-    this.ref.onClose.subscribe((fechoria: string) => {
-      if (fechoria) {
-        this.changeFechoria(fechoria);
-      }
-    });
-  }
+  // showDialog() {
+  //   this.ref = this.dialogService.open(FechoriaDialogComponent, {});
+  //   this.ref.onClose.subscribe((fechoria: string) => {
+  //     if (fechoria) {
+  //       this.changeFechoria(fechoria);
+  //     }
+  //   });
+  // }
   changeFechoria(fechoria: string): void {
     this.fechoria = fechoria;
     this.villainService.updateVillain(this);
   }
 
   override goToDetail() {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'It can only be edited if there is a single hero selected',
-    });
+    // this.messageService.add({
+    //   severity: 'error',
+    //   summary: 'Error',
+    //   detail: 'It can only be edited if there is a single hero selected',
+    // });
     this.router.navigate(['/detail/villain/', this.id]);
   }
 

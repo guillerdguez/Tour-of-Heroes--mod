@@ -5,4 +5,28 @@ import { PersonaConPoderes } from '../../Domain/personaConPoderes';
 export class PersonaModel {
   personas: PersonaConPoderes[] = [];
   persona: PersonaConPoderes | undefined;
+  personaSeleccionadas: PersonaConPoderes[] = [];
+  menuItemSeleccionado!: any;
+
+  // this.messageService.add({
+  //   severity: 'error',
+  //   summary: 'Error',
+  //   detail: 'It can only be edited if there is a single hero selected',
+  // });
+
+  ejecutarMenuItem() {
+    console.log(this.menuItemSeleccionado);
+
+    this.personaSeleccionadas.forEach((persona) => {
+      if (this.menuItemSeleccionado) {
+        console.log(this.menuItemSeleccionado);
+        let opciones = persona.menuItem(persona.getUrl());
+        let opcion = opciones.find(
+          (opcion) => opcion.label == this.menuItemSeleccionado
+        );
+        opcion?.command();
+      }
+    });
+    this.personaSeleccionadas = [];
+  }
 }

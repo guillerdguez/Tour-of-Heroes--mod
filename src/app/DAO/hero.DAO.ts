@@ -15,6 +15,7 @@ export class heroDAO {
   /////////// CREATE methods ///////////
 
   addHero(hero: Hero): Observable<Hero> {
+ 
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions);
   }
 

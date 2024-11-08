@@ -1,34 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { heroDAO } from '../../../DAO/hero.DAO';
 import { HeroModel } from '../../../Model/Views/Dynamic/HeroModel';
 import { HeroService } from '../../../Service/hero.service';
-import { Hero } from '../../../Model/Domain/hero';
-import { InMemoryDataService } from '../../../Service/in-memory-data.service';
 import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { HeroDetails } from '../../../Model/Domain/hero-details';
 
 @Component({
   selector: 'app-formulario',
   templateUrl: './formulario.component.html',
-  styleUrl: './formulario.component.css',
+  styleUrls: ['./formulario.component.css'],
 })
 export class FormularioComponentHeroe implements OnInit {
-  model: any;
-  heroName: any;
-  heroForm: any;
+  heroName: string = '';
+  heroAge: number = 0;
+  heroPower: string = '';
+  heroFavourite: boolean = false;
+  heroAlterEgo?: string = '';
+  heroLastName?: string = '';
+
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
-    private HeroDao: heroDAO,
+    private heroDao: heroDAO, // Si deseas usar el HeroDao
     public powerModel: PowerModel,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Cargar los poderes si es necesario
     this.powerModel.powers;
   }
+
   add(
     name: string,
     age: number,
@@ -41,31 +44,37 @@ export class FormularioComponentHeroe implements OnInit {
     alterEgo = alterEgo?.trim() === '' ? undefined : alterEgo?.trim();
     lastName = lastName?.trim() === '' ? undefined : lastName?.trim();
     power = power.trim();
-    age;
 
+    // Validación de los campos obligatorios
     if (!name || !age || !power) {
-      return;
+      return; // No permitir la adición si faltan campos esenciales
     }
-    //añadir favourite
-    this.HeroDao.getHeroes().subscribe((heroes) => {
+
+    // Crear el nuevo héroe
+    this.heroDao.getHeroes().subscribe((heroes) => {
       const lastHero = heroes[heroes.length - 1];
       const newId = lastHero ? lastHero.id + 1 : 1;
-      // mirar
-      // const newHero: Hero = {
-      //   id: newId,
-      //   name,
-      //   age,
-      //   power,
-      //   favourite,
-      //   lastName,
-      //   alterEgo,
-      // };
 
-      // this.heroService.addHero(newHero);
+      // Crear un objeto HeroDetails con los datos proporcionados
+      const newHero: HeroDetails = {
+        id: newId,
+        name,
+        age,
+        power,
+        favourite,
+        lastName,
+        alterEgo,
+      };
+
+      // Llamada al servicio para agregar el nuevo héroe
+      this.heroService.addHero(newHero);
+
+      // Redirigir a la lista de héroes
       this.goBack();
     });
   }
+
   goBack(): void {
-    this.router.navigate(['/heroes']);
+    this.router.navigate(['/heroes']); // Volver a la lista de héroes
   }
 }

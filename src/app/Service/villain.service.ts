@@ -15,14 +15,17 @@ export class VillainService {
     private messageService: MessageService,
     private personaModel: PersonaModel,
     private router: Router
-  ) {}
+  ) // private dialogService: DialogService
+  {}
 
   createVillain(villainData: any): Villain {
     return new Villain(
       this,
       this.villainModel,
       this.router,
-      this.messageService
+      this.messageService,
+      this.personaModel
+      // this.dialogService
     ).setDetails(villainData);
   }
   /////////// CREATE methods ///////////
@@ -147,9 +150,8 @@ export class VillainService {
 
   /** DELETE: delete the villain from the server */
   deleteVillain(id: number): void {
- 
     this.villainDAO.deleteVillain(id).subscribe({
-      next: (villain: Villain) => { 
+      next: (villain: Villain) => {
         this.personaModel.personas = this.personaModel.personas.filter(
           (persona) => persona.id !== id
         );

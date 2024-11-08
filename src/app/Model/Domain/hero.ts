@@ -4,27 +4,23 @@ import { Router } from '@angular/router';
 import { HeroService } from '../../Service/hero.service';
 import { HeroModel } from '../Views/Dynamic/HeroModel';
 import { HeroDetailComponent } from '../../UI/detail/hero-detail/hero-detail.component';
+import { PersonaModel } from '../Views/Dynamic/PersonaModel';
+import { HeroDetails } from './hero-details';
 
-interface HeroDetails {
-  id: number;
-  name: string;
-  alterEgo?: string;
-  lastName?: string;
-  age: number;
-  power: string;
-  favourite: boolean;
-}
+
 export class Hero extends PersonaConPoderes {
   title: string = 'Heroes';
   favourite!: boolean;
+  url: string = '/newHeroes';
 
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
     public override router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public override personaModel: PersonaModel
   ) {
-    super(router);
+    super(router, personaModel);
   }
 
   override setDetails(heroData: HeroDetails): this {
@@ -46,7 +42,7 @@ export class Hero extends PersonaConPoderes {
   }
 
   override menuItem() {
-    let items: any[] = super.menuItem('/newHeroes');
+    let items: any[] = super.menuItem(this.url);
     items.push({
       label: 'Favourite',
       icon: 'pi pi-star',
@@ -55,14 +51,25 @@ export class Hero extends PersonaConPoderes {
     return items;
   }
 
+  override menuItemOptions() {
+    let items: any[] = super.menuItemOptions();
+    let favorito = {
+      label: 'Favourite',
+      icon: 'pi pi-star',
+      command: () => {
+        this.personaModel.menuItemSeleccionado = 'Favourite';
+        this.personaModel.ejecutarMenuItem();
+      },
+    };
+    items.push(favorito);
+
+    return items;
+  }
   favouriteMethod() {
- 
     this.favourite = !this.favourite;
- 
     const heroData = this.getHeroData();
     this.heroService.updateHero(heroData);
   }
-
 
   delete(): void {
     this.heroModel.heroes = this.heroModel.heroes.filter(
@@ -72,15 +79,12 @@ export class Hero extends PersonaConPoderes {
   }
 
   goToDetail() {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'It can only be edited if there is a single hero selected',
-    });
     this.router.navigate(['/detail/hero/', this.id]);
   }
 
-  // Método para obtener solo los datos necesarios del héroe
+  getUrl() {
+    return this.url;
+  }
   getHeroData(): HeroDetails {
     return {
       id: this.id,
