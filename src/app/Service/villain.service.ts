@@ -14,18 +14,17 @@ export class VillainService {
     private villainModel: VillainModel,
     private messageService: MessageService,
     private personaModel: PersonaModel,
-    private router: Router
-  ) // private dialogService: DialogService
-  {}
+    private router: Router,
+    private dialogService: DialogService
+  ) {}
 
   createVillain(villainData: any): Villain {
     return new Villain(
       this,
       this.villainModel,
       this.router,
-      this.messageService,
-      this.personaModel
-      // this.dialogService
+      this.personaModel,
+      this.dialogService
     ).setDetails(villainData);
   }
   /////////// CREATE methods ///////////
@@ -126,14 +125,15 @@ export class VillainService {
   /////////// UPDATE methods ///////////
 
   /** PUT: update the villain on the server */
-  updateVillain(villain: Villain): void {
+
+  updateVillain(villain: any): void {
     this.villainDAO.updateVillain(villain).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
         this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Data Saved',
+           severity: 'success',
+           summary: 'Success',
+        detail: 'Data Saved',
         });
       },
       error: (error) => {
@@ -163,6 +163,7 @@ export class VillainService {
         });
       },
       error: (error) => {
+ 
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

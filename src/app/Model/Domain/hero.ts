@@ -1,9 +1,8 @@
-import { MenuItem, MessageService } from 'primeng/api';
+ 
 import { PersonaConPoderes } from './personaConPoderes';
 import { Router } from '@angular/router';
 import { HeroService } from '../../Service/hero.service';
-import { HeroModel } from '../Views/Dynamic/HeroModel';
-import { HeroDetailComponent } from '../../UI/detail/hero-detail/hero-detail.component';
+import { HeroModel } from '../Views/Dynamic/HeroModel'; 
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 import { HeroDetails } from './hero-details';
 
@@ -16,8 +15,7 @@ export class Hero extends PersonaConPoderes {
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
-    public override router: Router,
-    private messageService: MessageService,
+    public override router: Router, 
     public override personaModel: PersonaModel
   ) {
     super(router, personaModel);

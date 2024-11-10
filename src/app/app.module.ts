@@ -103,7 +103,7 @@ import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pas
       dataEncapsulation: false,
     }),
   ],
-  providers: [provideAnimationsAsync(), MessageService],
+  providers: [provideAnimationsAsync(), MessageService,DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

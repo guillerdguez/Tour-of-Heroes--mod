@@ -1,5 +1,4 @@
-import { Router } from '@angular/router';
-import { DialogService } from 'primeng/dynamicdialog';
+import { Router } from '@angular/router'; 
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 
 export abstract class PersonaConPoderes {

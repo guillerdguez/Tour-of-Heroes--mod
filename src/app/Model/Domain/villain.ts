@@ -1,5 +1,4 @@
-import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router'; 
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { VillainService } from '../../Service/villain.service';
 import { FechoriaDialogComponent } from '../../UI/fechoria-dialog/fechoria-dialog.component';
@@ -7,6 +6,7 @@ import { VillainModel } from '../Views/Dynamic/VillainModel';
 import { PersonaConPoderes } from './personaConPoderes';
 import { Injectable } from '@angular/core';
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
+import { VillainDetails } from './villain-details';
 
 @Injectable({ providedIn: 'root' })
 export class Villain extends PersonaConPoderes {
@@ -14,20 +14,22 @@ export class Villain extends PersonaConPoderes {
   title: string = 'Villains';
   ref!: DynamicDialogRef;
   url: string = '/newVillains';
+  favourite: boolean = false;
+
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
-    public override router: Router,
-    private messageService: MessageService,
-    public override personaModel: PersonaModel // public dialogService: DialogService
+    public override router: Router, 
+    public override personaModel: PersonaModel,
+    private dialogService: DialogService
   ) {
     super(router, personaModel);
   }
 
-  // setDialogService(dialogService: DialogService) {
-  //   this.dialogService = dialogService;
-  //   return this;
-  // }
+  setDialogService(dialogService: DialogService) {
+    this.dialogService = dialogService;
+    return this;
+  }
 
   override setDetails(villainData: any): any {
     super.setDetails(villainData);
@@ -40,8 +42,7 @@ export class Villain extends PersonaConPoderes {
     items.push({
       label: 'Cambiar Fechoria',
       icon: 'pi pi-thumbs-down-fill',
-      command: () => alert('llega'),
-      // this.showDialog()
+      command: () => this.showDialog(),
     });
     return items;
   }
@@ -60,14 +61,17 @@ export class Villain extends PersonaConPoderes {
 
     return items;
   }
+
   ngOnDestroy() {
     if (this.ref) {
       this.ref.close();
     }
   }
+
   getUrl() {
     return this.url;
   }
+
   override getHeaders() {
     return [
       { field: 'id', header: 'Id' },
@@ -79,8 +83,24 @@ export class Villain extends PersonaConPoderes {
       { field: 'fechoria', header: 'Fechoria' },
     ];
   }
-  //fechorias
 
+  showDialog() {
+    // Attempt to open the dialog
+    this.ref = this.dialogService.open(FechoriaDialogComponent, {});
+  
+    // Check if the dialog reference (`ref`) is created successfully
+    if (this.ref && this.ref.onClose) {
+      // Subscribe to the onClose event only if `onClose` is defined
+      this.ref.onClose.subscribe((fechoria: string) => {
+        if (fechoria) {
+          this.changeFechoria(fechoria);
+        }
+      });
+    } else {
+      console.error("Failed to open dialog or onClose event is not available.");
+    }
+  }
+  
   // showDialog() {
   //   this.ref = this.dialogService.open(FechoriaDialogComponent, {});
   //   this.ref.onClose.subscribe((fechoria: string) => {
@@ -95,15 +115,9 @@ export class Villain extends PersonaConPoderes {
   }
 
   override goToDetail() {
-    // this.messageService.add({
-    //   severity: 'error',
-    //   summary: 'Error',
-    //   detail: 'It can only be edited if there is a single hero selected',
-    // });
     this.router.navigate(['/detail/villain/', this.id]);
   }
 
-  //mirar
   override delete(): void {
     this.villainModel.villains = this.villainModel.villains.filter(
       (h) => h.id !== this.id
@@ -112,7 +126,15 @@ export class Villain extends PersonaConPoderes {
     this.villainService.deleteVillain(this.id);
   }
 
-  // override presentable(): boolean {
-  //   throw new Error('Method not implemented.');
-  // }
+  getVillain(): VillainDetails {
+    return {
+      id: this.id,
+      name: this.name,
+      alterEgo: this.alterEgo,
+      lastName: this.lastName,
+      age: this.age,
+      power: this.power,
+      fechoria: this.fechoria 
+    };
+  }
 }

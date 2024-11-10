@@ -42,7 +42,7 @@ export class SelectFormComponent implements OnInit {
   ngOnInit(): void {
     this.itemsCopy = [...this.items];
     this.firstItem = [this.itemsCopy[0]];
-    console.log(this.firstItem);
+ 
     this.itemsCopy.shift();
   }
 

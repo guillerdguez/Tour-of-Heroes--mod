@@ -14,12 +14,10 @@ export class PersonaModel {
   //   detail: 'It can only be edited if there is a single hero selected',
   // });
 
-  ejecutarMenuItem() {
-    console.log(this.menuItemSeleccionado);
-
+  ejecutarMenuItem() { 
     this.personaSeleccionadas.forEach((persona) => {
-      if (this.menuItemSeleccionado) {
-        console.log(this.menuItemSeleccionado);
+     
+      if (this.menuItemSeleccionado) { 
         let opciones = persona.menuItem(persona.getUrl());
         let opcion = opciones.find(
           (opcion) => opcion.label == this.menuItemSeleccionado
