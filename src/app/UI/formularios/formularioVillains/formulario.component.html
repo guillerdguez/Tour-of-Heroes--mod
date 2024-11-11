@@ -76,13 +76,15 @@
           name="fechoria"
           #fechoria
         >
-         
-          <option *ngFor="let fechoria of fechoriaModel.fechorias" [value]="fechoria.name">
+          <option
+            *ngFor="let fechoria of fechoriaModel.fechorias"
+            [value]="fechoria.name"
+          >
             {{ fechoria.name }}
           </option>
         </select>
       </div>
-      
+
       <div class="buttons">
         <button
           type="button"
@@ -92,13 +94,13 @@
               villainName.value,
               age.valueAsNumber,
               power.value,
-              selectedFechoria,
+              fechoria.value,
               alterEgo.value,
               lastName.value
             )
           "
         >
-          Agregar
+          Submit
         </button>
       </div>
     </div>

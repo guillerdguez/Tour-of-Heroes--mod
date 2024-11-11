@@ -1,4 +1,4 @@
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 
 export abstract class PersonaConPoderes {

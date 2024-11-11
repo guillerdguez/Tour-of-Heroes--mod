@@ -30,6 +30,6 @@ export class PersonaModel {
     this.personasSeleccionadas = [];
 
     this.fechoriaModel.fechoriaGlobal = undefined;
-    console.log(this.personasSeleccionadas);
+ 
   }
 }

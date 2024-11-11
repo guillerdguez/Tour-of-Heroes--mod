@@ -7,6 +7,7 @@ import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
 import { VillainModel } from '../../../Model/Views/Dynamic/VillainModel';
 import { VillainService } from '../../../Service/villain.service';
+import { VillainDetails } from '../../../Model/Domain/villain-details';
 
 @Component({
   selector: 'app-formulario',
@@ -17,7 +18,6 @@ export class FormularioComponentVillain implements OnInit {
   model: any;
   villainName: any;
   villainForm: any;
-  selectedFechoria!: string;
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
@@ -42,6 +42,7 @@ export class FormularioComponentVillain implements OnInit {
     alterEgo = alterEgo?.trim() === '' ? undefined : alterEgo?.trim();
     lastName = lastName?.trim() === '' ? undefined : lastName?.trim();
     power = power.trim();
+    fechoria = fechoria.trim();
 
     age;
 
@@ -53,18 +54,16 @@ export class FormularioComponentVillain implements OnInit {
       const lastVillain = villains[villains.length - 1];
       const newId = lastVillain ? lastVillain.id + 1 : 1;
 
-      // mirar
-      // const newVillain: Villain = {
-      //   id: newId,
-      //   name,
-      //   age,
-      //   power,
-      //   fechoria,
-      //   alterEgo,
-      //   lastName,
-      // };
-
-      // this.villainService.addVillain(newVillain);
+      const newVillain: VillainDetails = {
+        id: newId,
+        name,
+        age,
+        power,
+        fechoria,
+        alterEgo,
+        lastName,
+      }; 
+      this.villainService.addVillain(newVillain);
 
       this.goBack();
     });

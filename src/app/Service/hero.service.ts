@@ -127,9 +127,9 @@ export class HeroService {
     this.heroDAO.updateHero(hero).subscribe({
       next: (hero: Hero) => {
         this.heroModel.hero = hero;
-        // this.personaModel.personas = this.personaModel.personas.filter(
-        //   (persona) => (persona as Hero).favourite === hero.favourite
-        // );
+        this.personaModel.personas = this.personaModel.personas.filter(
+          (persona) => (persona as Hero).favourite === hero.favourite
+        );
         // this.messageService.add({
         //   severity: 'success',
         //   summary: 'Success',

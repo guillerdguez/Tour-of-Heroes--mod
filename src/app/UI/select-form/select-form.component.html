@@ -1,3 +1,10 @@
+@if(personaModel.personas.length==0){
+<form [formGroup]="formGroup">
+  <p-splitButton label="+ Create" (onClick)="onSelectDefaultItem()">
+  </p-splitButton>
+</form>
+
+}@else {
 <form [formGroup]="formGroup">
   <p-splitButton
     label="+ Create"
@@ -7,7 +14,7 @@
   >
   </p-splitButton>
 </form>
-
+}
 <!-- 
 <form [formGroup]="formGroup" class="speed-dial-form">
   <p-speedDial

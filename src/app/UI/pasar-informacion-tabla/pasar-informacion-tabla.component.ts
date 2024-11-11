@@ -15,7 +15,9 @@ import { VillainService } from '../../Service/villain.service';
     <div class="continer">
       <app-select-form
         (selectedTable)="onTableSelected($event)"
-        [isTableEmpty]="selectedTable.length == 0"
+        [isTableEmpty]="
+          selectedTable.length == 0 && personaModel.personas.length != 0
+        "
         [items]="personaModel.personas[0].menuItemOptions()"
       ></app-select-form>
       <app-esquema-lista
@@ -60,3 +62,4 @@ export class PasarInformacionTablaComponent {
     this.selectedTable = [...selectedTables];
   }
 }
+

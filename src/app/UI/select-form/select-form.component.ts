@@ -9,7 +9,6 @@ import {
 import { FormGroup, FormControl } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
-import { Dropdown } from 'primeng/dropdown';
 import { PersonaModel } from '../../Model/Views/Dynamic/PersonaModel';
 
 @Component({
@@ -42,13 +41,19 @@ export class SelectFormComponent implements OnInit {
   ngOnInit(): void {
     this.itemsCopy = [...this.items];
     this.firstItem = [this.itemsCopy[0]];
- 
+
     this.itemsCopy.shift();
   }
-
+  ngOnChanges(): void {
+    if (this.personaModel.personasSeleccionadas.length == 0) {
+      this.isTableEmpty = true;
+    } else {
+      this.isTableEmpty = false;
+    }
+  }
   resetItem() {
     this.ItemSelect.emit(this.selectedItems);
-    this.selectedItems = null;
+    this.selectedItems = [];
   }
   onSelectDefaultItem() {
     this.firstItem[0].command();

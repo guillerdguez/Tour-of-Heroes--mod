@@ -33,7 +33,7 @@ export class VillainService {
   /////////// CREATE methods ///////////
 
   /** POST: add a new villain to the server */
-  addVillain(villain: Villain): void {
+  addVillain(villain: any): void {
     this.villainModel.villains.push(villain);
 
     this.villainDAO.addVillain(villain).subscribe({
@@ -130,11 +130,9 @@ export class VillainService {
   /** PUT: update the villain on the server */
 
   updateVillain(villain: any): void {
- 
     this.villainDAO.updateVillain(villain).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
-   
       },
       error: (error) => {
         this.messageService.add({
