@@ -1,9 +1,5 @@
-export interface VillainDetails {
-  id: number;
-  name: string;
-  alterEgo?: string;
-  lastName?: string;
-  age: number;
-  power: string;
-  fechoria: string; 
+import { personaDetails } from './persona-details';
+
+export interface VillainDetails extends personaDetails {
+  fechoria: string | undefined;
 }

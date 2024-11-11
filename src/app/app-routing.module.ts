@@ -5,19 +5,17 @@ import { HeroDetailComponent } from './UI/detail/hero-detail/hero-detail.compone
 import { FormularioComponentHeroe } from './UI/formularios/formularioHeroes/formulario.component';
 import { FormularioComponentVillain } from './UI/formularios/formularioVillains/formulario.component';
 import { VillainDetailComponent } from './UI/detail/villain-detail/villain-detail.component';
-import { ChangeFechoriaComponent } from './UI/change-fechoria/change-fechoria.component';
 import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pasar-informacion-tabla.component';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'heroes' ,redirectTo: '/tabla/heroes'},
-  { path: 'villains' ,redirectTo: '/tabla/villains'},
+  { path: 'heroes', redirectTo: '/tabla/heroes' },
+  { path: 'villains', redirectTo: '/tabla/villains' },
   { path: 'tabla/:tipoPersona', component: PasarInformacionTablaComponent },
   { path: 'detail/hero/:id', component: HeroDetailComponent },
   { path: 'detail/villain/:id', component: VillainDetailComponent },
   { path: 'newHeroes', component: FormularioComponentHeroe },
   { path: 'newVillains', component: FormularioComponentVillain },
-  { path: 'changeFechoria', component: ChangeFechoriaComponent },
 ];
 
 @NgModule({

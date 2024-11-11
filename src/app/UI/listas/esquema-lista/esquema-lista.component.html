@@ -24,7 +24,7 @@
       <ng-template pTemplate="body" let-item let-columns="columns">
         <tr
           class="table-body-row"
-          [class.selected]="personaModel.personaSeleccionadas.includes(item)"
+          [class.selected]="personaModel.personasSeleccionadas.includes(item)"
           (click)="onselectedTable($event, item)"
           style="width: 200px; height: 70px"
         >

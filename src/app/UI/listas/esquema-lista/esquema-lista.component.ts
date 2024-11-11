@@ -46,7 +46,7 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
       this.ParamsTemporal();
       this.initializeHeaders();
       this.rellenador();
-      this.personaModel.personaSeleccionadas = [];
+      this.personaModel.personasSeleccionadas = [];
     }
   }
 
@@ -60,18 +60,18 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
   onselectedTable(event: MouseEvent, item: any) {
     if (
       (event.button !== 2 && event.button !== 1) ||
-      this.personaModel.personaSeleccionadas.length !== 0
+      this.personaModel.personasSeleccionadas.length !== 0
     ) {
-      if (!this.personaModel.personaSeleccionadas.includes(item)) {
-        this.personaModel.personaSeleccionadas.push(item);
+      if (!this.personaModel.personasSeleccionadas.includes(item)) {
+        this.personaModel.personasSeleccionadas.push(item);
       } else {
-        this.personaModel.personaSeleccionadas =
-          this.personaModel.personaSeleccionadas.filter(
+        this.personaModel.personasSeleccionadas =
+          this.personaModel.personasSeleccionadas.filter(
             (selected) => selected !== item
           );
       }
 
-      this.TableSelected.emit(this.personaModel.personaSeleccionadas);
+      this.TableSelected.emit(this.personaModel.personasSeleccionadas);
     }
   }
 
@@ -96,10 +96,10 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
     event.preventDefault();
     this.menu.show(event);
 
-    if (!this.personaModel.personaSeleccionadas.includes(item)) {
-      this.personaModel.personaSeleccionadas.push(item);
+    if (!this.personaModel.personasSeleccionadas.includes(item)) {
+      this.personaModel.personasSeleccionadas.push(item);
     }
-   
-    this.TableSelected.emit(this.personaModel.personaSeleccionadas);
+
+    this.TableSelected.emit(this.personaModel.personasSeleccionadas);
   }
 }

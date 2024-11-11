@@ -15,5 +15,6 @@ export class FechoriaModel {
     { name: 'Controla la mente del presidente' },
     { name: 'Desató una tormenta eterna' },
   ];
+  fechoriaGlobal: string | undefined;
   fechoria: string | undefined;
 }

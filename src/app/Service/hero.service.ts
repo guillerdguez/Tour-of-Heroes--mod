@@ -58,7 +58,7 @@ export class HeroService {
     return new Hero(
       this,
       this.heroModel,
-      this.router, 
+      this.router,
       this.personaModel
     ).setDetails(heroData);
   }
@@ -123,7 +123,7 @@ export class HeroService {
   /////////// UPDATE methods ///////////
 
   /** PUT: update the hero on the server */
-  updateHero(hero: any): void {  
+  updateHero(hero: any): void {
     this.heroDAO.updateHero(hero).subscribe({
       next: (hero: Hero) => {
         this.heroModel.hero = hero;

@@ -1,4 +1,4 @@
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { VillainService } from '../../Service/villain.service';
 import { FechoriaDialogComponent } from '../../UI/fechoria-dialog/fechoria-dialog.component';
@@ -7,21 +7,22 @@ import { PersonaConPoderes } from './personaConPoderes';
 import { Injectable } from '@angular/core';
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 import { VillainDetails } from './villain-details';
+import { FechoriaModel } from '../Views/Dynamic/fechoriaModel';
 
 @Injectable({ providedIn: 'root' })
 export class Villain extends PersonaConPoderes {
-  fechoria!: string;
+  fechoria: string | undefined;
   title: string = 'Villains';
   ref!: DynamicDialogRef;
   url: string = '/newVillains';
-  favourite: boolean = false;
 
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
-    public override router: Router, 
+    public override router: Router,
     public override personaModel: PersonaModel,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    public fechoriaModel: FechoriaModel
   ) {
     super(router, personaModel);
   }
@@ -85,33 +86,28 @@ export class Villain extends PersonaConPoderes {
   }
 
   showDialog() {
-    // Attempt to open the dialog
     this.ref = this.dialogService.open(FechoriaDialogComponent, {});
-  
-    // Check if the dialog reference (`ref`) is created successfully
-    if (this.ref && this.ref.onClose) {
-      // Subscribe to the onClose event only if `onClose` is defined
+    if (this.ref) {
+      let copiaLista: any[] = this.personaModel.personasSeleccionadas;
       this.ref.onClose.subscribe((fechoria: string) => {
-        if (fechoria) {
+        if (copiaLista.length == 0) {
           this.changeFechoria(fechoria);
+        } else {
+          copiaLista.forEach((persona) => {
+            (persona as Villain).changeFechoria(fechoria);
+          });
         }
-      });
-    } else {
-      console.error("Failed to open dialog or onClose event is not available.");
+      });    
     }
   }
-  
-  // showDialog() {
-  //   this.ref = this.dialogService.open(FechoriaDialogComponent, {});
-  //   this.ref.onClose.subscribe((fechoria: string) => {
-  //     if (fechoria) {
-  //       this.changeFechoria(fechoria);
-  //     }
-  //   });
-  // }
-  changeFechoria(fechoria: string): void {
-    this.fechoria = fechoria;
-    this.villainService.updateVillain(this);
+
+  changeFechoria(fechoria: string | undefined): void {
+    if (fechoria != undefined) {
+      this.fechoria = fechoria;
+      this.fechoriaModel.fechoriaGlobal = this.fechoria;
+      const villainData = this.getVillain();
+      this.villainService.updateVillain(villainData);
+    }
   }
 
   override goToDetail() {
@@ -134,7 +130,7 @@ export class Villain extends PersonaConPoderes {
       lastName: this.lastName,
       age: this.age,
       power: this.power,
-      fechoria: this.fechoria 
+      fechoria: this.fechoria,
     };
   }
 }

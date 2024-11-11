@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { PersonaModel } from '../Model/Views/Dynamic/PersonaModel';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
+import { FechoriaModel } from '../Model/Views/Dynamic/fechoriaModel';
 @Injectable({ providedIn: 'root' })
 export class VillainService {
   constructor(
@@ -15,7 +16,8 @@ export class VillainService {
     private messageService: MessageService,
     private personaModel: PersonaModel,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    public fechoriaModel: FechoriaModel
   ) {}
 
   createVillain(villainData: any): Villain {
@@ -24,7 +26,8 @@ export class VillainService {
       this.villainModel,
       this.router,
       this.personaModel,
-      this.dialogService
+      this.dialogService,
+      this.fechoriaModel
     ).setDetails(villainData);
   }
   /////////// CREATE methods ///////////
@@ -127,14 +130,11 @@ export class VillainService {
   /** PUT: update the villain on the server */
 
   updateVillain(villain: any): void {
+ 
     this.villainDAO.updateVillain(villain).subscribe({
       next: (villain: Villain) => {
         this.villainModel.villain = villain;
-        this.messageService.add({
-           severity: 'success',
-           summary: 'Success',
-        detail: 'Data Saved',
-        });
+   
       },
       error: (error) => {
         this.messageService.add({
@@ -163,7 +163,6 @@ export class VillainService {
         });
       },
       error: (error) => {
- 
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

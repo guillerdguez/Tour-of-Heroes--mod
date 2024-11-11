@@ -37,8 +37,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectFormComponent } from './UI/select-form/select-form.component';
-import { MessageService } from 'primeng/api';
-import { ChangeFechoriaComponent } from './UI/change-fechoria/change-fechoria.component';
+import { MessageService } from 'primeng/api'; 
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CardModule } from 'primeng/card';
 import { FechoriaDialogComponent } from './UI/fechoria-dialog/fechoria-dialog.component';
@@ -62,8 +61,7 @@ import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pas
     SidebarComponent,
 
     EsquemaListaComponent,
-    SelectFormComponent,
-    ChangeFechoriaComponent,
+    SelectFormComponent, 
     FechoriaDialogComponent,
     PasarInformacionTablaComponent,
   ],

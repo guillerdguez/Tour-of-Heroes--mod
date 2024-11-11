@@ -1,9 +1,5 @@
-export interface HeroDetails {
-  id: number;
-  name: string;
-  alterEgo?: string;
-  lastName?: string;
-  age: number;
-  power: string;
+import { personaDetails } from './persona-details';
+
+export interface HeroDetails extends personaDetails {
   favourite: boolean;
 }
