@@ -69,10 +69,19 @@ export abstract class PersonaConPoderes {
     };
     return [crear, borrar, editar];
   }
-
+  getHeaders() {
+    return [
+      { field: 'id', header: 'Id' },
+      { field: 'name', header: 'Name' },
+      { field: 'lastName', header: 'LastName' },
+      { field: 'age', header: 'Age' },
+      { field: 'power', header: 'Power' },
+      { field: 'alterEgo', header: 'AlterEgo' },
+     
+    ];
+  }
   abstract delete(): void;
-  abstract goToDetail(): void;
-  // abstract presentable(): boolean;
-  abstract getHeaders(): any[];
+  abstract goToDetail(): void; 
+
   abstract getUrl(): string;
 }

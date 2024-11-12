@@ -25,7 +25,8 @@
         <tr
           class="table-body-row"
           [class.selected]="personaModel.personasSeleccionadas.includes(item)"
-          (click)="onselectedTable($event, item)"
+          (dblclick)="onselectedTable($event, item)"   
+        
           style="width: 200px; height: 70px"
         >
           <td
@@ -34,23 +35,21 @@
             (contextmenu)="onContextMenu($event, item)"
             style="width: 200px; height: 70px"
           >
-            <!-- opcional que clickes -->
             <ng-container
               *ngIf="
                 header.field === 'favourite' &&
-                  item.favourite !== null &&
-                  item.favourite !== undefined;
+                item.favourite !== null &&
+                item.favourite !== undefined;
                 else regularCell
               "
             >
               <i
-                (click)="toggleFavorite(item); $event.stopPropagation()"
                 [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
                 tabindex="-1"
               ></i>
             </ng-container>
             <ng-template #regularCell>
-              <span>{{ item[header.field] ?? "&nbsp;" }}</span>
+              <span>{{ item[header.field] ?? '&nbsp;' }}</span>
             </ng-template>
           </td>
         </tr>

@@ -1,10 +1,4 @@
-@if(personaModel.personas.length==0){
-<form [formGroup]="formGroup">
-  <p-splitButton label="+ Create" (onClick)="onSelectDefaultItem()">
-  </p-splitButton>
-</form>
 
-}@else {
 <form [formGroup]="formGroup">
   <p-splitButton
     label="+ Create"
@@ -14,25 +8,3 @@
   >
   </p-splitButton>
 </form>
-}
-<!-- 
-<form [formGroup]="formGroup" class="speed-dial-form">
-  <p-speedDial
-    [model]="items"
-    direction="up"
-    [radius]="80"
-    type="semi-circle"
-    [disabled]="isTableEmpty"
-  />
-</form>
-<form [formGroup]="formGroup" style="  padding: 20px;   border-radius: 5px;  ">
-  <p-menu label="Select a option" #menu [model]="items" [popup]="true"></p-menu>
-  <p-button  
-    class="pmenu"
-    label="Select a option"
-    (onClick)="menu.toggle($event)"
-    icon="pi pi-ellipsis-v"
-    [disabled]="isTableEmpty"
-    [ngStyle]="{ marginTop: '10px', border: '0px', borderRadius: '5px',   cursor: 'pointer', }"
-  ></p-button>
-</form> -->

@@ -126,7 +126,8 @@ export class HeroService {
   updateHero(hero: any): void {
     this.heroDAO.updateHero(hero).subscribe({
       next: (hero: Hero) => {
-        this.heroModel.hero = hero;
+   
+        this.heroModel.hero = hero;   
         this.personaModel.personas = this.personaModel.personas.filter(
           (persona) => (persona as Hero).favourite === hero.favourite
         );

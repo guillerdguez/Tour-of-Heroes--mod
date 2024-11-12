@@ -21,19 +21,19 @@ import { PersonaModel } from '../../../Model/Views/Dynamic/PersonaModel';
   styleUrls: ['./esquema-lista.component.css'],
 })
 export class EsquemaListaComponent implements OnInit, OnChanges {
+
   paramsTemporal: any[] = [];
   headers: any[] = [];
-
   elegidosTemporal: PersonaConPoderes[] = [];
   items: MenuItem[] = [];
   @Input() params: PersonaConPoderes[] = [];
   @Input() title: string = '';
-  @Input() toggleFavorite!: (item: any) => void;
+  @Output() toggleFavorite!: (item: any) => void;
 
-  // @Output() ItemSelect = new EventEmitter<any>();
   @Output() TableSelected = new EventEmitter<any[]>();
 
   @ViewChild('menu') menu!: ContextMenu;
+  
   constructor(public personaModel: PersonaModel) {}
   ngOnInit() {
     this.ParamsTemporal();

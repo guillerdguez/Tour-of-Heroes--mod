@@ -26,15 +26,10 @@ export class Hero extends PersonaConPoderes {
   }
 
   override getHeaders() {
-    return [
-      { field: 'id', header: 'Id' },
-      { field: 'name', header: 'Name' },
-      { field: 'lastName', header: 'LastName' },
-      { field: 'age', header: 'Age' },
-      { field: 'power', header: 'Power' },
-      { field: 'alterEgo', header: 'AlterEgo' },
-      { field: 'favourite', header: 'Favourite' },
-    ];
+    let headers = super.getHeaders();
+    headers.push({ field: 'favourite', header: 'Favourite' });
+
+    return headers;
   }
 
   override menuItem() {
@@ -65,6 +60,7 @@ export class Hero extends PersonaConPoderes {
   favouriteMethod() {
     this.favourite = !this.favourite;
     const heroData = this.getHeroData();
+
     this.heroService.updateHero(heroData);
   }
 

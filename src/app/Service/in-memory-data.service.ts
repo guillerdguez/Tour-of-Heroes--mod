@@ -197,16 +197,5 @@ export class InMemoryDataService implements InMemoryDbService {
 
     return { heroes, villains };
   }
-
-  // genId(heros: Hero[]): number {
-  //   return heros.length > 0
-  //     ? Math.max(...heros.map((hero) => hero.id)) + 1
-  //     : 11;
-  // }
-
-  // genIdVillanos(villains: Villain[]): number {
-  //   return villains.length > 0
-  //     ? Math.max(...villains.map((villain) => villain.id)) + 1
-  //     : 21;
-  // }
+ 
 }

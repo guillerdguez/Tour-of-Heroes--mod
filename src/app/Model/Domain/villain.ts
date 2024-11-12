@@ -74,21 +74,16 @@ export class Villain extends PersonaConPoderes {
   }
 
   override getHeaders() {
-    return [
-      { field: 'id', header: 'Id' },
-      { field: 'name', header: 'Name' },
-      { field: 'lastName', header: 'LastName' },
-      { field: 'age', header: 'Age' },
-      { field: 'power', header: 'Power' },
-      { field: 'alterEgo', header: 'AlterEgo' },
-      { field: 'fechoria', header: 'Fechoria' },
-    ];
-  }
+    let headers = super.getHeaders();
+    headers.push({ field: 'fechoria', header: 'Fechoria' });
 
+    return headers;
+  }
   showDialog() {
     this.ref = this.dialogService.open(FechoriaDialogComponent, {});
     if (this.ref) {
-      let copiaLista: any[] = this.personaModel.personasSeleccionadas;
+      let copiaLista: PersonaConPoderes[] =
+        this.personaModel.personasSeleccionadas;
       this.ref.onClose.subscribe((fechoria: string) => {
         if (copiaLista.length == 0) {
           this.changeFechoria(fechoria);
@@ -97,7 +92,7 @@ export class Villain extends PersonaConPoderes {
             (persona as Villain).changeFechoria(fechoria);
           });
         }
-      });    
+      });
     }
   }
 
