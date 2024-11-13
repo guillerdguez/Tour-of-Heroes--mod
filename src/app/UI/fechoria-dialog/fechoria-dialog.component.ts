@@ -15,7 +15,7 @@ export class FechoriaDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fechorias = this.fechoriaModel.fechorias.map((f) => f.name);
+    this.fechorias = this.fechoriaModel.fechorias
   }
 
   selectFechoria(fechoria: string) {

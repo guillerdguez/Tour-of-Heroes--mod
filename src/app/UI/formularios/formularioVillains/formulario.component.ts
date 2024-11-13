@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { villainDAO } from '../../../DAO/villain.DAO';
-import { Fechoria } from '../../../Model/Domain/fechoria';
 import { Villain } from '../../../Model/Domain/villain';
 import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
 import { PowerModel } from '../../../Model/Views/Dynamic/powerModel';
