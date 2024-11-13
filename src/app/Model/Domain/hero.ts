@@ -22,8 +22,6 @@ export class Hero extends PersonaConPoderes {
   ) {
     super(router, personaModel, dialogService, powerModel);
   }
-
-  // Sobrescribimos el método setDetails para incluir la propiedad 'favourite'
   override setDetails(heroData: HeroDetails): this {
     super.setDetails(heroData);
     this.favourite = heroData.favourite;

@@ -22,13 +22,12 @@ export class FormularioComponentHeroe implements OnInit {
   constructor(
     private heroService: HeroService,
     public heroModel: HeroModel,
-    private heroDao: heroDAO, // Si deseas usar el HeroDao
+    private heroDao: heroDAO, 
     public powerModel: PowerModel,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Cargar los poderes si es necesario
     this.powerModel.powers;
   }
 
@@ -45,17 +44,14 @@ export class FormularioComponentHeroe implements OnInit {
     lastName = lastName?.trim() === '' ? undefined : lastName?.trim();
     power = power.trim();
 
-    // Validación de los campos obligatorios
     if (!name || !age || !power) {
-      return; // No permitir la adición si faltan campos esenciales
+      return; 
     }
 
-    // Crear el nuevo héroe
     this.heroDao.getHeroes().subscribe((heroes) => {
       const lastHero = heroes[heroes.length - 1];
       const newId = lastHero ? lastHero.id + 1 : 1;
 
-      // Crear un objeto HeroDetails con los datos proporcionados
       const newHero: HeroDetails = {
         id: newId,
         name,
@@ -66,15 +62,13 @@ export class FormularioComponentHeroe implements OnInit {
         alterEgo,
       };
 
-      // Llamada al servicio para agregar el nuevo héroe
       this.heroService.addHero(newHero);
 
-      // Redirigir a la lista de héroes
       this.goBack();
     });
   }
 
   goBack(): void {
-    this.router.navigate(['/heroes']); // Volver a la lista de héroes
+    this.router.navigate(['/heroes']); 
   }
 }

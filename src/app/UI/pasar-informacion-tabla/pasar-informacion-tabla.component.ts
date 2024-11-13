@@ -71,24 +71,6 @@ export class PasarInformacionTablaComponent {
     this.selectedTable = [...selectedTables];
   }
 
-  // onParamsChange(updatedParams: PersonaConPoderes) {
-  //   this.route.paramMap.subscribe((params) => {
-  //     const tipoPersona = params.get('tipoPersona');
-  //     if (tipoPersona === 'heroes') {
-  //       console.log(this.personaModel.personas, 'aDADVASDASD');
-
-  //       this.personaModel.personas.forEach((persona) => {
-  //         console.log(persona.setDetails(persona as Hero));
-  //         // this.heroModel.hero = persona.setDetails(persona as Hero) as Hero;
-  //         this.heroService.updateHero(persona);
-  //       });
-  //       // this.heroModel.heroes = updatedParams as Hero[];
-  //       this.personaModel.persona = updatedParams;
-  //     } else {
-  //       this.villainService.updateVillain(updatedParams);
-  //     }
-  //   });
-  // }
 
   onParamsChange(updatedParams: PersonaConPoderes) {
     this.route.paramMap.subscribe((params) => {

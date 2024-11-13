@@ -6,5 +6,4 @@ import { MenuItem } from 'primeng/api';
 export class HeroModel {
   heroes: Hero[] = [];
   hero: Hero | undefined;
-  // menuItemOptions: MenuItem[] = [];
 }

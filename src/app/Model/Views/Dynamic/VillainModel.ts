@@ -6,5 +6,4 @@ import { MenuItem } from 'primeng/api';
 export class VillainModel {
   villains: Villain[] = [];
   villain: Villain | undefined;
-  // menuItemOptions: MenuItem[] = [];
 }
