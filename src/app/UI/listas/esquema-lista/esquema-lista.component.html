@@ -52,6 +52,7 @@
             header.field !== 'id')) {
             <span>
               <input
+                style="text-align: center"
                 [class.custom-input]="true"
                 [ngModel]="item[header.field]"
                 (ngModelChange)="onValueChange(item, header.field, $event)"

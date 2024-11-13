@@ -105,6 +105,7 @@ export class Villain extends PersonaConPoderes {
       this.villainService.updateVillain(villainData);
     }
   }
+  
   override showDialogPower() {
     super.showDialogPower();
   }
