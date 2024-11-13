@@ -6,6 +6,8 @@ import { HeroModel } from '../Model/Views/Dynamic/HeroModel';
 import { MessageService } from 'primeng/api';
 import { Route, Router } from '@angular/router';
 import { PersonaModel } from '../Model/Views/Dynamic/PersonaModel';
+import { DialogService } from 'primeng/dynamicdialog';
+import { PowerModel } from '../Model/Views/Dynamic/powerModel';
 @Injectable({ providedIn: 'root' })
 export class HeroService {
   constructor(
@@ -13,7 +15,9 @@ export class HeroService {
     private heroModel: HeroModel,
     private messageService: MessageService,
     private router: Router,
-    private personaModel: PersonaModel
+    private personaModel: PersonaModel,
+    private powerModel: PowerModel,
+    private dialogService: DialogService
   ) {}
 
   /////////// CREATE methods ///////////
@@ -59,7 +63,9 @@ export class HeroService {
       this,
       this.heroModel,
       this.router,
-      this.personaModel
+      this.personaModel,
+      this.powerModel,
+      this.dialogService
     ).setDetails(heroData);
   }
   private heroes: Hero[] = [];
@@ -126,8 +132,7 @@ export class HeroService {
   updateHero(hero: any): void {
     this.heroDAO.updateHero(hero).subscribe({
       next: (hero: Hero) => {
-   
-        this.heroModel.hero = hero;   
+        this.heroModel.hero = hero;
         this.personaModel.personas = this.personaModel.personas.filter(
           (persona) => (persona as Hero).favourite === hero.favourite
         );
@@ -138,6 +143,7 @@ export class HeroService {
         // });
       },
       error: (error) => {
+        console.log(error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

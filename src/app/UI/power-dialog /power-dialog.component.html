@@ -1,0 +1,14 @@
+<div class="table-container">
+  <p-table [value]="powers" class="container">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Select a Power</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-power>
+      <tr (click)="selectPower(power)">
+        <td>{{ power }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

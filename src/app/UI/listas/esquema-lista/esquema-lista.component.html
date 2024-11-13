@@ -25,8 +25,7 @@
         <tr
           class="table-body-row"
           [class.selected]="personaModel.personasSeleccionadas.includes(item)"
-          (dblclick)="onselectedTable($event, item)"   
-        
+          (dblclick)="onselectedTable($event, item)"
           style="width: 200px; height: 70px"
         >
           <td
@@ -35,22 +34,30 @@
             (contextmenu)="onContextMenu($event, item)"
             style="width: 200px; height: 70px"
           >
-            <ng-container
-              *ngIf="
-                header.field === 'favourite' &&
-                item.favourite !== null &&
-                item.favourite !== undefined;
-                else regularCell
-              "
-            >
-              <i
-                [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
-                tabindex="-1"
-              ></i>
-            </ng-container>
-            <ng-template #regularCell>
-              <span>{{ item[header.field] ?? '&nbsp;' }}</span>
-            </ng-template>
+            @if( header.field === 'favourite' && item.favourite !== null &&
+            item.favourite !== undefined){
+            <i
+              (click)="item.favouriteMethod()"
+              [ngClass]="item.favourite ? 'pi pi-star-fill' : 'pi pi-star'"
+              tabindex="-1"
+            ></i>
+            } @else if( header.field === 'fechoria' ){
+            <span (click)="item.showDialog()"> {{ item.fechoria }}</span>
+
+            }@else if( header.field === 'power' ){
+            <span (click)="item.showDialogPower()">{{ item.power }}</span>
+
+            }@else if ( header.field === 'id') {<span>{{ item.id }}</span
+            >} @else if(( item[header.field] || item.id !== undefined &&
+            header.field !== 'id')) {
+            <span>
+              <input
+                [class.custom-input]="true"
+                [ngModel]="item[header.field]"
+                (ngModelChange)="onValueChange(item, header.field, $event)"
+                (keypress)="onKeyPress($event, header.type)"
+            /></span>
+            }@else{ &nbsp;}
           </td>
         </tr>
       </ng-template>

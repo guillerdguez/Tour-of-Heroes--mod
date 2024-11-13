@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InMemoryDataService } from './Service/in-memory-data.service';
 import { ReactiveFormsModule } from '@angular/forms';
-// UI Components 
+// UI Components
 import { HeroDetailComponent } from './UI/detail/hero-detail/hero-detail.component';
 import { MessagesComponent } from './UI/messages/messages.component';
 import { DashboardComponent } from './UI/dashboard/dashboard.component';
@@ -37,7 +37,7 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { SelectFormComponent } from './UI/select-form/select-form.component';
-import { MessageService } from 'primeng/api'; 
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CardModule } from 'primeng/card';
 import { FechoriaDialogComponent } from './UI/fechoria-dialog/fechoria-dialog.component';
@@ -46,6 +46,7 @@ import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pasar-informacion-tabla.component';
+import { PowerDialogComponent } from './UI/power-dialog /power-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pas
     FormularioComponentHeroe,
     FormularioComponentVillain,
     AppComponent,
- 
+
     HeroDetailComponent,
     MessagesComponent,
     DashboardComponent,
@@ -62,8 +63,9 @@ import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pas
     SidebarComponent,
 
     EsquemaListaComponent,
-    SelectFormComponent, 
+    SelectFormComponent,
     FechoriaDialogComponent,
+    PowerDialogComponent,
     PasarInformacionTablaComponent,
   ],
   imports: [
@@ -102,7 +104,7 @@ import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pas
       dataEncapsulation: false,
     }),
   ],
-  providers: [provideAnimationsAsync(), MessageService,DialogService],
+  providers: [provideAnimationsAsync(), MessageService, DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

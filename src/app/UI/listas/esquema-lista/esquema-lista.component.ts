@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  DoCheck,
   OnChanges,
   SimpleChanges,
   EventEmitter,
@@ -9,11 +8,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-
-import { MenuItem } from 'primeng/api';
-import { ContextMenu } from 'primeng/contextmenu';
 import { PersonaConPoderes } from '../../../Model/Domain/personaConPoderes';
 import { PersonaModel } from '../../../Model/Views/Dynamic/PersonaModel';
+import { MenuItem } from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
 
 @Component({
   selector: 'app-esquema-lista',
@@ -21,20 +19,20 @@ import { PersonaModel } from '../../../Model/Views/Dynamic/PersonaModel';
   styleUrls: ['./esquema-lista.component.css'],
 })
 export class EsquemaListaComponent implements OnInit, OnChanges {
+  @Output() paramsChange = new EventEmitter<any>();
+  @Output() TableSelected = new EventEmitter<any[]>();
+
+  @Input() params: PersonaConPoderes[] = [];
+  @Input() title: string = '';
 
   paramsTemporal: any[] = [];
   headers: any[] = [];
-  elegidosTemporal: PersonaConPoderes[] = [];
   items: MenuItem[] = [];
-  @Input() params: PersonaConPoderes[] = [];
-  @Input() title: string = '';
-  @Output() toggleFavorite!: (item: any) => void;
-
-  @Output() TableSelected = new EventEmitter<any[]>();
 
   @ViewChild('menu') menu!: ContextMenu;
-  
+
   constructor(public personaModel: PersonaModel) {}
+
   ngOnInit() {
     this.ParamsTemporal();
     this.initializeHeaders();
@@ -58,10 +56,7 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
   }
 
   onselectedTable(event: MouseEvent, item: any) {
-    if (
-      (event.button !== 2 && event.button !== 1) ||
-      this.personaModel.personasSeleccionadas.length !== 0
-    ) {
+    if (event.button !== 2 && event.button !== 1) {
       if (!this.personaModel.personasSeleccionadas.includes(item)) {
         this.personaModel.personasSeleccionadas.push(item);
       } else {
@@ -90,9 +85,9 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
       this.paramsTemporal.push([]);
     }
   }
-  onContextMenu(event: MouseEvent, item: any) {
-    this.items = item.menuItemOptions();
 
+  onContextMenu(event: MouseEvent, item: any) {
+    this.items = item.getMenuItemOptions();
     event.preventDefault();
     this.menu.show(event);
 
@@ -101,5 +96,30 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
     }
 
     this.TableSelected.emit(this.personaModel.personasSeleccionadas);
+  }
+
+  onValueChange(
+    item: PersonaConPoderes,
+    field: keyof PersonaConPoderes,
+    newValue: any
+  ): void {
+    item[field] = newValue;
+    this.params = [...this.params];
+    this.paramsChange.emit(item.setDetails(item));
+  }
+  onKeyPress(event: KeyboardEvent, type: string): void {
+    if (type === 'number') {
+      const char = event.key;
+
+      if (
+        !/[0-9]/.test(char) &&
+        char !== 'Backspace' &&
+        char !== 'Delete' &&
+        char !== 'ArrowLeft' &&
+        char !== 'ArrowRight'
+      ) {
+        event.preventDefault();
+      }
+    }
   }
 }

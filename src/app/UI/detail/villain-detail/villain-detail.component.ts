@@ -12,8 +12,7 @@ import { FechoriaModel } from '../../../Model/Views/Dynamic/fechoriaModel';
   styleUrls: ['./villain-detail.component.css'],
 })
 export class VillainDetailComponent implements OnInit, OnChanges {
-  selectedPower: string | undefined;
-selectedFechoria: any;
+ 
   constructor(
     private route: ActivatedRoute,
     private villainService: VillainService,
@@ -24,9 +23,7 @@ selectedFechoria: any;
   ) {}
   ngOnChanges( ): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.villainService.getVillain(id);
-    this.selectedPower = this.villainModel.villain?.power;
-    this.selectedFechoria = this.villainModel.villain?.fechoria;
+    this.villainService.getVillain(id); 
   }
 
   ngOnInit(): void {

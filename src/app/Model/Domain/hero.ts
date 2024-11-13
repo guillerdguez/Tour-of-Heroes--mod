@@ -4,6 +4,8 @@ import { HeroService } from '../../Service/hero.service';
 import { HeroModel } from '../Views/Dynamic/HeroModel';
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 import { HeroDetails } from './hero-details';
+import { PowerModel } from '../Views/Dynamic/powerModel';
+import { DialogService } from 'primeng/dynamicdialog';
 
 export class Hero extends PersonaConPoderes {
   title: string = 'Heroes';
@@ -14,11 +16,14 @@ export class Hero extends PersonaConPoderes {
     private heroService: HeroService,
     public heroModel: HeroModel,
     public override router: Router,
-    public override personaModel: PersonaModel
+    public override personaModel: PersonaModel,
+    public override powerModel: PowerModel,
+    public override dialogService: DialogService
   ) {
-    super(router, personaModel);
+    super(router, personaModel, dialogService, powerModel);
   }
 
+  // Sobrescribimos el método setDetails para incluir la propiedad 'favourite'
   override setDetails(heroData: HeroDetails): this {
     super.setDetails(heroData);
     this.favourite = heroData.favourite;
@@ -28,12 +33,11 @@ export class Hero extends PersonaConPoderes {
   override getHeaders() {
     let headers = super.getHeaders();
     headers.push({ field: 'favourite', header: 'Favourite' });
-
     return headers;
   }
 
-  override menuItem() {
-    let items: any[] = super.menuItem(this.url);
+  override getMenuItems() {
+    let items: any[] = super.getMenuItems(this.url);
     items.push({
       label: 'Favourite',
       icon: 'pi pi-star',
@@ -42,25 +46,22 @@ export class Hero extends PersonaConPoderes {
     return items;
   }
 
-  override menuItemOptions() {
-    let items: any[] = super.menuItemOptions();
-    let favorito = {
+  override getMenuItemOptions() {
+    let items: any[] = super.getMenuItemOptions();
+    items.push({
       label: 'Favourite',
       icon: 'pi pi-star',
       command: () => {
         this.personaModel.menuItemSeleccionado = 'Favourite';
         this.personaModel.ejecutarMenuItem();
       },
-    };
-    items.push(favorito);
-    this.heroModel.menuItemOptions = items;
-
+    });
     return items;
   }
+
   favouriteMethod() {
     this.favourite = !this.favourite;
     const heroData = this.getHeroData();
-
     this.heroService.updateHero(heroData);
   }
 
@@ -70,7 +71,6 @@ export class Hero extends PersonaConPoderes {
     );
     this.heroService.deleteHero(this.id);
   }
-
   goToDetail() {
     this.router.navigate(['/detail/hero/', this.id]);
   }
@@ -78,6 +78,15 @@ export class Hero extends PersonaConPoderes {
   getUrl() {
     return this.url;
   }
+  override showDialogPower() {
+    super.showDialogPower();
+  }
+  override changePower(power: string | undefined): void {
+    super.changePower(power);
+    const heroData = this.getHeroData();
+    this.heroService.updateHero(heroData);
+  }
+
   getHeroData(): HeroDetails {
     return {
       id: this.id,

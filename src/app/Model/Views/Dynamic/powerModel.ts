@@ -15,4 +15,5 @@ export class PowerModel {
     'Mind Control',
   ];
   power: string | undefined;
+  powerGlobal: string | undefined;
 }

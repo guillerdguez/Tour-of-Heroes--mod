@@ -8,12 +8,12 @@ import { Injectable } from '@angular/core';
 import { PersonaModel } from '../Views/Dynamic/PersonaModel';
 import { VillainDetails } from './villain-details';
 import { FechoriaModel } from '../Views/Dynamic/fechoriaModel';
+import { PowerModel } from '../Views/Dynamic/powerModel';
 
 @Injectable({ providedIn: 'root' })
 export class Villain extends PersonaConPoderes {
-  fechoria: string | undefined;
+  fechoria?: string;
   title: string = 'Villains';
-  ref!: DynamicDialogRef;
   url: string = '/newVillains';
 
   constructor(
@@ -21,10 +21,11 @@ export class Villain extends PersonaConPoderes {
     public villainModel: VillainModel,
     public override router: Router,
     public override personaModel: PersonaModel,
-    private dialogService: DialogService,
-    public fechoriaModel: FechoriaModel
+    public override dialogService: DialogService,
+    public fechoriaModel: FechoriaModel,
+    public override powerModel: PowerModel
   ) {
-    super(router, personaModel);
+    super(router, personaModel, dialogService, powerModel);
   }
 
   setDialogService(dialogService: DialogService) {
@@ -32,14 +33,14 @@ export class Villain extends PersonaConPoderes {
     return this;
   }
 
-  override setDetails(villainData: any): any {
+  override setDetails(villainData: any): this {
     super.setDetails(villainData);
     this.fechoria = villainData.fechoria;
     return this;
   }
 
-  override menuItem() {
-    let items: any[] = super.menuItem(this.url);
+  override getMenuItems() {
+    let items: any[] = super.getMenuItems(this.url);
     items.push({
       label: 'Cambiar Fechoria',
       icon: 'pi pi-thumbs-down-fill',
@@ -48,18 +49,16 @@ export class Villain extends PersonaConPoderes {
     return items;
   }
 
-  override menuItemOptions() {
-    let items: any[] = super.menuItemOptions();
-    let cambiarFechoria = {
+  override getMenuItemOptions() {
+    let items: any[] = super.getMenuItemOptions();
+    items.push({
       label: 'Cambiar Fechoria',
       icon: 'pi pi-thumbs-down-fill',
       command: () => {
         this.personaModel.menuItemSeleccionado = 'Cambiar Fechoria';
         this.personaModel.ejecutarMenuItem();
       },
-    };
-    items.push(cambiarFechoria);
-
+    });
     return items;
   }
 
@@ -76,20 +75,22 @@ export class Villain extends PersonaConPoderes {
   override getHeaders() {
     let headers = super.getHeaders();
     headers.push({ field: 'fechoria', header: 'Fechoria' });
-
     return headers;
   }
+
   showDialog() {
     this.ref = this.dialogService.open(FechoriaDialogComponent, {});
     if (this.ref) {
       let copiaLista: PersonaConPoderes[] =
         this.personaModel.personasSeleccionadas;
       this.ref.onClose.subscribe((fechoria: string) => {
-        if (copiaLista.length == 0) {
+        if (copiaLista.length === 0) {
           this.changeFechoria(fechoria);
         } else {
           copiaLista.forEach((persona) => {
-            (persona as Villain).changeFechoria(fechoria);
+            if (persona instanceof Villain) {
+              persona.changeFechoria(fechoria);
+            }
           });
         }
       });
@@ -97,12 +98,20 @@ export class Villain extends PersonaConPoderes {
   }
 
   changeFechoria(fechoria: string | undefined): void {
-    if (fechoria != undefined) {
+    if (fechoria !== undefined) {
       this.fechoria = fechoria;
       this.fechoriaModel.fechoriaGlobal = this.fechoria;
       const villainData = this.getVillain();
       this.villainService.updateVillain(villainData);
     }
+  }
+  override showDialogPower() {
+    super.showDialogPower();
+  }
+  override changePower(power: string | undefined): void {
+    super.changePower(power);
+    const villainData = this.getVillain();
+    this.villainService.updateVillain(villainData);
   }
 
   override goToDetail() {
@@ -113,7 +122,6 @@ export class Villain extends PersonaConPoderes {
     this.villainModel.villains = this.villainModel.villains.filter(
       (h) => h.id !== this.id
     );
-
     this.villainService.deleteVillain(this.id);
   }
 

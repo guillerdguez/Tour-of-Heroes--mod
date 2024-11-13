@@ -8,6 +8,7 @@ import { PersonaModel } from '../Model/Views/Dynamic/PersonaModel';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Router } from '@angular/router';
 import { FechoriaModel } from '../Model/Views/Dynamic/fechoriaModel';
+import { PowerModel } from '../Model/Views/Dynamic/powerModel';
 @Injectable({ providedIn: 'root' })
 export class VillainService {
   constructor(
@@ -17,17 +18,19 @@ export class VillainService {
     private personaModel: PersonaModel,
     private router: Router,
     private dialogService: DialogService,
-    public fechoriaModel: FechoriaModel
+    private fechoriaModel: FechoriaModel,
+    private powerModel: PowerModel
   ) {}
 
-  createVillain(villainData: any): Villain {
+  createVillain(villainData: Villain): Villain {
     return new Villain(
       this,
       this.villainModel,
       this.router,
       this.personaModel,
       this.dialogService,
-      this.fechoriaModel
+      this.fechoriaModel,
+      this.powerModel
     ).setDetails(villainData);
   }
   /////////// CREATE methods ///////////
