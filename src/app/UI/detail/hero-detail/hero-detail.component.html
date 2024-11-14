@@ -30,9 +30,13 @@
     />
   </div>
 
-  <div class="modAge">
+  <div class="form-group-age">
     <label for="age">Hero age: </label>
-    <input id="age" [(ngModel)]="heroModel.hero.age" placeholder="Age" />
+    <p-inputNumber
+      inputId="age"
+      [(ngModel)]="heroModel.hero.age"
+      placeholder="Age"
+    />
   </div>
 
   <div class="form-group">
@@ -64,7 +68,7 @@
       <option [ngValue]="true">Yes</option>
     </select>
   </div>
-  
+
   <div class="botones">
     <button class="boton" type="button" (click)="goBack()">Go Back</button>
     <button class="boton" type="button" (click)="save()">Save</button>

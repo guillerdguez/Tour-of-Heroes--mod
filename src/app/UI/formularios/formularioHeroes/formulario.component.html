@@ -44,7 +44,7 @@
           #lastName
         />
       </div>
-      <div class="form-group-age">
+      <!-- <div class="form-group-age">
         <label for="age">Age: </label>
         <input
           type="number"
@@ -54,7 +54,13 @@
           required
           #age
         />
+      </div> -->
+
+      <div class="form-group-age">
+        <label for="age">Age: </label>
+        <p-inputNumber inputId="age" [(ngModel)]="heroAge" />
       </div>
+
       <div class="form-group-favourite">
         <label for="favourite">Favourite: </label>
         <select
@@ -68,7 +74,7 @@
           <option value="true">Yes</option>
         </select>
       </div>
-      
+
       <div class="form-group-power">
         <label for="power">Hero Power</label>
         <select class="form-control" id="power" required name="power" #power>
@@ -78,24 +84,22 @@
         </select>
       </div>
 
-      
       <button
-      type="submit"
-      class="btn"
-      (click)="
-        add(
-          heroName.value,
-          age.valueAsNumber,
-          power.value,        
-          favourite.value === 'true',
-          alterEgo.value,
-          lastName.value
-        );
-      "
-    >
-      Submit
-    </button>
-    
+        type="submit"
+        class="btn"
+        (click)="
+          add(
+            heroName.value,
+            heroAge,
+            power.value,
+            favourite.value === 'true',
+            alterEgo.value,
+            lastName.value
+          )
+        "
+      >
+        Submit
+      </button>
     </div>
   </body>
 </html>

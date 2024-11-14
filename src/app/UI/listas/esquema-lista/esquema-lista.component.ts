@@ -104,20 +104,13 @@ export class EsquemaListaComponent implements OnInit, OnChanges {
     newValue: any
   ): void {
     item[field] = newValue;
-    this.params = [...this.params];
     this.paramsChange.emit(item.setDetails(item));
   }
   onKeyPress(event: KeyboardEvent, type: string): void {
     if (type === 'number') {
       const char = event.key;
 
-      if (
-        !/[0-9]/.test(char) &&
-        char !== 'Backspace' &&
-        char !== 'Delete' &&
-        char !== 'ArrowLeft' &&
-        char !== 'ArrowRight'
-      ) {
+      if (!/[0-9]/.test(char)) {
         event.preventDefault();
       }
     }

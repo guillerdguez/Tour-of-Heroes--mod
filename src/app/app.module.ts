@@ -47,6 +47,7 @@ import { MenuModule } from 'primeng/menu';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PasarInformacionTablaComponent } from './UI/pasar-informacion-tabla/pasar-informacion-tabla.component';
 import { PowerDialogComponent } from './UI/power-dialog /power-dialog.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { PowerDialogComponent } from './UI/power-dialog /power-dialog.component'
     PasarInformacionTablaComponent,
   ],
   imports: [
+    InputNumberModule,
     DialogModule,
     CardModule,
     ToastModule,

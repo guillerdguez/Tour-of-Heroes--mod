@@ -6,7 +6,7 @@
     <ng-container *ngFor="let hero of heroModel.heroes">
       <a
         class="menu"
-        *ngIf="hero.favourite==true"
+        *ngIf="hero.favourite == true"
         [routerLink]="['/detail/hero', hero.id]"
       >
         {{ hero.name }}

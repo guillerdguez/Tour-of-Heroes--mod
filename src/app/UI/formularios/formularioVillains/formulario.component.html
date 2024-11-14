@@ -49,14 +49,7 @@
 
       <div class="form-group-age">
         <label for="age">Age: </label>
-        <input
-          type="number"
-          class="form-control"
-          id="age"
-          name="age"
-          required
-          #age
-        />
+        <p-inputNumber inputId="age" [(ngModel)]="villainAge" />
       </div>
 
       <div class="form-group-power">
@@ -92,7 +85,7 @@
           (click)="
             add(
               villainName.value,
-              age.valueAsNumber,
+              villainAge,
               power.value,
               fechoria.value,
               alterEgo.value,

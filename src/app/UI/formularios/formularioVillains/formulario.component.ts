@@ -17,6 +17,7 @@ export class FormularioComponentVillain implements OnInit {
   model: any;
   villainName: any;
   villainForm: any;
+villainAge: number = 0;
   constructor(
     private villainService: VillainService,
     public villainModel: VillainModel,
@@ -61,7 +62,7 @@ export class FormularioComponentVillain implements OnInit {
         fechoria,
         alterEgo,
         lastName,
-      }; 
+      };
       this.villainService.addVillain(newVillain);
 
       this.goBack();

@@ -32,9 +32,13 @@
 
   <div class="modAge">
     <label for="age">Villain age: </label>
-    <input id="age" [(ngModel)]="villainModel.villain.age" placeholder="Age" />
-  </div>
+    <p-inputNumber
 
+      inputId="age"
+      [(ngModel)]="villainModel.villain.age"
+      placeholder="Age"
+    />
+  </div>
   <div class="form-group">
     <label for="power">Villain Power</label>
     <select
